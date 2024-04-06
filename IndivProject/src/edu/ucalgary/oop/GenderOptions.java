@@ -14,7 +14,6 @@ public class GenderOptions {
      */
     public GenderOptions(String filePath) {
         GenderOptions.filePath = filePath;
-        options = readGenderOptions();
     }
 
     public static void main(String[] args) {
@@ -82,6 +81,7 @@ public class GenderOptions {
      * @return Returns a String ArrayList of all the Genders in the provided filePath
      */
     public ArrayList<String> getOptions() {
+        options = readGenderOptions();
         return options;
     }
 
