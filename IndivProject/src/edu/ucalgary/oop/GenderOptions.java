@@ -9,6 +9,7 @@ public class GenderOptions {
 
     /**
      * Constructor
+     *
      * @param filePath The path to the file path
      */
     public GenderOptions(String filePath) {
@@ -16,8 +17,19 @@ public class GenderOptions {
         options = readGenderOptions();
     }
 
+    public static void main(String[] args) {
+
+        String fileName = "C:\\Users\\ahron\\OneDrive\\Desktop\\Files\\University\\ENSF 380\\Assignments\\I3\\IA3\\IndivProject\\src\\edu\\ucalgary\\oop\\GenderOptions.txt";
+        GenderOptions test = new GenderOptions(fileName);
+        System.out.println(test.containsGender("man")); // Will print true if "man" exists in the options list
+        System.out.println(test.containsGender("non-binary")); // Will print true if "non-binary" exists in the options list
+        System.out.println(test.containsGender("woman")); // Will print true if "woman" exists in the options list
+        System.out.println(test.containsGender("agender")); // Will print false if "agender" does not exist in the options list
+    }
+
     /**
      * Reads the .txt file and puts its contents into an ArrayList
+     *
      * @return The ArrayList of all the genders
      */
     private ArrayList<String> readGenderOptions() {
@@ -40,6 +52,7 @@ public class GenderOptions {
 
     /**
      * Writes the options ArrayList into filePath
+     *
      * @return 1 if successful, 0 if not
      */
     private int writeGenderOptionsToFile() {
@@ -57,6 +70,7 @@ public class GenderOptions {
 
     /**
      * Returns if gender is in options
+     *
      * @param gender The gender to find
      * @return True if gender is in options, otherwise False
      */
@@ -64,9 +78,7 @@ public class GenderOptions {
         return options.contains(gender);
     }
 
-
     /**
-     *
      * @return Returns a String ArrayList of all the Genders in the provided filePath
      */
     public ArrayList<String> getOptions() {
@@ -75,6 +87,7 @@ public class GenderOptions {
 
     /**
      * Updates the .txt file if a new ArrayList of Genders is provided through this function
+     *
      * @param options The new ArrayList of String of Genders
      */
     public void setOptions(ArrayList<String> options) {
@@ -83,7 +96,6 @@ public class GenderOptions {
     }
 
     /**
-     *
      * @return The filePath provided
      */
     public String getFilePath() {
@@ -91,20 +103,9 @@ public class GenderOptions {
     }
 
     /**
-     *
      * @param filePath The new filePath
      */
     public void setFilePath(String filePath) {
         GenderOptions.filePath = filePath;
-    }
-
-    public static void main(String[] args) {
-
-        String fileName = "C:\\Users\\ahron\\OneDrive\\Desktop\\Files\\University\\ENSF 380\\Assignments\\I3\\IA3\\IndivProject\\src\\edu\\ucalgary\\oop\\GenderOptions.txt";
-        GenderOptions test = new GenderOptions(fileName);
-        System.out.println(test.containsGender("man")); // Will print true if "man" exists in the options list
-        System.out.println(test.containsGender("non-binary")); // Will print true if "non-binary" exists in the options list
-        System.out.println(test.containsGender("woman")); // Will print true if "woman" exists in the options list
-        System.out.println(test.containsGender("agender")); // Will print false if "agender" does not exist in the options list
     }
 }
