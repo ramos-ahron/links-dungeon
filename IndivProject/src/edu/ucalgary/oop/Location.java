@@ -150,6 +150,7 @@ public class Location {
             for (Supply existingSupply : supplies) {
                 if (existingSupply.getType().equals(supply.getType())) {
                     existingSupply.add(amount);
+                    refreshSupplies(supplies);
                     return;
                 }
             }
@@ -173,6 +174,7 @@ public class Location {
             for (Supply existingSupply : supplies) {
                 if (existingSupply.getType().equals(supply.getType())) {
                     existingSupply.add(amount);
+                    refreshSupplies(supplies);
                     return;
                 }
             }
@@ -197,5 +199,15 @@ public class Location {
         }
         return false;
     }
+
+    /**
+     * Removes supplies from the provided list that have a quantity of zero.
+     *
+     * @param list the LinkedList of supplies to refresh
+     */
+    private void refreshSupplies(LinkedList<Supply> list) {
+        list.removeIf(supply -> supply.getQuantity() == 0);
+    }
+
 }
 
