@@ -54,7 +54,7 @@ public class GenderOptions {
      *
      * @return 1 if successful, 0 if not
      */
-    private int writeGenderOptionsToFile() {
+    private int writeGenderOptions() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (String option : options) {
                 bw.write(option);
@@ -92,7 +92,7 @@ public class GenderOptions {
      */
     public void setOptions(ArrayList<String> options) {
         GenderOptions.options = options;
-        writeGenderOptionsToFile();
+        writeGenderOptions();
     }
 
     /**
