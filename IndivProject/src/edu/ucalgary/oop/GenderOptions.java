@@ -17,13 +17,6 @@ public class GenderOptions {
     }
 
     public static void main(String[] args) {
-
-        String fileName = "C:\\Users\\ahron\\OneDrive\\Desktop\\Files\\University\\ENSF 380\\Assignments\\I3\\IA3\\IndivProject\\src\\edu\\ucalgary\\oop\\GenderOptions.txt";
-        GenderOptions test = new GenderOptions(fileName);
-        System.out.println(test.containsGender("man")); // Will print true if "man" exists in the options list
-        System.out.println(test.containsGender("non-binary")); // Will print true if "non-binary" exists in the options list
-        System.out.println(test.containsGender("woman")); // Will print true if "woman" exists in the options list
-        System.out.println(test.containsGender("agender")); // Will print false if "agender" does not exist in the options list
     }
 
     /**
@@ -31,19 +24,16 @@ public class GenderOptions {
      *
      * @return The ArrayList of all the genders
      */
-    private ArrayList<String> readGenderOptions() {
+    private ArrayList<String> readGenderOptions() throws IOException {
         ArrayList<String> genderOptions = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (!line.isEmpty()) {
-                    genderOptions.add(line);
-                }
+        BufferedReader br = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = br.readLine()) != null) {
+            line = line.trim();
+            if (!line.isEmpty()) {
+                genderOptions.add(line);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return genderOptions;
@@ -51,19 +41,20 @@ public class GenderOptions {
 
     /**
      * Writes the options ArrayList into filePath
-     *
-     * @return 1 if successful, 0 if not
      */
-    private int writeGenderOptions() {
+    private void writeGenderOptions() throws IOException {
+        // Check if the file exists
+        File file = new File(filePath);
+        if (!file.exists()) {
+            throw new IOException("File not found: " + filePath);
+        }
+
+        // Proceed with writing options to the file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (String option : options) {
                 bw.write(option);
-                bw.newLine(); // Add newline after each option
+                bw.newLine();
             }
-            return 1;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 0;
         }
     }
 
@@ -80,7 +71,7 @@ public class GenderOptions {
     /**
      * @return Returns a String ArrayList of all the Genders in the provided filePath
      */
-    public ArrayList<String> getOptions() {
+    public ArrayList<String> getOptions() throws IOException {
         options = readGenderOptions();
         return options;
     }
@@ -90,7 +81,7 @@ public class GenderOptions {
      *
      * @param options The new ArrayList of String of Genders
      */
-    public void setOptions(ArrayList<String> options) {
+    public void setOptions(ArrayList<String> options) throws IOException {
         GenderOptions.options = options;
         writeGenderOptions();
     }
