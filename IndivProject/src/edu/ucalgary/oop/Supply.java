@@ -19,9 +19,15 @@ public class Supply {
      *
      * @param type     The type of supply
      * @param quantity The number of supplies
+     * @throws IllegalArgumentException Gets thrown if quantity is negative
      */
-    public Supply(String type, int quantity) {
+    public Supply(String type, int quantity) throws IllegalArgumentException {
         this.type = type;
+
+        if (invalidQuantity(quantity)) {
+            throw new IllegalArgumentException("Cannot initialize supply with negative quantity");
+        }
+
         this.quantity = quantity;
     }
 
@@ -37,11 +43,25 @@ public class Supply {
     }
 
     /**
+     * Checks if quantity provided is valid
+     *
+     * @param quantity The quantity provided
+     * @return true if valid, otherwise false
+     */
+    private boolean invalidQuantity(int quantity) {
+        return quantity < 0;
+    }
+
+    /**
      * Adds amount to quantity
      *
      * @param amount The amount of supplies to be added
+     * @throws IllegalArgumentException Gets thrown if amount makes quantity negative
      */
-    public void add(int amount) {
+    public void add(int amount) throws IllegalArgumentException {
+        if (this.quantity + amount < 0) {
+            throw new IllegalArgumentException("This amount makes the number of supplies negative");
+        }
         this.quantity += amount;
     }
 
@@ -72,8 +92,12 @@ public class Supply {
      * Sets the new amount of quantity
      *
      * @param quantity The new amount of quantity
+     * @throws IllegalArgumentException Gets thrown if quantity is negative
      */
-    public void setQuantity(int quantity) {
+    public void setQuantity(int quantity) throws IllegalArgumentException {
+        if (invalidQuantity(quantity)) {
+            throw new IllegalArgumentException("Cannot initialize supply with negative quantity");
+        }
         this.quantity = quantity;
     }
 }

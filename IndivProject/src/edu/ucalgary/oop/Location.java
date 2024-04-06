@@ -7,7 +7,7 @@ public class Location {
     private String address;
     private LinkedList<DisasterVictim> occupants;
     private LinkedList<Supply> supplies;
-    private static DatabaseManager database;
+//    private static DatabaseManager database;
 
     public Location(String name, String address) {
         this.name = name;
