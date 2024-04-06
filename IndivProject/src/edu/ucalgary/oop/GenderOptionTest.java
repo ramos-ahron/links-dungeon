@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class GenderOptionsTest {
+public class GenderOptionTest {
     private final String path = "C:\\Users\\ahron\\OneDrive\\Desktop\\Files\\University\\ENSF 380\\Assignments\\I3\\IA3\\IndivProject\\src\\edu\\ucalgary\\oop\\GenderOptions.txt";
-    private final GenderOptions testGenderOptions = new GenderOptions(path);
+    private final GenderOption testGenderOptions = new GenderOption(path);
 
     @Test
     public void testObjectCreation() {

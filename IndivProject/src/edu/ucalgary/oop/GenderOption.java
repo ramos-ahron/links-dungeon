@@ -3,7 +3,7 @@ package edu.ucalgary.oop;
 import java.io.*;
 import java.util.ArrayList;
 
-public class GenderOptions {
+public class GenderOption {
     private static ArrayList<String> options = new ArrayList<>();
     private static String filePath;
 
@@ -12,8 +12,8 @@ public class GenderOptions {
      *
      * @param filePath The path to the file path
      */
-    public GenderOptions(String filePath) {
-        GenderOptions.filePath = filePath;
+    public GenderOption(String filePath) {
+        GenderOption.filePath = filePath;
     }
 
     public static void main(String[] args) {
@@ -23,6 +23,7 @@ public class GenderOptions {
      * Reads the .txt file and puts its contents into an ArrayList
      *
      * @return The ArrayList of all the genders
+     * @throws IOException Throws exception if file does not exist
      */
     private ArrayList<String> readGenderOptions() throws IOException {
         ArrayList<String> genderOptions = new ArrayList<>();
@@ -41,6 +42,8 @@ public class GenderOptions {
 
     /**
      * Writes the options ArrayList into filePath
+     *
+     * @throws IOException Throws exception if file does not exist
      */
     private void writeGenderOptions() throws IOException {
         // Check if the file exists
@@ -70,6 +73,7 @@ public class GenderOptions {
 
     /**
      * @return Returns a String ArrayList of all the Genders in the provided filePath
+     * @throws IOException Throws exception if file does not exist
      */
     public ArrayList<String> getOptions() throws IOException {
         options = readGenderOptions();
@@ -80,9 +84,10 @@ public class GenderOptions {
      * Updates the .txt file if a new ArrayList of Genders is provided through this function
      *
      * @param options The new ArrayList of String of Genders
+     * @throws IOException Throws exception if file does not exist
      */
     public void setOptions(ArrayList<String> options) throws IOException {
-        GenderOptions.options = options;
+        GenderOption.options = options;
         writeGenderOptions();
     }
 
@@ -97,6 +102,6 @@ public class GenderOptions {
      * @param filePath The new filePath
      */
     public void setFilePath(String filePath) {
-        GenderOptions.filePath = filePath;
+        GenderOption.filePath = filePath;
     }
 }
