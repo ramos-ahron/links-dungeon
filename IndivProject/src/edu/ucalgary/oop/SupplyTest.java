@@ -10,6 +10,17 @@ public class SupplyTest {
     private final Supply testSupply = new Supply(expectedType, expectedQuantity);
 
     @Test
+    public void testConstructor() {
+        assertNotNull("Constructor should create a non-null Location object", testSupply);
+        assertEquals("Constructor should set the type correctly", expectedType, testSupply.getType());
+        assertEquals("Constructor should set the quantity correctly", expectedQuantity, testSupply.getQuantity());
+
+        Supply testSupplyW = new Supply("Water");
+        assertEquals("Constructor should set the type correctly", "Water", testSupplyW.getType());
+        assertEquals("Constructor should set the quantity correctly", 0, testSupplyW.getQuantity());
+    }
+
+    @Test
     public void testObjectCreation() {
         Supply testSupplyW = new Supply("Water");
         assertNotNull(testSupply);
