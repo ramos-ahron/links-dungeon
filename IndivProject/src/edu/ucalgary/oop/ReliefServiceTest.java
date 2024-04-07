@@ -1,6 +1,9 @@
 package edu.ucalgary.oop;
 
 import org.junit.Test;
+
+import java.util.LinkedList;
+
 import static org.junit.Assert.*;
 
 public class ReliefServiceTest {
@@ -40,14 +43,15 @@ public class ReliefServiceTest {
 
     @Test
     public void testInvalidAddOccupantInList() {
-        Location testLocation = new Location("Test", "Random Address");
+        Location testLocation1 = new Location("Test", "Random Address");
+        Location testLocation2 = new Location("Test", "Random Address");
 
         boolean correctValueInList = false;
         String failureReasonInList = "no exception was thrown";
 
         try {
-            testReliefService.addShelter(testLocation);
-            testReliefService.addShelter(testLocation);
+            testReliefService.addShelter(testLocation1);
+            testReliefService.addShelter(testLocation2);
         } catch (IllegalArgumentException e) {
             correctValueInList = true;
         } catch (Exception e) {
@@ -74,5 +78,64 @@ public class ReliefServiceTest {
         }
 
         assertTrue("removeShelter() should make shelters empty", testReliefService.getShelters().isEmpty());
+    }
+
+    @Test
+    public void testInvalidRemoveShelter() {
+        boolean correctValueNull = false;
+        String failureReasonNull = "no exception was thrown";
+
+        try {
+            testReliefService.removeShelter(null);
+        } catch (NullPointerException e) {
+            correctValueNull = true;
+        } catch (Exception e) {
+            failureReasonNull = "the wrong type of exception was thrown";
+        }
+
+        String messageNull = "removeShelter() should throw an NullPointerException if null is tried to be removed from shelters but " + failureReasonNull;
+
+        assertTrue(messageNull, correctValueNull);
+    }
+
+    @Test
+    public void testInvalidRemoveOccupantNotInList() {
+        Location testLocation = new Location("Test", "Random Address");
+
+        boolean correctValueInList = false;
+        String failureReasonInList = "no exception was thrown";
+
+        try {
+            testReliefService.removeShelter(testLocation);
+        } catch (IllegalArgumentException e) {
+            correctValueInList = true;
+        } catch (Exception e) {
+            failureReasonInList = "the wrong type of exception was thrown";
+        }
+
+        String messageInList = "removeShelter() should throw an IllegalArgumentException if location is not in shelters but " + failureReasonInList;
+
+        assertTrue(messageInList, correctValueInList);
+    }
+
+    @Test
+    public void testGetAndSetShelters() {
+        LinkedList<Location> testLocationList = new LinkedList<>();
+        testLocationList.add(new Location("Location1", "Address1"));
+        testLocationList.add(new Location("Location2", "Address2"));
+        testLocationList.add(new Location("Location3", "Address3"));
+        testLocationList.add(new Location("Location4", "Address4"));
+
+        testReliefService.setShelters(testLocationList);
+
+        assertEquals("setShelters() should update the value of shelters", testLocationList, testReliefService.getShelters());
+    }
+
+    @Test
+    public void testGetWorkerID() {
+        int counter = ReliefService.getWorkerIdCounter();
+        int workerID = testReliefService.getWorkerId();
+
+        assertEquals("getWorkerID() should return getWorkerIdCounter() - 1", counter, workerID + 1);
     }
 }
