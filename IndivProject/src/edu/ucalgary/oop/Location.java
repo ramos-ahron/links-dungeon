@@ -102,15 +102,15 @@ public class Location {
      * Adds the specified occupant to the list of occupants.
      *
      * @param occupant the occupant to be added
-     * @throws IllegalArgumentException if the provided occupant is null
+     * @throws NullPointerException     if the provided occupant is null
      * @throws IllegalArgumentException if the provided occupant is already in the list of occupants
      */
-    public void addOccupant(DisasterVictim occupant) throws IllegalArgumentException {
+    public void addOccupant(DisasterVictim occupant) throws NullPointerException, IllegalArgumentException {
         if (occupant == null) {
-            throw new IllegalArgumentException("Occupant provided cannot be null");
+            throw new NullPointerException("The occupant provided cannot be null");
         }
         if (inList(occupants, occupant)) {
-            throw new IllegalArgumentException("Occupant is already in location");
+            throw new IllegalArgumentException("The occupant is already in the location");
         } else {
             this.occupants.add(occupant);
         }
@@ -120,31 +120,31 @@ public class Location {
      * Removes the specified occupant from the list of occupants.
      *
      * @param occupant the occupant to be removed
-     * @throws IllegalArgumentException if the provided occupant is null
-     * @throws IllegalArgumentException if the provided occupant is not in the list of occupants
+     * @throws NullPointerException     if the provided occupant is null
+     * @throws IllegalArgumentException if the provided occupant is not found in the list of occupants
      */
-    public void removeOccupant(DisasterVictim occupant) throws IllegalArgumentException {
+    public void removeOccupant(DisasterVictim occupant) throws NullPointerException, IllegalArgumentException {
         if (occupant == null) {
-            throw new IllegalArgumentException("Occupant provided cannot be null");
+            throw new NullPointerException("The occupant provided cannot be null");
         }
         if (inList(occupants, occupant)) {
             this.occupants.remove(occupant);
         } else {
-            throw new IllegalArgumentException("Occupant is not in location");
+            throw new IllegalArgumentException("The occupant is not found in the location");
         }
     }
+
 
     /**
      * Adds the specified supply to the inventory.
      *
      * @param supply the supply to be added
-     * @throws IllegalArgumentException if the provided supply is null
+     * @throws NullPointerException if the provided supply is null
      */
-    public void addSupply(Supply supply) throws IllegalArgumentException {
+    public void addSupply(Supply supply) throws NullPointerException {
         if (supply == null) {
-            throw new IllegalArgumentException("Supply provided cannot be null");
+            throw new NullPointerException("The supply provided cannot be null");
         }
-
         if (inList(supplies, supply)) {
             int amount = supply.getQuantity();
             for (Supply existingSupply : supplies) {
@@ -159,15 +159,17 @@ public class Location {
         }
     }
 
+
     /**
      * Removes the specified supply from the inventory.
      *
      * @param supply the supply to be removed
-     * @throws IllegalArgumentException if the provided supply is not in the inventory
+     * @throws NullPointerException     if the provided supply is null
+     * @throws IllegalArgumentException if the provided supply is not found in the inventory
      */
-    public void removeSupply(Supply supply) throws IllegalArgumentException {
+    public void removeSupply(Supply supply) throws NullPointerException, IllegalArgumentException {
         if (supply == null) {
-            throw new IllegalArgumentException("Supply provided cannot be null");
+            throw new NullPointerException("The supply provided cannot be null");
         }
         if (inList(supplies, supply)) {
             int amount = -supply.getQuantity();
@@ -179,7 +181,7 @@ public class Location {
                 }
             }
         } else {
-            throw new IllegalArgumentException("supply provided is not in inventory");
+            throw new IllegalArgumentException("The supply provided is not found in the inventory");
         }
     }
 
