@@ -2,7 +2,7 @@ package edu.ucalgary.oop;
 
 import java.util.LinkedList;
 
-public class Location {
+public class Location extends HelperFunctions {
     private final LinkedList<DisasterVictim> occupants;
     private final LinkedList<Supply> supplies;
     private String name;
@@ -186,23 +186,6 @@ public class Location {
     }
 
     /**
-     * Checks if the specified element is present in the provided LinkedList.
-     *
-     * @param list          the LinkedList to search
-     * @param elementToFind the element to search for
-     * @param <T>           the type of elements in the LinkedList
-     * @return true if the element is found in the LinkedList, otherwise false
-     */
-    private <T> boolean inList(LinkedList<T> list, T elementToFind) {
-        for (T element : list) {
-            if (element.equals(elementToFind)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Removes supplies from the provided list that have a quantity of zero.
      *
      * @param list the LinkedList of supplies to refresh
@@ -210,6 +193,5 @@ public class Location {
     private void refreshSupplies(LinkedList<Supply> list) {
         list.removeIf(supply -> supply.getQuantity() == 0);
     }
-
 }
 

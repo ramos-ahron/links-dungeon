@@ -1,6 +1,6 @@
 package edu.ucalgary.oop;
 
-public class MedicalRecord extends DateValidator {
+public class MedicalRecord extends HelperFunctions {
     private Location location;
     private String treatmentDetails;
     private String dateOfTreatment;

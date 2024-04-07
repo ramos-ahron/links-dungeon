@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
-public class LocationTest {
+public class LocationTest extends HelperFunctions {
     private final String expectedName = "Shelter A";
     private final String expectedAddress = "1234 Shelter Ave";
     private final Location testLocation = new Location(expectedName, expectedAddress);
@@ -234,22 +234,5 @@ public class LocationTest {
         String messageNegative = "removeSupply() should throw an IllegalArgumentException if resulting supply will give a negative amount but " + failureReasonNegative;
 
         assertTrue(messageNegative, correctValueNegative);
-    }
-
-    /**
-     * Checks if the specified element is present in the provided LinkedList.
-     *
-     * @param list          the LinkedList to search
-     * @param elementToFind the element to search for
-     * @param <T>           the type of elements in the LinkedList
-     * @return true if the element is found in the LinkedList, otherwise false
-     */
-    private <T> boolean inList(LinkedList<T> list, T elementToFind) {
-        for (T element : list) {
-            if (element.equals(elementToFind)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
