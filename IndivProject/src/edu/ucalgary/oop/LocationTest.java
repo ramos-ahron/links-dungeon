@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
-public class LocationTest extends HelperFunctions {
+public class LocationTest {
     private final String expectedName = "Shelter A";
     private final String expectedAddress = "1234 Shelter Ave";
     private final Location testLocation = new Location(expectedName, expectedAddress);
@@ -63,10 +63,10 @@ public class LocationTest extends HelperFunctions {
         DisasterVictim victim = new DisasterVictim("Emma", "Smith", "2024-01-01");
         testLocation.addOccupant(victim);
 
-        assertTrue("addOccupants() should update occupants list", inList(testLocation.getOccupants(), victim));
+        assertTrue("addOccupants() should update occupants list", inListOccupants(victim));
 
         testLocation.removeOccupant(victim);
-        assertFalse("removeOccupant() should update occupants list", inList(testLocation.getOccupants(), victim));
+        assertFalse("removeOccupant() should update occupants list", inListOccupants(victim));
     }
 
     @Test
@@ -155,10 +155,10 @@ public class LocationTest extends HelperFunctions {
         Supply supply = new Supply("Papaya", 100);
         testLocation.addSupply(supply);
 
-        assertTrue("addSupply() should update supplies list", inList(testLocation.getSupplies(), supply));
+        assertTrue("addSupply() should update supplies list", inListSupply(supply));
 
         testLocation.removeSupply(supply);
-        assertFalse("removeSupply() should update supplies list", inList(testLocation.getSupplies(), supply));
+        assertFalse("removeSupply() should update supplies list", inListSupply(supply));
     }
 
     @Test
@@ -234,5 +234,36 @@ public class LocationTest extends HelperFunctions {
         String messageNegative = "removeSupply() should throw an IllegalArgumentException if resulting supply will give a negative amount but " + failureReasonNegative;
 
         assertTrue(messageNegative, correctValueNegative);
+    }
+
+    /**
+     * Checks if the specified supply is present in the list of supplies.
+     *
+     * @param elementToFind The supply to search for.
+     * @return true if the supply is found in the list, otherwise false.
+     */
+    private boolean inListSupply(Supply elementToFind) {
+        for (Supply element : testLocation.getSupplies()) {
+            // Check if both type and other attributes match
+            if (element.equals(elementToFind)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the specified occupant is present in the list of occupants.
+     *
+     * @param elementToFind The occupant to search for.
+     * @return true if elementToFind is in occupants
+     */
+    private boolean inListOccupants(DisasterVictim elementToFind) {
+        for (DisasterVictim element : testLocation.getOccupants()) {
+            if (element.getAssignedSocialID() == elementToFind.getAssignedSocialID()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

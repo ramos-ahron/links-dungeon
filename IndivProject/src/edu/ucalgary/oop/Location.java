@@ -2,7 +2,7 @@ package edu.ucalgary.oop;
 
 import java.util.LinkedList;
 
-public class Location extends HelperFunctions {
+public class Location {
     private final LinkedList<DisasterVictim> occupants;
     private final LinkedList<Supply> supplies;
     private String name;
@@ -97,7 +97,6 @@ public class Location extends HelperFunctions {
         this.supplies.addAll(supplies);
     }
 
-
     /**
      * Adds the specified occupant to the list of occupants.
      *
@@ -109,7 +108,8 @@ public class Location extends HelperFunctions {
         if (occupant == null) {
             throw new NullPointerException("The occupant provided cannot be null");
         }
-        if (inList(occupants, occupant)) {
+
+        if (inListOccupants(occupant) != null) {
             throw new IllegalArgumentException("The occupant is already in the location");
         } else {
             this.occupants.add(occupant);
@@ -127,13 +127,14 @@ public class Location extends HelperFunctions {
         if (occupant == null) {
             throw new NullPointerException("The occupant provided cannot be null");
         }
-        if (inList(occupants, occupant)) {
-            this.occupants.remove(occupant);
+        DisasterVictim occupantToRemove = inListOccupants(occupant);
+
+        if (occupantToRemove != null) {
+            this.occupants.remove(occupantToRemove);
         } else {
             throw new IllegalArgumentException("The occupant is not found in the location");
         }
     }
-
 
     /**
      * Adds the specified supply to the inventory.
@@ -145,7 +146,7 @@ public class Location extends HelperFunctions {
         if (supply == null) {
             throw new NullPointerException("The supply provided cannot be null");
         }
-        if (inList(supplies, supply)) {
+        if (inListSupply(supply)) {
             int amount = supply.getQuantity();
             for (Supply existingSupply : supplies) {
                 if (existingSupply.getType().equals(supply.getType())) {
@@ -159,7 +160,6 @@ public class Location extends HelperFunctions {
         }
     }
 
-
     /**
      * Removes the specified supply from the inventory.
      *
@@ -171,7 +171,7 @@ public class Location extends HelperFunctions {
         if (supply == null) {
             throw new NullPointerException("The supply provided cannot be null");
         }
-        if (inList(supplies, supply)) {
+        if (inListSupply(supply)) {
             int amount = -supply.getQuantity();
             for (Supply existingSupply : supplies) {
                 if (existingSupply.getType().equals(supply.getType())) {
@@ -192,6 +192,38 @@ public class Location extends HelperFunctions {
      */
     private void refreshSupplies(LinkedList<Supply> list) {
         list.removeIf(supply -> supply.getQuantity() == 0);
+    }
+
+    /**
+     * Checks if the specified supply is present in the list of supplies.
+     *
+     * @param elementToFind The supply to search for.
+     * @return true if the supply is found in the list, otherwise false.
+     */
+    private boolean inListSupply(Supply elementToFind) {
+        for (Supply element : supplies) {
+            // Check if both type and other attributes match
+            if (element.equals(elementToFind)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the specified occupant is present in the list of occupants.
+     *
+     * @param elementToFind The occupant to search for.
+     * @return The first found occupant with the same assignedSocialID as the specified elementToFind,
+     * or null if no such occupant is found.
+     */
+    private DisasterVictim inListOccupants(DisasterVictim elementToFind) {
+        for (DisasterVictim element : occupants) {
+            if (element.getAssignedSocialID() == elementToFind.getAssignedSocialID()) {
+                return element;
+            }
+        }
+        return null;
     }
 }
 

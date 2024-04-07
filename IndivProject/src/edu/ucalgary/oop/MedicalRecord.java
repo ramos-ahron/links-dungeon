@@ -1,6 +1,9 @@
 package edu.ucalgary.oop;
 
-public class MedicalRecord extends HelperFunctions {
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class MedicalRecord {
     private Location location;
     private String treatmentDetails;
     private String dateOfTreatment;
@@ -115,5 +118,20 @@ public class MedicalRecord extends HelperFunctions {
             throw new IllegalArgumentException("Invalid date format. Expected format: YYYY-MM-DD");
         }
         this.dateOfTreatment = dateOfTreatment;
+    }
+
+    /**
+     * Checks if the provided date string has an invalid format.
+     *
+     * @param date the date string to check
+     * @return true if the date string has an invalid format, otherwise false
+     */
+    private boolean invalidDateFormat(String date) {
+        try {
+            LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+            return false;
+        } catch (Exception e) {
+            return true;
+        }
     }
 }
