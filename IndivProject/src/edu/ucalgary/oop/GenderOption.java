@@ -17,6 +17,12 @@ public class GenderOption {
     }
 
     public static void main(String[] args) {
+        File f = new File("./src/edu/ucalgary/oop/GenderOptions.txt");
+        try {
+            System.out.println(f.getCanonicalPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -27,7 +33,6 @@ public class GenderOption {
      */
     private ArrayList<String> readGenderOptions() throws IOException {
         ArrayList<String> genderOptions = new ArrayList<>();
-
         BufferedReader br = new BufferedReader(new FileReader(filePath));
         String line;
         while ((line = br.readLine()) != null) {
