@@ -17,14 +17,20 @@ public class MedicalRecord extends DateValidator {
 
 
     /**
-     * Constructs a medical record with the specified location and treatment details.
+     * Constructs a MedicalRecord object with the specified location, treatment details, and date of treatment.
      *
      * @param location         the location where the treatment took place
-     * @param treatmentDetails the details of the treatment
+     * @param dateOfTreatment  the date of the treatment in the format "YYYY-MM-DD"
+     * @throws IllegalArgumentException if the provided date of treatment is not in the format "YYYY-MM-DD"
      */
-    public MedicalRecord(Location location, String treatmentDetails) {
+    public MedicalRecord(Location location, String dateOfTreatment) throws IllegalArgumentException {
         this.location = location;
-        this.treatmentDetails = treatmentDetails;
+
+        if (invalidDateFormat(dateOfTreatment)) {
+            throw new IllegalArgumentException("Invalid date format for date of treatment. Expected format: YYYY-MM-DD");
+        }
+
+        this.dateOfTreatment = dateOfTreatment;
     }
 
 
