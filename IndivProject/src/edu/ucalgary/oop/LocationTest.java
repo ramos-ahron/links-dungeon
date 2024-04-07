@@ -70,14 +70,11 @@ public class LocationTest {
     }
 
     @Test
-    public void testInvalidAddOccupant() {
+    public void testInvalidAddOccupantNull() {
         DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
 
         boolean correctValueNull = false;
         String failureReasonNull = "no exception was thrown";
-
-        boolean correctValueInList = false;
-        String failureReasonInList = "no exception was thrown";
 
         try {
             testLocation.addOccupant(null);
@@ -87,6 +84,18 @@ public class LocationTest {
             failureReasonNull = "the wrong type of exception was thrown";
         }
 
+        String messageNull = "addOccupant() should throw an NullPointerException if null is tried to be added to occupants but " + failureReasonNull;
+
+        assertTrue(messageNull, correctValueNull);
+    }
+
+    @Test
+    public void testInvalidAddOccupantInList() {
+        DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
+
+        boolean correctValueInList = false;
+        String failureReasonInList = "no exception was thrown";
+
         try {
             testLocation.addOccupant(victim);
             testLocation.addOccupant(victim);
@@ -96,22 +105,17 @@ public class LocationTest {
             failureReasonInList = "the wrong type of exception was thrown";
         }
 
-        String messageNull = "addOccupant() should throw an NullPointerException if null is tried to be added to occupants but " + failureReasonNull;
         String messageInList = "addOccupant() should throw an IllegalArgumentException if occupant is already in location but " + failureReasonInList;
 
-        assertTrue(messageNull, correctValueNull);
         assertTrue(messageInList, correctValueInList);
     }
 
     @Test
-    public void testInvalidRemoveOccupant() {
+    public void testInvalidRemoveOccupantNull() {
         DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
 
         boolean correctValueNull = false;
         String failureReasonNull = "no exception was thrown";
-
-        boolean correctValueInList = false;
-        String failureReasonInList = "no exception was thrown";
 
         try {
             testLocation.removeOccupant(null);
@@ -121,6 +125,18 @@ public class LocationTest {
             failureReasonNull = "the wrong type of exception was thrown";
         }
 
+        String messageNull = "removeOccupant() should throw an NullPointerException if null is tried to be removed to occupants but " + failureReasonNull;
+
+        assertTrue(messageNull, correctValueNull);
+    }
+
+    @Test
+    public void testInvalidRemoveOccupantInList() {
+        DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
+
+        boolean correctValueInList = false;
+        String failureReasonInList = "no exception was thrown";
+
         try {
             testLocation.removeOccupant(victim);
         } catch (IllegalArgumentException e) {
@@ -129,10 +145,8 @@ public class LocationTest {
             failureReasonInList = "the wrong type of exception was thrown";
         }
 
-        String messageNull = "removeOccupant() should throw an NullPointerException if null is tried to be removed to occupants but " + failureReasonNull;
         String messageInList = "removeOccupant() should throw an IllegalArgumentException if occupant is not in location but " + failureReasonInList;
 
-        assertTrue(messageNull, correctValueNull);
         assertTrue(messageInList, correctValueInList);
     }
 
@@ -164,17 +178,9 @@ public class LocationTest {
     }
 
     @Test
-    public void testInvalidRemoveSupply() {
-        Supply invalidSupply = new Supply("Random", 5);
-
+    public void testInvalidRemoveSupplyNull() {
         boolean correctValueNull = false;
         String failureReasonNull = "no exception was thrown";
-
-        boolean correctValueInList = false;
-        String failureReasonInList = "no exception was thrown";
-
-        boolean correctValueNegative = false;
-        String failureReasonNegative = "no exception was thrown";
 
         try {
             testLocation.removeSupply(null);
@@ -184,6 +190,18 @@ public class LocationTest {
             failureReasonNull = "the wrong type of exception was thrown";
         }
 
+        String messageNull = "removeSupply() should throw an NullPointerException if null is tried to be removed from supplies but " + failureReasonNull;
+
+        assertTrue(messageNull, correctValueNull);
+    }
+
+    @Test
+    public void testInvalidRemoveSupplyInList() {
+        Supply invalidSupply = new Supply("Random", 5);
+
+        boolean correctValueInList = false;
+        String failureReasonInList = "no exception was thrown";
+
         try {
             testLocation.removeSupply(invalidSupply);
         } catch (IllegalArgumentException e) {
@@ -191,6 +209,18 @@ public class LocationTest {
         } catch (Exception e) {
             failureReasonInList = "the wrong type of exception was thrown";
         }
+
+        String messageInList = "removeSupply() should throw an IllegalArgumentException if supply is not in location but " + failureReasonInList;
+
+        assertTrue(messageInList, correctValueInList);
+    }
+
+    @Test
+    public void testInvalidRemoveSupplyNegative() {
+        Supply invalidSupply = new Supply("Random", 5);
+
+        boolean correctValueNegative = false;
+        String failureReasonNegative = "no exception was thrown";
 
         try {
             testLocation.addSupply(invalidSupply);
@@ -201,13 +231,8 @@ public class LocationTest {
             failureReasonNegative = "the wrong type of exception was thrown";
         }
 
-        String messageNull = "removeSupply() should throw an NullPointerException if null is tried to be removed from supplies but " + failureReasonNull;
-        String messageInList = "removeSupply() should throw an IllegalArgumentException if supply is not in location but " + failureReasonInList;
         String messageNegative = "removeSupply() should throw an IllegalArgumentException if resulting supply will give a negative amount but " + failureReasonNegative;
 
-
-        assertTrue(messageNull, correctValueNull);
-        assertTrue(messageInList, correctValueInList);
         assertTrue(messageNegative, correctValueNegative);
     }
 
