@@ -71,14 +71,11 @@ public class GenderOptionTest {
     }
 
     @Test
-    public void testInvalidFile() {
+    public void testInvalidFileSet() {
         String randomFilePath = "RandomFiles.txt";
 
         boolean correctValueSet = false;
         String failureReasonSet = "No Exception was Thrown";
-
-        boolean correctValueGet = false;
-        String failureReasonGet = "No Exception was Thrown";
 
         ArrayList<String> newOptions = new ArrayList<>();
         newOptions.add("element1");
@@ -94,6 +91,18 @@ public class GenderOptionTest {
             failureReasonSet = "the wrong type of exception was thrown";
         }
 
+        String messageSet = "setOptions() should throw an IOException with invalid file path '" + randomFilePath + "' but " + failureReasonSet + ".";
+        assertTrue(messageSet, correctValueSet);
+    }
+
+    @Test
+    public void testInvalidFileGet() {
+        String randomFilePath = "RandomFiles.txt";
+
+        boolean correctValueGet = false;
+        String failureReasonGet = "No Exception was Thrown";
+
+        testGenderOptions.setFilePath(randomFilePath);
         try {
             testGenderOptions.getOptions();
         } catch (IOException e) {
@@ -101,9 +110,6 @@ public class GenderOptionTest {
         } catch (Exception e) {
             failureReasonGet = "the wrong type of exception was thrown";
         }
-
-        String messageSet = "setOptions() should throw an IOException with invalid file path '" + randomFilePath + "' but " + failureReasonSet + ".";
-        assertTrue(messageSet, correctValueSet);
 
         String messageGet = "getOptions() should throw an IOException with invalid file path '" + randomFilePath + "' but " + failureReasonGet + ".";
         assertTrue(messageGet, correctValueGet);

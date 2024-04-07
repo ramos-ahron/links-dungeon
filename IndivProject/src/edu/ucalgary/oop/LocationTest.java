@@ -9,27 +9,27 @@ import static org.junit.Assert.*;
 public class LocationTest {
     private final String expectedName = "Shelter A";
     private final String expectedAddress = "1234 Shelter Ave";
-    private final Location location = new Location(expectedName, expectedAddress);
+    private final Location testLocation = new Location(expectedName, expectedAddress);
 
     @Test
     public void testConstructor() {
-        assertNotNull("Constructor should create a non-null Location object", location);
-        assertEquals("Constructor should set the name correctly", expectedName, location.getName());
-        assertEquals("Constructor should set the address correctly", expectedAddress, location.getAddress());
+        assertNotNull("Constructor should create a non-null Location object", testLocation);
+        assertEquals("Constructor should set the name correctly", expectedName, testLocation.getName());
+        assertEquals("Constructor should set the address correctly", expectedAddress, testLocation.getAddress());
     }
 
     @Test
     public void testGetAndSetName() {
         String newName = "Shelter B";
-        location.setName(newName);
-        assertEquals("setName() should update the name of the location", newName, location.getName());
+        testLocation.setName(newName);
+        assertEquals("setName() should update the name of the location", newName, testLocation.getName());
     }
 
     @Test
     public void testGetAndSetAddress() {
         String newAddress = "4321 Shelter Blvd";
-        location.setAddress(newAddress);
-        assertEquals("setAddress() should update the address of the location", newAddress, location.getAddress());
+        testLocation.setAddress(newAddress);
+        assertEquals("setAddress() should update the address of the location", newAddress, testLocation.getAddress());
     }
 
     @Test
@@ -40,9 +40,9 @@ public class LocationTest {
         newSupplies.add(supply1);
         newSupplies.add(supply2);
 
-        location.setSupplies(newSupplies);
+        testLocation.setSupplies(newSupplies);
 
-        assertEquals("setSupplies() should change the value of supplies", newSupplies, location.getSupplies());
+        assertEquals("setSupplies() should change the value of supplies", newSupplies, testLocation.getSupplies());
     }
 
     @Test
@@ -53,98 +53,112 @@ public class LocationTest {
         newOccupants.add(personOne);
         newOccupants.add(personTwo);
 
-        location.setOccupants(newOccupants);
+        testLocation.setOccupants(newOccupants);
 
-        assertEquals("setOccupants() should change the value of occupants", newOccupants, location.getOccupants());
+        assertEquals("setOccupants() should change the value of occupants", newOccupants, testLocation.getOccupants());
     }
 
     @Test
     public void testAddAndRemoveOccupant() {
         DisasterVictim victim = new DisasterVictim("Emma", "Smith", "2024-01-01");
-        location.addOccupant(victim);
+        testLocation.addOccupant(victim);
 
-        assertTrue("addOccupants() should update occupants list", inList(location.getOccupants(), victim));
+        assertTrue("addOccupants() should update occupants list", inList(testLocation.getOccupants(), victim));
 
-        location.removeOccupant(victim);
-        assertFalse("removeOccupant() should update occupants list", inList(location.getOccupants(), victim));
+        testLocation.removeOccupant(victim);
+        assertFalse("removeOccupant() should update occupants list", inList(testLocation.getOccupants(), victim));
     }
 
     @Test
-    public void testInvalidAddOccupant() {
+    public void testInvalidAddOccupantNull() {
         DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
 
         boolean correctValueNull = false;
         String failureReasonNull = "no exception was thrown";
 
-        boolean correctValueInList = false;
-        String failureReasonInList = "no exception was thrown";
-
         try {
-            location.addOccupant(null);
+            testLocation.addOccupant(null);
         } catch (NullPointerException e) {
             correctValueNull = true;
         } catch (Exception e) {
             failureReasonNull = "the wrong type of exception was thrown";
         }
 
+        String messageNull = "addOccupant() should throw an NullPointerException if null is tried to be added to occupants but " + failureReasonNull;
+
+        assertTrue(messageNull, correctValueNull);
+    }
+
+    @Test
+    public void testInvalidAddOccupantInList() {
+        DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
+
+        boolean correctValueInList = false;
+        String failureReasonInList = "no exception was thrown";
+
         try {
-            location.addOccupant(victim);
-            location.addOccupant(victim);
+            testLocation.addOccupant(victim);
+            testLocation.addOccupant(victim);
         } catch (IllegalArgumentException e) {
             correctValueInList = true;
         } catch (Exception e) {
             failureReasonInList = "the wrong type of exception was thrown";
         }
 
-        String messageNull = "addOccupant() should throw an NullPointerException if null is tried to be added to occupants but " + failureReasonNull;
         String messageInList = "addOccupant() should throw an IllegalArgumentException if occupant is already in location but " + failureReasonInList;
 
-        assertTrue(messageNull, correctValueNull);
         assertTrue(messageInList, correctValueInList);
     }
 
     @Test
-    public void testInvalidRemoveOccupant() {
+    public void testInvalidRemoveOccupantNull() {
         DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
 
         boolean correctValueNull = false;
         String failureReasonNull = "no exception was thrown";
 
-        boolean correctValueInList = false;
-        String failureReasonInList = "no exception was thrown";
-
         try {
-            location.removeOccupant(null);
+            testLocation.removeOccupant(null);
         } catch (NullPointerException e) {
             correctValueNull = true;
         } catch (Exception e) {
             failureReasonNull = "the wrong type of exception was thrown";
         }
 
+        String messageNull = "removeOccupant() should throw an NullPointerException if null is tried to be removed to occupants but " + failureReasonNull;
+
+        assertTrue(messageNull, correctValueNull);
+    }
+
+    @Test
+    public void testInvalidRemoveOccupantInList() {
+        DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
+
+        boolean correctValueInList = false;
+        String failureReasonInList = "no exception was thrown";
+
         try {
-            location.removeOccupant(victim);
+            testLocation.removeOccupant(victim);
         } catch (IllegalArgumentException e) {
             correctValueInList = true;
         } catch (Exception e) {
             failureReasonInList = "the wrong type of exception was thrown";
         }
 
-        String messageNull = "removeOccupant() should throw an NullPointerException if null is tried to be removed to occupants but " + failureReasonNull;
         String messageInList = "removeOccupant() should throw an IllegalArgumentException if occupant is not in location but " + failureReasonInList;
 
-        assertTrue(messageNull, correctValueNull);
         assertTrue(messageInList, correctValueInList);
     }
 
     @Test
     public void testAddAndRemoveSupply() {
         Supply supply = new Supply("Papaya", 100);
-        location.addSupply(supply);
+        testLocation.addSupply(supply);
 
-        assertTrue("addSupply() should update supplies list", inList(location.getSupplies(), supply));
+        assertTrue("addSupply() should update supplies list", inList(testLocation.getSupplies(), supply));
 
-        location.removeSupply(supply);
-        assertFalse("removeSupply() should update supplies list", inList(location.getSupplies(), supply));
+        testLocation.removeSupply(supply);
+        assertFalse("removeSupply() should update supplies list", inList(testLocation.getSupplies(), supply));
     }
 
     @Test
@@ -152,7 +166,7 @@ public class LocationTest {
         boolean correctValue = false;
         String failureReason = "no exception was thrown";
         try {
-            location.addSupply(null);
+            testLocation.addSupply(null);
         } catch (NullPointerException e) {
             correctValue = true;
         } catch (Exception e) {
@@ -164,50 +178,61 @@ public class LocationTest {
     }
 
     @Test
-    public void testInvalidRemoveSupply() {
-        Supply invalidSupply = new Supply("Random", 5);
-
+    public void testInvalidRemoveSupplyNull() {
         boolean correctValueNull = false;
         String failureReasonNull = "no exception was thrown";
 
-        boolean correctValueInList = false;
-        String failureReasonInList = "no exception was thrown";
-
-        boolean correctValueNegative = false;
-        String failureReasonNegative = "no exception was thrown";
-
         try {
-            location.removeSupply(null);
+            testLocation.removeSupply(null);
         } catch (NullPointerException e) {
             correctValueNull = true;
         } catch (Exception e) {
             failureReasonNull = "the wrong type of exception was thrown";
         }
 
+        String messageNull = "removeSupply() should throw an NullPointerException if null is tried to be removed from supplies but " + failureReasonNull;
+
+        assertTrue(messageNull, correctValueNull);
+    }
+
+    @Test
+    public void testInvalidRemoveSupplyInList() {
+        Supply invalidSupply = new Supply("Random", 5);
+
+        boolean correctValueInList = false;
+        String failureReasonInList = "no exception was thrown";
+
         try {
-            location.removeSupply(invalidSupply);
+            testLocation.removeSupply(invalidSupply);
         } catch (IllegalArgumentException e) {
             correctValueInList = true;
         } catch (Exception e) {
             failureReasonInList = "the wrong type of exception was thrown";
         }
 
+        String messageInList = "removeSupply() should throw an IllegalArgumentException if supply is not in location but " + failureReasonInList;
+
+        assertTrue(messageInList, correctValueInList);
+    }
+
+    @Test
+    public void testInvalidRemoveSupplyNegative() {
+        Supply invalidSupply = new Supply("Random", 5);
+
+        boolean correctValueNegative = false;
+        String failureReasonNegative = "no exception was thrown";
+
         try {
-            location.addSupply(invalidSupply);
-            location.removeSupply(new Supply("Random", 20));
+            testLocation.addSupply(invalidSupply);
+            testLocation.removeSupply(new Supply("Random", 20));
         } catch (IllegalArgumentException e) {
             correctValueNegative = true;
         } catch (Exception e) {
             failureReasonNegative = "the wrong type of exception was thrown";
         }
 
-        String messageNull = "removeSupply() should throw an NullPointerException if null is tried to be removed from supplies but " + failureReasonNull;
-        String messageInList = "removeSupply() should throw an IllegalArgumentException if supply is not in location but " + failureReasonInList;
         String messageNegative = "removeSupply() should throw an IllegalArgumentException if resulting supply will give a negative amount but " + failureReasonNegative;
 
-
-        assertTrue(messageNull, correctValueNull);
-        assertTrue(messageInList, correctValueInList);
         assertTrue(messageNegative, correctValueNegative);
     }
 
