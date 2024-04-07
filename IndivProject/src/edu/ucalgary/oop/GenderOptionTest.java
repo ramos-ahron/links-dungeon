@@ -17,6 +17,12 @@ public class GenderOptionTest {
     }
 
     @Test
+    public void testConstructor() {
+        assertNotNull("Constructor should create a non-null Location object", testGenderOptions);
+        assertEquals("Constructor should set the path correctly", path, testGenderOptions.getFilePath());
+    }
+
+    @Test
     public void testSetAndGetOptions() {
         ArrayList<String> oldOptions = null;
         try {

@@ -10,6 +10,17 @@ public class SupplyTest {
     private final Supply testSupply = new Supply(expectedType, expectedQuantity);
 
     @Test
+    public void testConstructor() {
+        assertNotNull("Constructor should create a non-null Location object", testSupply);
+        assertEquals("Constructor should set the type correctly", expectedType, testSupply.getType());
+        assertEquals("Constructor should set the quantity correctly", expectedQuantity, testSupply.getQuantity());
+
+        Supply testSupplyW = new Supply("Water");
+        assertEquals("Constructor should set the type correctly", "Water", testSupplyW.getType());
+        assertEquals("Constructor should set the quantity correctly", 0, testSupplyW.getQuantity());
+    }
+
+    @Test
     public void testObjectCreation() {
         Supply testSupplyW = new Supply("Water");
         assertNotNull(testSupply);
@@ -17,7 +28,39 @@ public class SupplyTest {
     }
 
     @Test
-    public void testInvalidObjectCreation() {
+    public void testInvalidObjectCreationTypeEmpty() {
+        boolean correctValue = false;
+        String failureReason = "no exception was thrown";
+        try {
+            new Supply("", 1);
+        } catch (IllegalArgumentException e) {
+            correctValue = true;
+        } catch (Exception e) {
+            failureReason = "the wrong type of exception was thrown";
+        }
+
+        String message = "Constructor should throw IllegalArgumentException when type is empty but " + failureReason;
+        assertTrue(message, correctValue);
+    }
+
+    @Test
+    public void testInvalidObjectCreationTypeNull() {
+        boolean correctValue = false;
+        String failureReason = "no exception was thrown";
+        try {
+            new Supply(null, 1);
+        } catch (IllegalArgumentException e) {
+            correctValue = true;
+        } catch (Exception e) {
+            failureReason = "the wrong type of exception was thrown";
+        }
+
+        String message = "Constructor should throw IllegalArgumentException when type is null but " + failureReason;
+        assertTrue(message, correctValue);
+    }
+
+    @Test
+    public void testInvalidObjectCreationQuantity() {
         boolean correctValue = false;
         String failureReason = "no exception was thrown";
         try {
