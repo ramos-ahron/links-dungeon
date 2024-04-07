@@ -14,6 +14,7 @@ public class DisasterVictim extends Person {
     private String gender;
     private GenderOption genderChecker;
     private String comments;
+    private Location shelter;
 
     public DisasterVictim(String firstName, String lastName, String ENTRY_DATE) {
         super(firstName, lastName);
@@ -30,7 +31,7 @@ public class DisasterVictim extends Person {
         return false; // Placeholder return value
     }
 
-    public void addPersonalBelonging(Supply supply, Location location) {
+    public void addPersonalBelonging(Supply supply) {
         // Implementation to add personal belongings
     }
 
@@ -122,6 +123,14 @@ public class DisasterVictim extends Person {
         return genderChecker;
     }
 
+    public Location getShelter() {
+        return shelter;
+    }
+
+    public void setShelter(Location shelter) {
+        this.shelter = shelter;
+    }
+
     public void setGenderChecker(GenderOption genderChecker) {
         this.genderChecker = genderChecker;
     }
@@ -135,6 +144,7 @@ public class DisasterVictim extends Person {
     }
 
     public String getEntryDate() {return this.ENTRY_DATE;}
+
 
 
 }

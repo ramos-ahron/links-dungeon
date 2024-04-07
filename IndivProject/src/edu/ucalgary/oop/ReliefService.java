@@ -1,70 +1,63 @@
 package edu.ucalgary.oop;
 
+import java.util.LinkedList;
+
 public class ReliefService {
-    private Inquirer inquirer;
-    private DisasterVictim missingPerson;
-    private String dateOfInquiry;
-    private String infoProvided;
-    private Location lastKnownLocation;
+    private static int WORKER_ID_COUNTER = 1;
+    private final int workerId;
 
-    // Constructor
-    public ReliefService(Inquirer inquirer, DisasterVictim missingPerson, String dateOfInquiry, String infoProvided, Location lastKnownLocation) {
-        this.inquirer = inquirer;
-        this.missingPerson = missingPerson;
-        this.dateOfInquiry = dateOfInquiry;
-        this.infoProvided = infoProvided;
-        this.lastKnownLocation = lastKnownLocation;
+    private final LinkedList<Location> shelters = new LinkedList<>();
+
+    public ReliefService() {
+        workerId = WORKER_ID_COUNTER ++;
     }
 
-    // Getters and setters
-    public Inquirer getInquirer() {
-        return inquirer;
+    public void addShelter(Location location) throws NullPointerException, IllegalArgumentException {
+        if (location == null) {
+            throw new NullPointerException("The location provided cannot be null");
+        }
+
+        if (inList(location) != null) {
+            throw new IllegalArgumentException("The location is already a shelter");
+        } else {
+            this.shelters.add(location);
+        }
     }
 
-    public void setInquirer(Inquirer inquirer) {
-        this.inquirer = inquirer;
+    public void removeShelter(Location location) throws NullPointerException, IllegalArgumentException {
+        if (location == null) {
+            throw new NullPointerException("The shelter provided cannot be null");
+        }
+
+        Location locationToRemove = inList(location);
+
+        if (locationToRemove != null) {
+            this.shelters.remove(locationToRemove);
+        } else {
+            throw new IllegalArgumentException("The location is not a shelter");
+        }
     }
 
-    public DisasterVictim getMissingPerson() {
-        return missingPerson;
+    public LinkedList<Location> getShelters() {
+        return shelters;
     }
 
-    public void setMissingPerson(DisasterVictim missingPerson) {
-        this.missingPerson = missingPerson;
+    public void setShelters(LinkedList<Location> shelters) {
+        this.shelters.clear();
+        this.shelters.addAll(shelters);
     }
 
-    public String getDateOfInquiry() {
-        return dateOfInquiry;
+    public int getWorkerId() {
+        return workerId;
     }
 
-    public void setDateOfInquiry(String dateOfInquiry) {
-        this.dateOfInquiry = dateOfInquiry;
+    public Location inList(Location elementToFind) {
+        for (Location location : shelters) {
+            if (location.getName().equals(elementToFind.getName()) && location.getAddress().equals(elementToFind.getAddress())) {
+                return location;
+            }
+        }
+        return null;
     }
 
-    public String getInfoProvided() {
-        return infoProvided;
-    }
-
-    public void setInfoProvided(String infoProvided) {
-        this.infoProvided = infoProvided;
-    }
-
-    public Location getLastKnownLocation() {
-        return lastKnownLocation;
-    }
-
-    public void setLastKnownLocation(Location lastKnownLocation) {
-        this.lastKnownLocation = lastKnownLocation;
-    }
-
-    // Additional methods
-    public boolean isValidDateFormat(String date) {
-        // Implementation of isValidDateFormat method
-        return false;
-    }
-
-    public String getLogDetails() {
-        // Implementation of getLogDetails method
-        return "";
-    }
 }
