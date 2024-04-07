@@ -28,7 +28,39 @@ public class SupplyTest {
     }
 
     @Test
-    public void testInvalidObjectCreation() {
+    public void testInvalidObjectCreationTypeEmpty() {
+        boolean correctValue = false;
+        String failureReason = "no exception was thrown";
+        try {
+            new Supply("", 1);
+        } catch (IllegalArgumentException e) {
+            correctValue = true;
+        } catch (Exception e) {
+            failureReason = "the wrong type of exception was thrown";
+        }
+
+        String message = "Constructor should throw IllegalArgumentException when type is empty but " + failureReason;
+        assertTrue(message, correctValue);
+    }
+
+    @Test
+    public void testInvalidObjectCreationTypeNull() {
+        boolean correctValue = false;
+        String failureReason = "no exception was thrown";
+        try {
+            new Supply(null, 1);
+        } catch (IllegalArgumentException e) {
+            correctValue = true;
+        } catch (Exception e) {
+            failureReason = "the wrong type of exception was thrown";
+        }
+
+        String message = "Constructor should throw IllegalArgumentException when type is null but " + failureReason;
+        assertTrue(message, correctValue);
+    }
+
+    @Test
+    public void testInvalidObjectCreationQuantity() {
         boolean correctValue = false;
         String failureReason = "no exception was thrown";
         try {

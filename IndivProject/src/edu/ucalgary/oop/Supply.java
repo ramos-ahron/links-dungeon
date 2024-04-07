@@ -19,9 +19,13 @@ public class Supply {
      *
      * @param type     The type of supply
      * @param quantity The number of supplies
-     * @throws IllegalArgumentException Gets thrown if quantity is negative
+     * @throws IllegalArgumentException Gets thrown if type is null or empty or quantity is negative
      */
     public Supply(String type, int quantity) throws IllegalArgumentException {
+        if (invalidType(type)) {
+            throw new IllegalArgumentException("Type cannot be null or empty string");
+        }
+
         this.type = type;
 
         if (invalidQuantity(quantity)) {
@@ -51,6 +55,17 @@ public class Supply {
     private boolean invalidQuantity(int quantity) {
         return quantity < 0;
     }
+
+    /**
+     * Checks if the provided type is invalid.
+     *
+     * @param type the type to be checked
+     * @return true if the type is null or empty, otherwise false
+     */
+    private boolean invalidType(String type) {
+        return type == null || type.isEmpty();
+    }
+
 
     /**
      * Adds amount to quantity
