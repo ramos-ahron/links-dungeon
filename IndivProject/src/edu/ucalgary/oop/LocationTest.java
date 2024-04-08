@@ -63,10 +63,10 @@ public class LocationTest {
         DisasterVictim victim = new DisasterVictim("Emma", "Smith", "2024-01-01");
         testLocation.addOccupant(victim);
 
-        assertTrue("addOccupants() should update occupants list", inList(testLocation.getOccupants(), victim));
+        assertTrue("addOccupants() should update occupants list", inListOccupants(victim));
 
         testLocation.removeOccupant(victim);
-        assertFalse("removeOccupant() should update occupants list", inList(testLocation.getOccupants(), victim));
+        assertFalse("removeOccupant() should update occupants list", inListOccupants(victim));
     }
 
     @Test
@@ -131,23 +131,23 @@ public class LocationTest {
     }
 
     @Test
-    public void testInvalidRemoveOccupantInList() {
+    public void testInvalidRemoveOccupantNotInList() {
         DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
 
-        boolean correctValueInList = false;
-        String failureReasonInList = "no exception was thrown";
+        boolean correctValueNotInList = false;
+        String failureReasonNotInList = "no exception was thrown";
 
         try {
             testLocation.removeOccupant(victim);
         } catch (IllegalArgumentException e) {
-            correctValueInList = true;
+            correctValueNotInList = true;
         } catch (Exception e) {
-            failureReasonInList = "the wrong type of exception was thrown";
+            failureReasonNotInList = "the wrong type of exception was thrown";
         }
 
-        String messageInList = "removeOccupant() should throw an IllegalArgumentException if occupant is not in location but " + failureReasonInList;
+        String messageInList = "removeOccupant() should throw an IllegalArgumentException if occupant is not in location but " + failureReasonNotInList;
 
-        assertTrue(messageInList, correctValueInList);
+        assertTrue(messageInList, correctValueNotInList);
     }
 
     @Test
@@ -155,10 +155,10 @@ public class LocationTest {
         Supply supply = new Supply("Papaya", 100);
         testLocation.addSupply(supply);
 
-        assertTrue("addSupply() should update supplies list", inList(testLocation.getSupplies(), supply));
+        assertTrue("addSupply() should update supplies list", inListSupply(supply));
 
         testLocation.removeSupply(supply);
-        assertFalse("removeSupply() should update supplies list", inList(testLocation.getSupplies(), supply));
+        assertFalse("removeSupply() should update supplies list", inListSupply(supply));
     }
 
     @Test
@@ -237,16 +237,30 @@ public class LocationTest {
     }
 
     /**
-     * Checks if the specified element is present in the provided LinkedList.
+     * Checks if the specified supply is present in the list of supplies.
      *
-     * @param list          the LinkedList to search
-     * @param elementToFind the element to search for
-     * @param <T>           the type of elements in the LinkedList
-     * @return true if the element is found in the LinkedList, otherwise false
+     * @param elementToFind The supply to search for.
+     * @return true if the supply is found in the list, otherwise false.
      */
-    private <T> boolean inList(LinkedList<T> list, T elementToFind) {
-        for (T element : list) {
+    private boolean inListSupply(Supply elementToFind) {
+        for (Supply element : testLocation.getSupplies()) {
+            // Check if both type and other attributes match
             if (element.equals(elementToFind)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the specified occupant is present in the list of occupants.
+     *
+     * @param elementToFind The occupant to search for.
+     * @return true if elementToFind is in occupants
+     */
+    private boolean inListOccupants(DisasterVictim elementToFind) {
+        for (DisasterVictim element : testLocation.getOccupants()) {
+            if (element.getAssignedSocialID() == elementToFind.getAssignedSocialID()) {
                 return true;
             }
         }
