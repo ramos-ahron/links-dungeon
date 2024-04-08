@@ -131,23 +131,23 @@ public class LocationTest {
     }
 
     @Test
-    public void testInvalidRemoveOccupantInList() {
+    public void testInvalidRemoveOccupantNotInList() {
         DisasterVictim victim = new DisasterVictim("Liam", "Johnson", "2020-05-11");
 
-        boolean correctValueInList = false;
-        String failureReasonInList = "no exception was thrown";
+        boolean correctValueNotInList = false;
+        String failureReasonNotInList = "no exception was thrown";
 
         try {
             testLocation.removeOccupant(victim);
         } catch (IllegalArgumentException e) {
-            correctValueInList = true;
+            correctValueNotInList = true;
         } catch (Exception e) {
-            failureReasonInList = "the wrong type of exception was thrown";
+            failureReasonNotInList = "the wrong type of exception was thrown";
         }
 
-        String messageInList = "removeOccupant() should throw an IllegalArgumentException if occupant is not in location but " + failureReasonInList;
+        String messageInList = "removeOccupant() should throw an IllegalArgumentException if occupant is not in location but " + failureReasonNotInList;
 
-        assertTrue(messageInList, correctValueInList);
+        assertTrue(messageInList, correctValueNotInList);
     }
 
     @Test
