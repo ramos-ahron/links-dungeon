@@ -81,7 +81,7 @@ public class ReliefServiceTest {
     }
 
     @Test
-    public void testInvalidRemoveShelter() {
+    public void testInvalidRemoveShelterNull() {
         boolean correctValueNull = false;
         String failureReasonNull = "no exception was thrown";
 
@@ -102,20 +102,120 @@ public class ReliefServiceTest {
     public void testInvalidRemoveOccupantNotInList() {
         Location testLocation = new Location("Test", "Random Address");
 
+        boolean correctValueNotInList = false;
+        String failureReasonNotInList = "no exception was thrown";
+
+        try {
+            testReliefService.removeShelter(testLocation);
+        } catch (IllegalArgumentException e) {
+            correctValueNotInList = true;
+        } catch (Exception e) {
+            failureReasonNotInList = "the wrong type of exception was thrown";
+        }
+
+        String messageInList = "removeShelter() should throw an IllegalArgumentException if location is not in shelters but " + failureReasonNotInList;
+
+        assertTrue(messageInList, correctValueNotInList);
+    }
+
+    @Test
+    public void testAddMissingPerson() {
+        DisasterVictim testVictim = new DisasterVictim("Random", "Name", "2024-01-10");
+
+        assertTrue("newly created object should have an empty shelters", testReliefService.getMissingPeople().isEmpty());
+        testReliefService.addMissingPerson(testVictim);
+        assertNotNull("addShelter() should update the contents of shelters", testReliefService.getMissingPeople());
+    }
+
+    @Test
+    public void testInvalidAddMissingPersonNull() {
+        boolean correctValueNull = false;
+        String failureReasonNull = "no exception was thrown";
+
+        try {
+            testReliefService.addMissingPerson(null);
+        } catch (NullPointerException e) {
+            correctValueNull = true;
+        } catch (Exception e) {
+            failureReasonNull = "the wrong type of exception was thrown";
+        }
+
+        String messageNull = "addMissingPerson() should throw an NullPointerException if null is tried to be added to missingPeople but " + failureReasonNull;
+
+        assertTrue(messageNull, correctValueNull);
+    }
+
+    @Test
+    public void testInvalidAddMissingPersonInList() {
+        DisasterVictim testVictim1 = new DisasterVictim("Random", "Name", "2024-01-10");
+        DisasterVictim testVictim2 = new DisasterVictim("Random", "Name", "2024-01-10");
+
         boolean correctValueInList = false;
         String failureReasonInList = "no exception was thrown";
 
         try {
-            testReliefService.removeShelter(testLocation);
+            testReliefService.addMissingPerson(testVictim1);
+            testReliefService.addMissingPerson(testVictim2);
         } catch (IllegalArgumentException e) {
             correctValueInList = true;
         } catch (Exception e) {
             failureReasonInList = "the wrong type of exception was thrown";
         }
 
-        String messageInList = "removeShelter() should throw an IllegalArgumentException if location is not in shelters but " + failureReasonInList;
+        String messageInList = "addMissingPerson() should throw an IllegalArgumentException if victim is already in missingPeople but " + failureReasonInList;
 
         assertTrue(messageInList, correctValueInList);
+    }
+
+    @Test
+    public void testRemoveMissingPerson() {
+        DisasterVictim testVictim1 = new DisasterVictim("Random", "Name", "2024-01-10");
+        DisasterVictim testVictim2 = new DisasterVictim("Random", "Name", "2024-01-10");
+
+        testReliefService.getMissingPeople().clear();
+
+        testReliefService.addMissingPerson(testVictim1);
+        testReliefService.removeMissingPerson(testVictim2);
+
+        assertTrue("removeMissingPerson() should make missingPeople empty", testReliefService.getMissingPeople().isEmpty());
+    }
+
+    @Test
+    public void testInvalidRemoveMissingPersonNull() {
+        boolean correctValueNull = false;
+        String failureReasonNull = "no exception was thrown";
+
+        try {
+            testReliefService.removeMissingPerson(null);
+        } catch (NullPointerException e) {
+            correctValueNull = true;
+        } catch (Exception e) {
+            failureReasonNull = "the wrong type of exception was thrown";
+        }
+
+        String messageNull = "removeMissingPerson() should throw a NullPointerException if null is tried to be removed from missingPeople but " + failureReasonNull;
+
+        assertTrue(messageNull, correctValueNull);
+    }
+
+    @Test
+    public void testInvalidRemoveMissingPersonNotInList() {
+        DisasterVictim testVictim = new DisasterVictim("Random", "Name", "2024-01-10");
+
+        boolean correctValueNotInList = false;
+        String failureReasonNotInList = "no exception was thrown";
+
+        try {
+            testReliefService.removeMissingPerson(testVictim);
+        } catch (IllegalArgumentException e) {
+            correctValueNotInList = true;
+        } catch (Exception e) {
+            failureReasonNotInList = "the wrong type of exception was thrown";
+        }
+
+        String messageInList = "removeMissingPerson() should throw an IllegalArgumentException if victim is not in missingPeople but " + failureReasonNotInList;
+
+        assertTrue(messageInList, correctValueNotInList);
     }
 
     @Test
@@ -129,6 +229,19 @@ public class ReliefServiceTest {
         testReliefService.setShelters(testLocationList);
 
         assertEquals("setShelters() should update the value of shelters", testLocationList, testReliefService.getShelters());
+    }
+
+    @Test
+    public void testSetAndGetMissingPeople() {
+        LinkedList<DisasterVictim> testVictimList = new LinkedList<>();
+
+        testVictimList.add(new DisasterVictim("Victim1", "Random1", "2024-01-01"));
+        testVictimList.add(new DisasterVictim("Victim2", "Random2", "2024-01-02"));
+        testVictimList.add(new DisasterVictim("Victim3", "Random3", "2024-01-03"));
+
+        testReliefService.setMissingPeople(testVictimList);
+
+        assertEquals("setMissingPeople() should update the value of missingPeople", testVictimList, testReliefService.getMissingPeople());
     }
 
     @Test
