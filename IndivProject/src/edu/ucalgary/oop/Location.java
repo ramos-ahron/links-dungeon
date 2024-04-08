@@ -203,7 +203,7 @@ public class Location {
     private boolean inListSupply(Supply elementToFind) {
         for (Supply element : supplies) {
             // Check if both type and other attributes match
-            if (element.equals(elementToFind)) {
+            if (element.getType().equals(elementToFind.getType())) {
                 return true;
             }
         }
