@@ -4,15 +4,15 @@ import java.util.HashSet;
 
 public class FamilyRelation {
     private DisasterVictim personOne;
-    private String relationshipTo;
+    private RelationshipType relationshipType;
     private DisasterVictim personTwo;
 
     private HashSet<FamilyRelation> currentRelations = new HashSet<>();
 
-    public FamilyRelation(DisasterVictim personOne, String relationshipTo, DisasterVictim personTwo) {
+    public FamilyRelation(DisasterVictim personOne, DisasterVictim personTwo, RelationshipType relationshipType) {
         this.personOne = personOne;
-        this.relationshipTo = relationshipTo;
         this.personTwo = personTwo;
+        this.relationshipType = relationshipType;
     }
 
     public DisasterVictim getPersonOne() {
@@ -23,12 +23,12 @@ public class FamilyRelation {
         this.personOne = personOne;
     }
 
-    public String getRelationshipTo() {
-        return relationshipTo;
+    public RelationshipType getRelationshipType() {
+        return relationshipType;
     }
 
-    public void setRelationshipTo(String relationshipTo) {
-        this.relationshipTo = relationshipTo;
+    public void setRelationshipType(RelationshipType relationshipType) {
+        this.relationshipType = relationshipType;
     }
 
     public DisasterVictim getPersonTwo() {
