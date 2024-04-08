@@ -4,20 +4,22 @@ import java.util.HashSet;
 import java.util.ArrayList;
 
 public class DisasterVictim extends Person {
-    private int counter = 0;
+    private static int counter = 0;
     private String dateOfBirth;
     private int ASSIGNED_SOCIAL_ID;
     private HashSet<FamilyRelation> familyConnections;
-    private ArrayList<MedicalRecord> medicalRecords;
-    private ArrayList<Supply> personalBelongings;
+    private ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
+    private ArrayList<Supply> personalBelongings = new ArrayList<>();
     private String ENTRY_DATE;
     private String gender;
     private GenderOption genderChecker;
     private String comments;
+    private Location location;
 
     public DisasterVictim(String firstName, String lastName, String ENTRY_DATE) {
         super(firstName, lastName);
         this.ENTRY_DATE = ENTRY_DATE;
+        this.ASSIGNED_SOCIAL_ID = counter ++;
     }
 
     public static int generateSocialID() {
@@ -30,8 +32,8 @@ public class DisasterVictim extends Person {
         return false; // Placeholder return value
     }
 
-    public void addPersonalBelonging(Supply supply, Location location) {
-        // Implementation to add personal belongings
+    public void addPersonalBelonging(Supply supply) {
+        personalBelongings.add(supply);
     }
 
     public void removePersonalBelonging(Supply unwantedSupply) {
@@ -48,6 +50,7 @@ public class DisasterVictim extends Person {
 
     public void addMedicalRecord(MedicalRecord record) {
         // Implementation to add medical records
+        medicalRecords.add(record);
     }
 
     // Other methods as per your requirements
@@ -122,6 +125,14 @@ public class DisasterVictim extends Person {
         return genderChecker;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public void setGenderChecker(GenderOption genderChecker) {
         this.genderChecker = genderChecker;
     }
@@ -135,6 +146,7 @@ public class DisasterVictim extends Person {
     }
 
     public String getEntryDate() {return this.ENTRY_DATE;}
+
 
 
 }
