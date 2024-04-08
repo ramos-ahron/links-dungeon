@@ -15,6 +15,7 @@ public class DisasterVictim extends Person {
     private final HashSet<FamilyRelation> familyConnections = new HashSet<>();
     private final ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
     private final ArrayList<Supply> personalBelongings = new ArrayList<>();
+    private final HashSet<DietaryRestriction> dietaryRestrictions = new HashSet<>();
     private int age;
     private String gender;
     private String comments;
@@ -338,6 +339,37 @@ public class DisasterVictim extends Person {
         }
         this.dateOfBirth = dateOfBirth;
         this.age = calculateAge();
+    }
+
+
+    /**
+     * Gets the age of the disaster victim.
+     *
+     * @return the age of the disaster victim in years
+     */
+    public int getAge() {
+        return age;
+    }
+
+
+    /**
+     * Retrieves the set of dietary restrictions.
+     *
+     * @return the set of dietary restrictions
+     */
+    public HashSet<DietaryRestriction> getDietaryRestrictions() {
+        return dietaryRestrictions;
+    }
+
+
+    /**
+     * Sets the dietary restrictions for the disaster victim.
+     *
+     * @param dietaryRestrictions the set of dietary restrictions to set
+     */
+    public void setDietaryRestrictions(HashSet<DietaryRestriction> dietaryRestrictions) {
+        this.dietaryRestrictions.clear();
+        this.dietaryRestrictions.addAll(dietaryRestrictions);
     }
 
 
