@@ -86,12 +86,31 @@ public class DisasterVictim extends Person {
 
 
     public static void main(String[] args) {
-        DisasterVictim test = new DisasterVictim("a", "b", "2020-02-10");
+        DisasterVictim john = new DisasterVictim("John", "Cena");
+        DisasterVictim taylor = new DisasterVictim("Taylor", "Swift");
+        DisasterVictim tony = new DisasterVictim("Tony", "Vegas");
 
-        test.addPersonalBelonging(new Supply("water", 2));
-        test.removePersonalBelonging(new Supply("water", 2));
+        john.addFamilyRelationship(tony, RelationshipType.SIBLING);
+        taylor.addFamilyRelationship(tony, RelationshipType.SIBLING);
 
-        System.out.println(test.personalBelongings.get(0).getQuantity());
+        // Print all relationships for John
+        System.out.println("Relationships for John:");
+        for (FamilyRelation relation : john.getFamilyConnections()) {
+            System.out.println(john.getFirstName() + " " + relation.getRelationshipType() + " " + relation.getPersonTwo().getFirstName());
+        }
+
+        // Print all relationships for Taylor
+        System.out.println("\nRelationships for Taylor:");
+        for (FamilyRelation relation : taylor.getFamilyConnections()) {
+            System.out.println(taylor.getFirstName() + " " + relation.getRelationshipType() + " " + relation.getPersonTwo().getFirstName());
+        }
+
+        // Print all relationships for Tony
+        System.out.println("\nRelationships for Tony:");
+        for (FamilyRelation relation : tony.getFamilyConnections()) {
+            System.out.println(tony.getFirstName() + " " + relation.getRelationshipType() + " " + relation.getPersonTwo().getFirstName());
+        }
+
     }
 
 
@@ -150,10 +169,99 @@ public class DisasterVictim extends Person {
         FamilyRelation relation1 = new FamilyRelation(this, victim2, relationType);
         FamilyRelation relation2 = new FamilyRelation(victim2, this, relationType);
 
+        // Add the relationships to both victims
         this.familyConnections.add(relation1);
         victim2.familyConnections.add(relation2);
+
+        // Ensure completeness of relationships
+        addMissingFamilyRelationships(victim2, relationType);
+        checkAndAddMissingFamilyRelationships(relationType);
     }
 
+    /**
+     * Recursively ensures completeness of family relationships by adding missing relationships between this victim and connected victims.
+     *
+     * @param relationType the type of relationship to add
+     */
+    public void checkAndAddMissingFamilyRelationships(RelationshipType relationType) {
+
+        // Iterate over each family relation of this victim
+        for (FamilyRelation existingRelation : this.familyConnections) {
+            existingRelation.getPersonTwo().addMissingFamilyRelationships(this, existingRelation.getRelationshipType());
+        }
+    }
+
+    /**
+     * Ensures completeness of family relationships by adding missing relationships between two victims.
+     *
+     * @param victim2      the other DisasterVictim involved in the relationship
+     * @param relationType the type of relationship added between the two victims
+     */
+    private void addMissingFamilyRelationships(DisasterVictim victim2, RelationshipType relationType) {
+        for (FamilyRelation existingRelation1 : this.familyConnections) {
+            for (FamilyRelation existingRelation2 : victim2.getFamilyConnections()) {
+                // Ensures not the same person
+                if (existingRelation1.getPersonTwo().getAssignedSocialID() != victim2.getAssignedSocialID()) {
+                    // If not the same person but the same relationship
+                    if (existingRelation1.getRelationshipType() == relationType) {
+
+                        if (relationType.equals(RelationshipType.PARENT_CHILD)) {
+                            FamilyRelation correspondingRelation1 = new FamilyRelation(existingRelation1.getPersonTwo(), victim2, RelationshipType.COUPLE);
+
+                            FamilyRelation correspondingRelation2 = new FamilyRelation(victim2, existingRelation1.getPersonTwo(), RelationshipType.COUPLE);
+
+                            if (!inListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
+                                existingRelation1.getPersonTwo().addFamilyRelationship(correspondingRelation1.getPersonTwo(), correspondingRelation1.getRelationshipType());
+                            }
+
+                            if (!inListRelationships(victim2.familyConnections, correspondingRelation2)) {
+                                victim2.addFamilyRelationship(correspondingRelation2.getPersonTwo(), correspondingRelation2.getRelationshipType());
+                            }
+
+                        } else if (relationType.equals(RelationshipType.GUARDIAN_WARD)) {
+                            FamilyRelation correspondingRelation1 = new FamilyRelation(existingRelation1.getPersonTwo(), victim2, RelationshipType.COUPLE);
+
+                            FamilyRelation correspondingRelation2 = new FamilyRelation(victim2, existingRelation1.getPersonTwo(), RelationshipType.COUPLE);
+
+                            if (!inListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
+                                existingRelation1.getPersonTwo().addFamilyRelationship(correspondingRelation1.getPersonTwo(), correspondingRelation1.getRelationshipType());
+                            }
+
+                            if (!inListRelationships(victim2.familyConnections, correspondingRelation2)) {
+                                victim2.addFamilyRelationship(correspondingRelation2.getPersonTwo(), correspondingRelation2.getRelationshipType());
+                            }
+
+                        } else if (relationType.equals(RelationshipType.SIBLING)) {
+                            FamilyRelation correspondingRelation1 = new FamilyRelation(existingRelation1.getPersonTwo(), victim2, RelationshipType.SIBLING);
+
+                            FamilyRelation correspondingRelation2 = new FamilyRelation(victim2, existingRelation1.getPersonTwo(), RelationshipType.SIBLING);
+
+                            if (!inListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
+                                existingRelation1.getPersonTwo().addFamilyRelationship(correspondingRelation1.getPersonTwo(), correspondingRelation1.getRelationshipType());
+                            }
+
+                            if (!inListRelationships(victim2.familyConnections, correspondingRelation2)) {
+                                victim2.addFamilyRelationship(correspondingRelation2.getPersonTwo(), correspondingRelation2.getRelationshipType());
+                            }
+
+                        } else if (relationType.equals(RelationshipType.FRIEND)) {
+                            FamilyRelation correspondingRelation1 = new FamilyRelation(existingRelation1.getPersonTwo(), victim2, RelationshipType.FRIEND);
+
+                            FamilyRelation correspondingRelation2 = new FamilyRelation(victim2, existingRelation1.getPersonTwo(), RelationshipType.FRIEND);
+
+                            if (!inListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
+                                existingRelation1.getPersonTwo().addFamilyRelationship(correspondingRelation1.getPersonTwo(), correspondingRelation1.getRelationshipType());
+                            }
+
+                            if (!inListRelationships(victim2.familyConnections, correspondingRelation2)) {
+                                victim2.addFamilyRelationship(correspondingRelation2.getPersonTwo(), correspondingRelation2.getRelationshipType());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * Removes a family relationship between this DisasterVictim and another DisasterVictim.
@@ -179,13 +287,46 @@ public class DisasterVictim extends Person {
                 throw new IllegalArgumentException("Relationship not found in the list");
             }
 
-            boolean removedFromVictim2 = victim2.familyConnections.removeIf(relation -> relation.getPersonTwo().equals(this) && relation.getRelationshipType() == relationType);
+            boolean removedFromVictim2 = victim2.familyConnections.removeIf(relation ->
+                    relation.getPersonTwo().equals(this) && relation.getRelationshipType() == relationType);
             if (!removedFromVictim2) {
                 throw new IllegalArgumentException("Relationship not found in the list of the second victim");
             }
+
+            // Remove corresponding relationship if it exists
+            removeCorrespondingFamilyRelationship(victim2, relationType);
         } else {
             throw new IllegalArgumentException("Relationship not found in the list");
         }
+    }
+
+    /**
+     * Removes corresponding family relationships between two victims.
+     *
+     * @param victim2      the other DisasterVictim involved in the relationship
+     * @param relationType the type of relationship to remove
+     */
+    private void removeCorrespondingFamilyRelationship(DisasterVictim victim2, RelationshipType relationType) {
+        victim2.getFamilyConnections().removeIf(relation ->
+                relation.getPersonTwo().equals(this) && relation.getRelationshipType() == relationType);
+    }
+
+
+    /**
+     * Checks if the specified family relation is present in the list of family relations.
+     *
+     * @param relations      The list of family relations to search within.
+     * @param relationToFind The family relation to search for.
+     * @return True if a family relation with the same attributes (personOne, personTwo, relationshipType)
+     * as the specified relationToFind is found in the list, otherwise false.
+     */
+    private boolean inListRelationships(HashSet<FamilyRelation> relations, FamilyRelation relationToFind) {
+        for (FamilyRelation relation : relations) {
+            if (relationToFind.equals(relation)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

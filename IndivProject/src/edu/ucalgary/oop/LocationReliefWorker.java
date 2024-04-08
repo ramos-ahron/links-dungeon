@@ -35,6 +35,9 @@ public class LocationReliefWorker extends ReliefService {
      */
     public void removeDisasterVictim(DisasterVictim victim) {
         victim.getLocation().removeOccupant(victim);
+        for (FamilyRelation familyRelation : victim.getFamilyConnections()) {
+            victim.removeFamilyRelationship(familyRelation.getPersonTwo(), familyRelation.getRelationshipType());
+        }
         try {
             // Remove from missingPeople if missing
             removeMissingPerson(victim);

@@ -52,4 +52,21 @@ public class FamilyRelation {
         // Implement your logic here
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        FamilyRelation other = (FamilyRelation) obj;
+        return this.personOne.getAssignedSocialID() == other.personOne.getAssignedSocialID() &&
+                this.personTwo.getAssignedSocialID() == other.personTwo.getAssignedSocialID() &&
+                this.relationshipType == other.relationshipType;
+    }
 }
