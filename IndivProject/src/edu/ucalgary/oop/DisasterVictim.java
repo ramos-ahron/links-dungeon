@@ -33,7 +33,7 @@ public class DisasterVictim extends Person {
      */
     public DisasterVictim(String firstName, String lastName, String ENTRY_DATE) throws IllegalArgumentException {
         super(firstName, lastName);
-        if (!validDate(ENTRY_DATE)) {
+        if (invalidDate(ENTRY_DATE)) {
             throw new IllegalArgumentException("Invalid entry date");
         }
         this.ENTRY_DATE = ENTRY_DATE;
@@ -64,7 +64,7 @@ public class DisasterVictim extends Person {
      */
     public DisasterVictim(String firstName, LocalDate ENTRY_DATE) {
         super(firstName);
-        if (!validDate(ENTRY_DATE)) {
+        if (invalidDate(ENTRY_DATE)) {
             throw new IllegalArgumentException("Invalid entry date");
         }
         this.ENTRY_DATE = ENTRY_DATE.toString();
@@ -86,7 +86,7 @@ public class DisasterVictim extends Person {
 
 
     public static void main(String[] args) {
-        DisasterVictim test = new DisasterVictim("a", "b", "2020-02-30");
+        DisasterVictim test = new DisasterVictim("a", "b", "2020-02-10");
 
         test.addPersonalBelonging(new Supply("water", 2));
         test.removePersonalBelonging(new Supply("water", 2));
@@ -228,14 +228,14 @@ public class DisasterVictim extends Person {
      * @param dateToCheck the date string to check, formatted as "YYYY-MM-DD"
      * @return true if the date string has a valid format and represents a date before or equal to the current date, otherwise false
      */
-    private boolean validDate(String dateToCheck) {
+    private boolean invalidDate(String dateToCheck) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         try {
             LocalDate date = LocalDate.parse(dateToCheck, formatter);
             LocalDate currentDate = LocalDate.now();
-            return date.isBefore(currentDate) || date.isEqual(currentDate);
+            return !date.isBefore(currentDate) && !date.isEqual(currentDate);
         } catch (DateTimeException e) {
-            return false;
+            return true;
         }
     }
 
@@ -246,9 +246,9 @@ public class DisasterVictim extends Person {
      * @param dateToCheck the date to check
      * @return true if the provided date is before or equal to the current date, otherwise false
      */
-    private boolean validDate(LocalDate dateToCheck) {
+    private boolean invalidDate(LocalDate dateToCheck) {
         LocalDate currentDate = LocalDate.now();
-        return dateToCheck.isBefore(currentDate) || dateToCheck.isEqual(currentDate);
+        return !dateToCheck.isBefore(currentDate) && !dateToCheck.isEqual(currentDate);
     }
 
 
@@ -334,7 +334,7 @@ public class DisasterVictim extends Person {
      * @throws IllegalArgumentException if the provided date of birth is invalid
      */
     public void setDateOfBirth(String dateOfBirth) throws IllegalArgumentException {
-        if (!validDate(dateOfBirth)) {
+        if (invalidDate(dateOfBirth)) {
             throw new IllegalArgumentException("Invalid date of birth");
         }
         this.dateOfBirth = dateOfBirth;

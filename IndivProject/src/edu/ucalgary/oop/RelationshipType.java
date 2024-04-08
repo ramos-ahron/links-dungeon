@@ -4,7 +4,8 @@ public enum RelationshipType {
     GUARDIAN_WARD("Guardian-Ward"),
     PARENT_CHILD("Parent-Child"),
     SIBLING("Sibling"),
-    FRIEND("Friend");
+    FRIEND("Friend"),
+    COUPLE("Couple");
 
     private final String displayName;
 
