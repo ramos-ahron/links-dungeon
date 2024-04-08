@@ -4,21 +4,22 @@ import java.util.HashSet;
 import java.util.ArrayList;
 
 public class DisasterVictim extends Person {
-    private int counter = 0;
+    private static int counter = 0;
     private String dateOfBirth;
     private int ASSIGNED_SOCIAL_ID;
     private HashSet<FamilyRelation> familyConnections;
-    private ArrayList<MedicalRecord> medicalRecords;
-    private ArrayList<Supply> personalBelongings;
+    private ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
+    private ArrayList<Supply> personalBelongings = new ArrayList<>();
     private String ENTRY_DATE;
     private String gender;
     private GenderOption genderChecker;
     private String comments;
-    private Location shelter;
+    private Location location;
 
     public DisasterVictim(String firstName, String lastName, String ENTRY_DATE) {
         super(firstName, lastName);
         this.ENTRY_DATE = ENTRY_DATE;
+        this.ASSIGNED_SOCIAL_ID = counter ++;
     }
 
     public static int generateSocialID() {
@@ -32,7 +33,7 @@ public class DisasterVictim extends Person {
     }
 
     public void addPersonalBelonging(Supply supply) {
-        // Implementation to add personal belongings
+        personalBelongings.add(supply);
     }
 
     public void removePersonalBelonging(Supply unwantedSupply) {
@@ -49,6 +50,7 @@ public class DisasterVictim extends Person {
 
     public void addMedicalRecord(MedicalRecord record) {
         // Implementation to add medical records
+        medicalRecords.add(record);
     }
 
     // Other methods as per your requirements
@@ -123,12 +125,12 @@ public class DisasterVictim extends Person {
         return genderChecker;
     }
 
-    public Location getShelter() {
-        return shelter;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setShelter(Location shelter) {
-        this.shelter = shelter;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void setGenderChecker(GenderOption genderChecker) {
