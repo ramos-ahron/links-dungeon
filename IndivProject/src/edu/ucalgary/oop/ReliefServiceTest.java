@@ -7,20 +7,12 @@ import java.util.LinkedList;
 import static org.junit.Assert.*;
 
 public class ReliefServiceTest {
-    ReliefService testReliefService = new ReliefService();
-
-    @Test
-    public void testObjectCreation() {
-        assertNotNull(testReliefService);
-    }
-
     @Test
     public void testAddShelter() {
         Location testLocation = new Location("Test", "Random Address");
-
-        assertTrue("newly created object should have an empty shelters", testReliefService.getShelters().isEmpty());
-        testReliefService.addShelter(testLocation);
-        assertNotNull("addShelter() should update the contents of shelters", testReliefService.getShelters());
+        ReliefService.getShelters().clear();
+        ReliefService.addShelter(testLocation);
+        assertTrue("addShelter() should update the contents of shelters", inListLocation(ReliefService.getShelters(), testLocation));
     }
 
     @Test
@@ -29,7 +21,7 @@ public class ReliefServiceTest {
         String failureReasonNull = "no exception was thrown";
 
         try {
-            testReliefService.addShelter(null);
+            ReliefService.addShelter(null);
         } catch (NullPointerException e) {
             correctValueNull = true;
         } catch (Exception e) {
@@ -50,8 +42,8 @@ public class ReliefServiceTest {
         String failureReasonInList = "no exception was thrown";
 
         try {
-            testReliefService.addShelter(testLocation1);
-            testReliefService.addShelter(testLocation2);
+            ReliefService.addShelter(testLocation1);
+            ReliefService.addShelter(testLocation2);
         } catch (IllegalArgumentException e) {
             correctValueInList = true;
         } catch (Exception e) {
@@ -68,16 +60,16 @@ public class ReliefServiceTest {
         Location testLocation1 = new Location("Test", "Random Address");
         Location testLocation2 = new Location("Test", "Random Address");
 
-        testReliefService.getShelters().clear();
+        ReliefService.getShelters().clear();
 
-        testReliefService.addShelter(testLocation1);
-        testReliefService.removeShelter(testLocation2);
+        ReliefService.addShelter(testLocation1);
+        ReliefService.removeShelter(testLocation2);
 
-        for (Location element : testReliefService.getShelters()) {
+        for (Location element : ReliefService.getShelters()) {
             System.out.println(element.getName());
         }
 
-        assertTrue("removeShelter() should make shelters empty", testReliefService.getShelters().isEmpty());
+        assertTrue("removeShelter() should make shelters empty", ReliefService.getShelters().isEmpty());
     }
 
     @Test
@@ -86,7 +78,7 @@ public class ReliefServiceTest {
         String failureReasonNull = "no exception was thrown";
 
         try {
-            testReliefService.removeShelter(null);
+            ReliefService.removeShelter(null);
         } catch (NullPointerException e) {
             correctValueNull = true;
         } catch (Exception e) {
@@ -105,8 +97,10 @@ public class ReliefServiceTest {
         boolean correctValueNotInList = false;
         String failureReasonNotInList = "no exception was thrown";
 
+        ReliefService.getShelters().clear();
+
         try {
-            testReliefService.removeShelter(testLocation);
+            ReliefService.removeShelter(testLocation);
         } catch (IllegalArgumentException e) {
             correctValueNotInList = true;
         } catch (Exception e) {
@@ -121,10 +115,9 @@ public class ReliefServiceTest {
     @Test
     public void testAddMissingPerson() {
         DisasterVictim testVictim = new DisasterVictim("Random", "Name", "2024-01-10");
-
-        assertTrue("newly created object should have an empty shelters", testReliefService.getMissingPeople().isEmpty());
-        testReliefService.addMissingPerson(testVictim);
-        assertNotNull("addShelter() should update the contents of shelters", testReliefService.getMissingPeople());
+        ReliefService.getMissingPeople().clear();
+        ReliefService.addMissingPerson(testVictim);
+        assertTrue("addMissingPerson() should update the contents of missingPeople", inListMissingPerson(ReliefService.getMissingPeople(), testVictim));
     }
 
     @Test
@@ -133,7 +126,7 @@ public class ReliefServiceTest {
         String failureReasonNull = "no exception was thrown";
 
         try {
-            testReliefService.addMissingPerson(null);
+            ReliefService.addMissingPerson(null);
         } catch (NullPointerException e) {
             correctValueNull = true;
         } catch (Exception e) {
@@ -148,14 +141,13 @@ public class ReliefServiceTest {
     @Test
     public void testInvalidAddMissingPersonInList() {
         DisasterVictim testVictim1 = new DisasterVictim("Random", "Name", "2024-01-10");
-        DisasterVictim testVictim2 = new DisasterVictim("Random", "Name", "2024-01-10");
 
         boolean correctValueInList = false;
         String failureReasonInList = "no exception was thrown";
 
         try {
-            testReliefService.addMissingPerson(testVictim1);
-            testReliefService.addMissingPerson(testVictim2);
+            ReliefService.addMissingPerson(testVictim1);
+            ReliefService.addMissingPerson(testVictim1);
         } catch (IllegalArgumentException e) {
             correctValueInList = true;
         } catch (Exception e) {
@@ -170,14 +162,13 @@ public class ReliefServiceTest {
     @Test
     public void testRemoveMissingPerson() {
         DisasterVictim testVictim1 = new DisasterVictim("Random", "Name", "2024-01-10");
-        DisasterVictim testVictim2 = new DisasterVictim("Random", "Name", "2024-01-10");
 
-        testReliefService.getMissingPeople().clear();
+        ReliefService.getMissingPeople().clear();
 
-        testReliefService.addMissingPerson(testVictim1);
-        testReliefService.removeMissingPerson(testVictim2);
+        ReliefService.addMissingPerson(testVictim1);
+        ReliefService.removeMissingPerson(testVictim1);
 
-        assertTrue("removeMissingPerson() should make missingPeople empty", testReliefService.getMissingPeople().isEmpty());
+        assertTrue("removeMissingPerson() should make missingPeople empty", ReliefService.getMissingPeople().isEmpty());
     }
 
     @Test
@@ -186,7 +177,7 @@ public class ReliefServiceTest {
         String failureReasonNull = "no exception was thrown";
 
         try {
-            testReliefService.removeMissingPerson(null);
+            ReliefService.removeMissingPerson(null);
         } catch (NullPointerException e) {
             correctValueNull = true;
         } catch (Exception e) {
@@ -205,8 +196,10 @@ public class ReliefServiceTest {
         boolean correctValueNotInList = false;
         String failureReasonNotInList = "no exception was thrown";
 
+        ReliefService.getMissingPeople().clear();
+
         try {
-            testReliefService.removeMissingPerson(testVictim);
+            ReliefService.removeMissingPerson(testVictim);
         } catch (IllegalArgumentException e) {
             correctValueNotInList = true;
         } catch (Exception e) {
@@ -226,9 +219,9 @@ public class ReliefServiceTest {
         testLocationList.add(new Location("Location3", "Address3"));
         testLocationList.add(new Location("Location4", "Address4"));
 
-        testReliefService.setShelters(testLocationList);
+        ReliefService.setShelters(testLocationList);
 
-        assertEquals("setShelters() should update the value of shelters", testLocationList, testReliefService.getShelters());
+        assertEquals("setShelters() should update the value of shelters", testLocationList, ReliefService.getShelters());
     }
 
     @Test
@@ -239,16 +232,41 @@ public class ReliefServiceTest {
         testVictimList.add(new DisasterVictim("Victim2", "Random2", "2024-01-02"));
         testVictimList.add(new DisasterVictim("Victim3", "Random3", "2024-01-03"));
 
-        testReliefService.setMissingPeople(testVictimList);
+        ReliefService.setMissingPeople(testVictimList);
 
-        assertEquals("setMissingPeople() should update the value of missingPeople", testVictimList, testReliefService.getMissingPeople());
+        assertEquals("setMissingPeople() should update the value of missingPeople", testVictimList, ReliefService.getMissingPeople());
     }
 
-    @Test
-    public void testGetWorkerID() {
-        int counter = ReliefService.getWorkerIdCounter();
-        int workerID = testReliefService.getWorkerId();
 
-        assertEquals("getWorkerID() should return getWorkerIdCounter() - 1", counter, workerID + 1);
+    /**
+     * Checks if the specified location is present in the list of shelters.
+     *
+     * @param shelters      The list of shelters to search.
+     * @param elementToFind The location to search for.
+     * @return true if the location is found in the list of shelters, false otherwise.
+     */
+    private boolean inListLocation(LinkedList<Location> shelters, Location elementToFind) {
+        for (Location location : shelters) {
+            if (location.getName().equals(elementToFind.getName()) && location.getAddress().equals(elementToFind.getAddress())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the specified victim is present in the list of missingPeople.
+     *
+     * @param missingPeople The list of missing people to search.
+     * @param elementToFind The victim to search for.
+     * @return true if the victim is found in the list of missing people, false otherwise.
+     */
+    private boolean inListMissingPerson(LinkedList<DisasterVictim> missingPeople, DisasterVictim elementToFind) {
+        for (DisasterVictim victim : missingPeople) {
+            if (elementToFind.getAssignedSocialID() == victim.getAssignedSocialID()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -2,23 +2,10 @@ package edu.ucalgary.oop;
 
 import java.util.LinkedList;
 
-public class ReliefService {
-    private static int WORKER_ID_COUNTER = 1;
-    private final int workerId;
+abstract public class ReliefService {
+    private static final LinkedList<Location> shelters = new LinkedList<>();
+    private static final LinkedList<DisasterVictim> missingPeople = new LinkedList<>();
 
-    private final LinkedList<Location> shelters = new LinkedList<>();
-    private LinkedList<DisasterVictim> missingPeople = new LinkedList<>();
-
-    /**
-     * Initializes a new ReliefService instance.
-     *
-     * <p>
-     * This constructor assigns a unique worker ID to the ReliefService instance based on the current value of the WORKER_ID_COUNTER.
-     * </p>
-     */
-    public ReliefService() {
-        workerId = WORKER_ID_COUNTER++;
-    }
 
     /**
      * Adds a shelter to the list of shelters.
@@ -27,7 +14,7 @@ public class ReliefService {
      * @throws NullPointerException     If the provided location is null.
      * @throws IllegalArgumentException If the location is already a shelter in the list.
      */
-    public void addShelter(Location location) throws NullPointerException, IllegalArgumentException {
+    public static void addShelter(Location location) throws NullPointerException, IllegalArgumentException {
         if (location == null) {
             throw new NullPointerException("The location provided cannot be null");
         }
@@ -35,7 +22,7 @@ public class ReliefService {
         if (inListLocation(location) != null) {
             throw new IllegalArgumentException("The location is already a shelter");
         } else {
-            this.shelters.add(location);
+            shelters.add(location);
         }
     }
 
@@ -47,7 +34,7 @@ public class ReliefService {
      * @throws NullPointerException     If the provided shelter location is null.
      * @throws IllegalArgumentException If the location is not found in the list of shelters.
      */
-    public void removeShelter(Location location) throws NullPointerException, IllegalArgumentException {
+    public static void removeShelter(Location location) throws NullPointerException, IllegalArgumentException {
         if (location == null) {
             throw new NullPointerException("The shelter provided cannot be null");
         }
@@ -55,7 +42,7 @@ public class ReliefService {
         Location locationToRemove = inListLocation(location);
 
         if (locationToRemove != null) {
-            this.shelters.remove(locationToRemove);
+            shelters.remove(locationToRemove);
         } else {
             throw new IllegalArgumentException("The location is not a shelter");
         }
@@ -68,7 +55,7 @@ public class ReliefService {
      * @throws NullPointerException     If the provided victim is null.
      * @throws IllegalArgumentException If the victim is already in the list of missing people.
      */
-    public void addMissingPerson(DisasterVictim victim) throws NullPointerException, IllegalArgumentException {
+    public static void addMissingPerson(DisasterVictim victim) throws NullPointerException, IllegalArgumentException {
         if (victim == null) {
             throw new NullPointerException("The victim provided cannot be null");
         }
@@ -76,7 +63,7 @@ public class ReliefService {
         if (inListMissingPerson(victim) != null) {
             throw new IllegalArgumentException("The victim is already in the list");
         } else {
-            this.missingPeople.add(victim);
+            missingPeople.add(victim);
         }
     }
 
@@ -87,7 +74,7 @@ public class ReliefService {
      * @throws NullPointerException     If the provided victim is null.
      * @throws IllegalArgumentException If the victim is not found in the list of missing people.
      */
-    public void removeMissingPerson(DisasterVictim victim) throws NullPointerException, IllegalArgumentException {
+    public static void removeMissingPerson(DisasterVictim victim) throws NullPointerException, IllegalArgumentException {
         if (victim == null) {
             throw new NullPointerException("The victim provided cannot be null");
         }
@@ -95,12 +82,11 @@ public class ReliefService {
         DisasterVictim personToRemove = inListMissingPerson(victim);
 
         if (personToRemove != null) {
-            this.missingPeople.remove(personToRemove);
+            missingPeople.remove(personToRemove);
         } else {
             throw new IllegalArgumentException("The victim is not found in the list");
         }
     }
-
 
 
     /**
@@ -108,7 +94,7 @@ public class ReliefService {
      *
      * @return The list of shelters.
      */
-    public LinkedList<Location> getShelters() {
+    public static LinkedList<Location> getShelters() {
         return shelters;
     }
 
@@ -118,9 +104,9 @@ public class ReliefService {
      *
      * @param shelters The new list of shelters to set.
      */
-    public void setShelters(LinkedList<Location> shelters) {
-        this.shelters.clear();
-        this.shelters.addAll(shelters);
+    public static void setShelters(LinkedList<Location> shelters) {
+        ReliefService.shelters.clear();
+        ReliefService.shelters.addAll(shelters);
     }
 
     /**
@@ -128,7 +114,7 @@ public class ReliefService {
      *
      * @return The list of missing people.
      */
-    public LinkedList<DisasterVictim> getMissingPeople() {
+    public static LinkedList<DisasterVictim> getMissingPeople() {
         return missingPeople;
     }
 
@@ -137,29 +123,9 @@ public class ReliefService {
      *
      * @param missingPeople The new list of missing people to set.
      */
-    public void setMissingPeople(LinkedList<DisasterVictim> missingPeople) {
-        this.missingPeople.clear();
-        this.missingPeople.addAll(missingPeople);
-    }
-
-
-    /**
-     * Retrieves the worker ID associated with this ReliefService instance.
-     *
-     * @return The worker ID.
-     */
-    public int getWorkerId() {
-        return workerId;
-    }
-
-
-    /**
-     * Retrieves the current value of the worker ID counter.
-     *
-     * @return The current value of the worker ID counter.
-     */
-    public static int getWorkerIdCounter() {
-        return WORKER_ID_COUNTER;
+    public static void setMissingPeople(LinkedList<DisasterVictim> missingPeople) {
+        ReliefService.missingPeople.clear();
+        ReliefService.missingPeople.addAll(missingPeople);
     }
 
 
@@ -170,7 +136,7 @@ public class ReliefService {
      * @return The first found location with the same name and address as the specified elementToFind,
      *         or null if no such location is found.
      */
-    public Location inListLocation(Location elementToFind) {
+    public static Location inListLocation(Location elementToFind) {
         for (Location location : shelters) {
             if (location.getName().equals(elementToFind.getName()) && location.getAddress().equals(elementToFind.getAddress())) {
                 return location;
@@ -186,7 +152,7 @@ public class ReliefService {
      * @return The first found victim with the same social id as the specified elementToFind,
      *         or null if no such victim is found.
      */
-    public DisasterVictim inListMissingPerson(DisasterVictim elementToFind) {
+    public static DisasterVictim inListMissingPerson(DisasterVictim elementToFind) {
         for (DisasterVictim victim : missingPeople) {
             if (elementToFind.getAssignedSocialID() == victim.getAssignedSocialID()) {
                 return victim;
@@ -194,5 +160,4 @@ public class ReliefService {
         }
         return null;
     }
-
 }
