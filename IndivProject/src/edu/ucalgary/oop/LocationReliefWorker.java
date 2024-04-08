@@ -1,8 +1,18 @@
 package edu.ucalgary.oop;
 
 public class LocationReliefWorker extends ReliefService {
+    /**
+     * Constructs a new LocationReliefWorker instance.
+     */
     public LocationReliefWorker() {}
 
+
+    /**
+     * Adds the specified disaster victim to the provided location and updates relevant records.
+     *
+     * @param victim The disaster victim to be added.
+     * @param location The location where the victim will be placed.
+     */
     public void addDisasterVictim(DisasterVictim victim, Location location) {
         location.addOccupant(victim);
         victim.setLocation(location);
@@ -12,35 +22,57 @@ public class LocationReliefWorker extends ReliefService {
             addMissingPerson(victim);
         }
 
-        /*
-          TODO: Connect this to database
-         */
+    /*
+      TODO: Connect this to database
+     */
     }
 
+
+    /**
+     * Removes the specified disaster victim from their current location and updates relevant records.
+     *
+     * @param victim The disaster victim to be removed.
+     */
     public void removeDisasterVictim(DisasterVictim victim) {
         victim.getLocation().removeOccupant(victim);
         try {
-            // remove from missingPeople if missing
+            // Remove from missingPeople if missing
             removeMissingPerson(victim);
         } catch (IllegalArgumentException ignored) {
 
         }
-        /*
-            TODO: Connect this to database
-         */
+    /*
+        TODO: Connect this to database
+     */
     }
 
+
+    /**
+     * Gives supplies to the specified disaster victim, adding them to their personal belongings.
+     *
+     * @param victim The disaster victim to whom the supplies will be given.
+     * @param supply The supply item to be given to the victim.
+     * @throws IllegalArgumentException If the victim is not currently located in a valid shelter.
+     */
     public void giveSupplies(DisasterVictim victim, Supply supply) throws IllegalArgumentException {
         if (inListLocation(victim.getLocation()) == null) { // If missing, cannot give supplies
             throw new IllegalArgumentException("Disaster victim is not in a valid shelter");
         }
         victim.getLocation().removeSupply(supply);
         victim.addPersonalBelonging(supply);
-        /*
-            TODO: Connect this to database
-         */
+    /*
+        TODO: Connect this to database
+     */
     }
 
+
+    /**
+     * Updates the location of the specified disaster victim to the new location provided.
+     *
+     * @param victim The disaster victim whose location is being updated.
+     * @param newLocation The new location to which the victim will be moved.
+     * @throws IllegalArgumentException If the new location is the same as the current location of the victim.
+     */
     public void updateDisasterVictimLocation(DisasterVictim victim, Location newLocation) throws IllegalArgumentException {
         // Make sure that new location is not the same as old location
         if (victim.getLocation().getName().equals(newLocation.getName()) && victim.getLocation().getAddress().equals(newLocation.getAddress())) {
@@ -66,15 +98,22 @@ public class LocationReliefWorker extends ReliefService {
 
             }
         }
-        /*
-            TODO: Connect this to database
-         */
+    /*
+        TODO: Connect this to database
+     */
     }
 
+
+    /**
+     * Adds a medical record to the specified disaster victim.
+     *
+     * @param victim The disaster victim to whom the medical record will be added.
+     * @param medicalRecord The medical record to be added to the victim.
+     */
     public void addDisasterVictimMedicalRecord(DisasterVictim victim, MedicalRecord medicalRecord) {
         victim.addMedicalRecord(medicalRecord);
-        /*
-            TODO: Connect this to database
-         */
+    /*
+        TODO: Connect this to database
+     */
     }
 }
