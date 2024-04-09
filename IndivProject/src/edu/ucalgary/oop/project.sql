@@ -26,13 +26,13 @@ CREATE TABLE INQUIRER (
     phoneNumber VARCHAR(20) NOT NULL
 );
 INSERT INTO INQUIRER (id, firstName, lastName, phoneNumber) VALUES
-(1, 'Dominik', 'Pflug', '123-456-9831'),
-(2, 'Yaa', 'Odei', '123-456-8913'),
-(3, 'Cecilia', 'Cobos', '123-456-7891'),
-(4, 'Hongjoo', 'Park', '123-456-8912');
+		(1, 'Dominik', 'Pflug', '123-456-9831'),
+		(2, 'Yaa', 'Odei', '123-456-8913'),
+		(3, 'Cecilia', 'Cobos', '123-456-7891'),
+		(4, 'Hongjoo', 'Park', '123-456-8912');
 INSERT INTO INQUIRER (id, firstName, phoneNumber) VALUES
-(5, 'Saartje', '123-456-7234'),
-(6, 'Urjoshi', '456-123-4281');
+		(5, 'Saartje', '123-456-7234'),
+		(6, 'Urjoshi', '456-123-4281');
 
 CREATE TABLE INQUIRY_LOG (
     id SERIAL PRIMARY KEY,
@@ -43,13 +43,13 @@ CREATE TABLE INQUIRY_LOG (
 );
 
 INSERT INTO INQUIRY_LOG (id, inquirer, callDate, details) VALUES
-(1, 1, '2024-02-28', 'Theresa Pflug'),
-(2, 2, '2024-02-28', 'Offer to assist as volunteer'),
-(3, 3, '2024-03-01', 'Valesk Souza'),
-(4, 1, '2024-03-01', 'Theresa Pflug'),
-(5, 1, '2024-03-02', 'Theresa Pflug'),
-(6, 4, '2024-03-02', 'Yoyo Jefferson and Roisin Fitzgerald'),
-(7, 5, '2024-03-02', 'Henk Wouters'),
-(8, 3, '2024-03-03', 'Melinda'),
-(9, 6, '2024-03-04', 'Julius');
+		(1, 1, '2024-02-28', 'Theresa Pflug'),
+		(2, 2, '2024-02-28', 'Offer to assist as volunteer'),
+		(3, 3, '2024-03-01', 'Valesk Souza'),
+		(4, 1, '2024-03-01', 'Theresa Pflug'),
+		(5, 1, '2024-03-02', 'Theresa Pflug'),
+		(6, 4, '2024-03-02', 'Yoyo Jefferson and Roisin Fitzgerald'),
+		(7, 5, '2024-03-02', 'Henk Wouters'),
+		(8, 3, '2024-03-03', 'Melinda'),
+		(9, 6, '2024-03-04', 'Julius');
 
