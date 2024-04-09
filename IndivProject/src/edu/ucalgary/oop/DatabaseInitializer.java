@@ -93,8 +93,8 @@ public class DatabaseInitializer {
      * [restriction name, victim ID].
      *
      * @return an ArrayList containing information about all the dietary restriction entries in the database,
-     *         where each inner ArrayList represents the information for a single dietary restriction entry
-     *         and contains the restriction name and victim ID
+     * where each inner ArrayList represents the information for a single dietary restriction entry
+     * and contains the restriction name and victim ID
      */
     public static ArrayList<ArrayList<String>> getDietaryRestrictionInfo() {
         ArrayList<ArrayList<String>> dietaryRestrictionInfo = new ArrayList<>();
@@ -127,8 +127,8 @@ public class DatabaseInitializer {
      * [relationship type, victim1 ID, victim2 ID].
      *
      * @return an ArrayList containing information about all the relationship entries in the database,
-     *         where each inner ArrayList represents the information for a single relationship entry
-     *         and contains the relationship type, victim1 ID, and victim2 ID
+     * where each inner ArrayList represents the information for a single relationship entry
+     * and contains the relationship type, victim1 ID, and victim2 ID
      */
     public static ArrayList<ArrayList<String>> getRelationshipInfo() {
         ArrayList<ArrayList<String>> relationshipInfo = new ArrayList<>();
@@ -163,8 +163,8 @@ public class DatabaseInitializer {
      * [treatment details, date of treatment, victim ID, location name, location address].
      *
      * @return an ArrayList containing information about all the medical record entries in the database,
-     *         where each inner ArrayList represents the information for a single medical record entry
-     *         and contains the treatment details, date of treatment, victim ID, location name, and location address
+     * where each inner ArrayList represents the information for a single medical record entry
+     * and contains the treatment details, date of treatment, victim ID, location name, and location address
      */
     public static ArrayList<ArrayList<String>> getMedicalRecordInfo() {
         ArrayList<ArrayList<String>> medicalRecordInfo = new ArrayList<>();
@@ -210,8 +210,8 @@ public class DatabaseInitializer {
      * where the elements are arranged in the following order: [name, address].
      *
      * @return an ArrayList containing information about all the location entries in the database,
-     *         where each inner ArrayList represents the information for a single location entry
-     *         and contains the name and address of the location
+     * where each inner ArrayList represents the information for a single location entry
+     * and contains the name and address of the location
      */
     public static ArrayList<ArrayList<String>> getLocationInfo() {
         ArrayList<ArrayList<String>> locationInfo = new ArrayList<>();
@@ -245,8 +245,8 @@ public class DatabaseInitializer {
      * [victim_id, first_name, last_name, entry_date, age, gender, comments, date_of_birth, location_name, location_address].
      *
      * @return an ArrayList containing information about all the disaster victim entries in the database,
-     *         where each inner ArrayList represents the information for a single victim entry
-     *         and contains various details about the victim and their location
+     * where each inner ArrayList represents the information for a single victim entry
+     * and contains various details about the victim and their location
      */
     public static ArrayList<ArrayList<String>> getDisasterVictimInfo() {
         createConnection();
@@ -303,8 +303,8 @@ public class DatabaseInitializer {
      * [supply_id, type, quantity, reference_type, location_name, location_address, victim_id].
      *
      * @return an ArrayList containing information about all the supply entries in the database,
-     *         where each inner ArrayList represents the information for a single supply entry
-     *         and contains various details about the supply and its associated location or victim
+     * where each inner ArrayList represents the information for a single supply entry
+     * and contains various details about the supply and its associated location or victim
      */
     public static ArrayList<ArrayList<String>> getSupplyInfo() {
         createConnection();
@@ -345,7 +345,6 @@ public class DatabaseInitializer {
      * Establishes a connection to the PostgreSQL database used for the project.
      * This method uses JDBC to connect to the specified database URL with the provided
      * username and password.
-     *
      */
     public static void createConnection() {
         try {
