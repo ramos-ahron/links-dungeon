@@ -5,8 +5,10 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 
 public class DisasterVictim extends Person {
     private static int counter = 0;
@@ -90,8 +92,8 @@ public class DisasterVictim extends Person {
         DisasterVictim taylor = new DisasterVictim("Taylor", "Swift");
         DisasterVictim tony = new DisasterVictim("Tony", "Vegas");
 
-        john.addFamilyRelationship(tony, RelationshipType.SIBLING);
-        taylor.addFamilyRelationship(tony, RelationshipType.SIBLING);
+        john.addFamilyRelationship(tony, RelationshipType.PARENT_CHILD);
+        taylor.addFamilyRelationship(tony, RelationshipType.PARENT_CHILD);
 
         // Print all relationships for John
         System.out.println("Relationships for John:");
@@ -183,7 +185,7 @@ public class DisasterVictim extends Person {
      *
      * @param relationType the type of relationship to add
      */
-    public void checkAndAddMissingFamilyRelationships(RelationshipType relationType) {
+    private void checkAndAddMissingFamilyRelationships(RelationshipType relationType) {
 
         // Iterate over each family relation of this victim
         for (FamilyRelation existingRelation : this.familyConnections) {
@@ -210,11 +212,11 @@ public class DisasterVictim extends Person {
 
                             FamilyRelation correspondingRelation2 = new FamilyRelation(victim2, existingRelation1.getPersonTwo(), RelationshipType.COUPLE);
 
-                            if (!inListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
+                            if (notInListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
                                 existingRelation1.getPersonTwo().addFamilyRelationship(correspondingRelation1.getPersonTwo(), correspondingRelation1.getRelationshipType());
                             }
 
-                            if (!inListRelationships(victim2.familyConnections, correspondingRelation2)) {
+                            if (notInListRelationships(victim2.familyConnections, correspondingRelation2)) {
                                 victim2.addFamilyRelationship(correspondingRelation2.getPersonTwo(), correspondingRelation2.getRelationshipType());
                             }
 
@@ -223,11 +225,11 @@ public class DisasterVictim extends Person {
 
                             FamilyRelation correspondingRelation2 = new FamilyRelation(victim2, existingRelation1.getPersonTwo(), RelationshipType.COUPLE);
 
-                            if (!inListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
+                            if (notInListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
                                 existingRelation1.getPersonTwo().addFamilyRelationship(correspondingRelation1.getPersonTwo(), correspondingRelation1.getRelationshipType());
                             }
 
-                            if (!inListRelationships(victim2.familyConnections, correspondingRelation2)) {
+                            if (notInListRelationships(victim2.familyConnections, correspondingRelation2)) {
                                 victim2.addFamilyRelationship(correspondingRelation2.getPersonTwo(), correspondingRelation2.getRelationshipType());
                             }
 
@@ -236,11 +238,11 @@ public class DisasterVictim extends Person {
 
                             FamilyRelation correspondingRelation2 = new FamilyRelation(victim2, existingRelation1.getPersonTwo(), RelationshipType.SIBLING);
 
-                            if (!inListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
+                            if (notInListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
                                 existingRelation1.getPersonTwo().addFamilyRelationship(correspondingRelation1.getPersonTwo(), correspondingRelation1.getRelationshipType());
                             }
 
-                            if (!inListRelationships(victim2.familyConnections, correspondingRelation2)) {
+                            if (notInListRelationships(victim2.familyConnections, correspondingRelation2)) {
                                 victim2.addFamilyRelationship(correspondingRelation2.getPersonTwo(), correspondingRelation2.getRelationshipType());
                             }
 
@@ -249,11 +251,11 @@ public class DisasterVictim extends Person {
 
                             FamilyRelation correspondingRelation2 = new FamilyRelation(victim2, existingRelation1.getPersonTwo(), RelationshipType.FRIEND);
 
-                            if (!inListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
+                            if (notInListRelationships(existingRelation1.getPersonTwo().familyConnections, correspondingRelation1)) {
                                 existingRelation1.getPersonTwo().addFamilyRelationship(correspondingRelation1.getPersonTwo(), correspondingRelation1.getRelationshipType());
                             }
 
-                            if (!inListRelationships(victim2.familyConnections, correspondingRelation2)) {
+                            if (notInListRelationships(victim2.familyConnections, correspondingRelation2)) {
                                 victim2.addFamilyRelationship(correspondingRelation2.getPersonTwo(), correspondingRelation2.getRelationshipType());
                             }
                         }
@@ -320,13 +322,13 @@ public class DisasterVictim extends Person {
      * @return True if a family relation with the same attributes (personOne, personTwo, relationshipType)
      * as the specified relationToFind is found in the list, otherwise false.
      */
-    private boolean inListRelationships(HashSet<FamilyRelation> relations, FamilyRelation relationToFind) {
+    private boolean notInListRelationships(HashSet<FamilyRelation> relations, FamilyRelation relationToFind) {
         for (FamilyRelation relation : relations) {
             if (relationToFind.equals(relation)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
 
@@ -338,9 +340,9 @@ public class DisasterVictim extends Person {
      */
     public void addMedicalRecord(MedicalRecord medicalRecord) throws IllegalArgumentException {
         for (MedicalRecord existingRecord : medicalRecords) {
-            if (existingRecord.getLocation().equals(medicalRecord.getLocation()) &&
-                    existingRecord.getTreatmentDetails().equals(medicalRecord.getTreatmentDetails()) &&
-                    existingRecord.getDateOfTreatment().equals(medicalRecord.getDateOfTreatment())) {
+            if (Objects.equals(existingRecord.getLocation(), medicalRecord.getLocation()) &&
+                    Objects.equals(existingRecord.getTreatmentDetails(), medicalRecord.getTreatmentDetails()) &&
+                    Objects.equals(existingRecord.getDateOfTreatment(), medicalRecord.getDateOfTreatment())) {
                 throw new IllegalArgumentException("Medical record already exists");
             }
         }
@@ -374,10 +376,13 @@ public class DisasterVictim extends Person {
         try {
             LocalDate date = LocalDate.parse(dateToCheck, formatter);
             LocalDate currentDate = LocalDate.now();
-            return !date.isBefore(currentDate) && !date.isEqual(currentDate);
-        } catch (DateTimeException e) {
+
+            LocalDate minValidDate = currentDate.minusYears(150);
+            return date.isBefore(minValidDate) || date.isAfter(currentDate);
+        } catch (DateTimeParseException e) {
             return true;
         }
+
     }
 
 
@@ -453,7 +458,7 @@ public class DisasterVictim extends Person {
      *
      * @return the counter value
      */
-    public int getCounter() {
+    public static int getCounter() {
         return counter;
     }
 
