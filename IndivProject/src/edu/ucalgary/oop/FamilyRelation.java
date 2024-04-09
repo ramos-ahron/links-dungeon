@@ -7,8 +7,6 @@ public class FamilyRelation {
     private RelationshipType relationshipType;
     private DisasterVictim personTwo;
 
-    private HashSet<FamilyRelation> currentRelations = new HashSet<>();
-
     public FamilyRelation(DisasterVictim personOne, DisasterVictim personTwo, RelationshipType relationshipType) {
         this.personOne = personOne;
         this.personTwo = personTwo;
@@ -37,20 +35,6 @@ public class FamilyRelation {
 
     public void setPersonTwo(DisasterVictim personTwo) {
         this.personTwo = personTwo;
-    }
-
-    public HashSet<FamilyRelation> getCurrentRelations() {
-        return currentRelations;
-    }
-
-    public void setCurrentRelations(HashSet<FamilyRelation> currentRelations) {
-        this.currentRelations = currentRelations;
-    }
-
-    public boolean isEqualTo(FamilyRelation relationOne, FamilyRelation relationTwo) {
-        // Compare two FamilyRelation objects and return true if they are equal, otherwise return false
-        // Implement your logic here
-        return true;
     }
 
     @Override
