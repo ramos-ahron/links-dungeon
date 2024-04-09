@@ -1,7 +1,5 @@
 package edu.ucalgary.oop;
 
-import java.util.HashSet;
-
 public class FamilyRelation {
     private DisasterVictim personOne;
     private RelationshipType relationshipType;
