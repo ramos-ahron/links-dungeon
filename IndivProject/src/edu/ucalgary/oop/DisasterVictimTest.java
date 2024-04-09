@@ -608,8 +608,9 @@ public class DisasterVictimTest {
     /**
      * Searches for a Supply object with the same type as the specified element within the personal belongings list.
      *
+     * @param supplies      the list of supplies to search within
      * @param elementToFind the Supply object to search for
-     * @return the first matching Supply object found, or null if no match is found
+     * @return true if a matching Supply object is found, false otherwise
      */
     private boolean inSupplies(ArrayList<Supply> supplies, Supply elementToFind) {
         for (Supply element : supplies) {
