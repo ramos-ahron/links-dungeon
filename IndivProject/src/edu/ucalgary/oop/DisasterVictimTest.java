@@ -343,6 +343,62 @@ public class DisasterVictimTest {
     }
 
     @Test
+    public void testAddDietaryRestriction() {
+        DisasterVictim victim = new DisasterVictim("John");
+        victim.addDietaryRestriction(DietaryRestriction.GFML);
+        assertTrue("addDietaryRestriction() should update dietaryRestrictions", victim.getDietaryRestrictions().contains(DietaryRestriction.GFML));
+    }
+
+    @Test
+    public void testAddDuplicateDietaryRestriction() {
+        DisasterVictim victim = new DisasterVictim("John");
+        victim.addDietaryRestriction(DietaryRestriction.AVML);
+
+        boolean correctValue = false;
+        String failureReason = "no exception was thrown";
+
+        try {
+            victim.addDietaryRestriction(DietaryRestriction.AVML);
+        } catch (IllegalArgumentException e) {
+            correctValue = true;
+        } catch (Exception e) {
+            failureReason = "wrong exception was thrown";
+        }
+
+        String message = "addDietaryRestriction() should thrown an IllegalArgumentException when duplicate DietaryRestriction is added but " + failureReason;
+
+        assertTrue(message, correctValue);
+    }
+
+    @Test
+    public void testRemoveDietaryRestriction() {
+        DisasterVictim victim = new DisasterVictim("John");
+        victim.addDietaryRestriction(DietaryRestriction.KSML);
+        victim.removeDietaryRestriction(DietaryRestriction.KSML);
+        assertFalse(victim.getDietaryRestrictions().contains(DietaryRestriction.KSML));
+    }
+
+    @Test
+    public void testRemoveNonexistentDietaryRestriction() {
+        DisasterVictim victim = new DisasterVictim("John");
+
+        boolean correctValue = false;
+        String failureReason = "no exception was thrown";
+
+        try {
+            victim.removeDietaryRestriction(DietaryRestriction.DBML);
+        } catch (IllegalArgumentException e) {
+            correctValue = true;
+        } catch (Exception e) {
+            failureReason = "wrong exception was thrown";
+        }
+
+        String message = "removeDietaryRestriction() should thrown an IllegalArgumentException when DietaryRestriction being removed does not exist but " + failureReason;
+
+        assertTrue(message, correctValue);
+    }
+
+    @Test
     public void testAddValidMedicalRecord() {
         Location location = new Location("Hospital", "Address");
         MedicalRecord medicalRecord = new MedicalRecord(location, "2024-04-08");

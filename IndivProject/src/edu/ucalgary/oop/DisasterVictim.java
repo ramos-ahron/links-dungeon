@@ -366,6 +366,33 @@ public class DisasterVictim extends Person implements DateValidator {
 
 
     /**
+     * Adds a dietary restriction to the victim.
+     *
+     * @param restriction the dietary restriction to add
+     * @throws IllegalArgumentException if the dietary restriction is already in the list
+     */
+    public void addDietaryRestriction(DietaryRestriction restriction) {
+        if (dietaryRestrictions.contains(restriction)) {
+            throw new IllegalArgumentException("Dietary restriction already exists for this victim");
+        }
+        dietaryRestrictions.add(restriction);
+    }
+
+    /**
+     * Removes a dietary restriction from the victim.
+     *
+     * @param restriction the dietary restriction to remove
+     * @throws IllegalArgumentException if the dietary restriction is not in the list
+     */
+    public void removeDietaryRestriction(DietaryRestriction restriction) {
+        if (!dietaryRestrictions.contains(restriction)) {
+            throw new IllegalArgumentException("Dietary restriction not found for this victim");
+        }
+        dietaryRestrictions.remove(restriction);
+    }
+
+
+    /**
      * Checks if the provided date string has a valid format and represents a date before or equal to the current date.
      *
      * @param dateToCheck the date string to check, formatted as "YYYY-MM-DD"
