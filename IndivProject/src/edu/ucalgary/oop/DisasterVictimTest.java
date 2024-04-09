@@ -553,6 +553,9 @@ public class DisasterVictimTest {
         DisasterVictim victim = new DisasterVictim("Test");
         GenderOption genderOptions = new GenderOption("./src/edu/ucalgary/oop/GenderOptions.txt");
 
+        boolean correctValue = true;
+        String failureReason = "";
+
         try {
             ArrayList<String> options = genderOptions.getOptions();
 
@@ -561,10 +564,15 @@ public class DisasterVictimTest {
                 assertEquals("Gender should match", gender, victim.getGender());
             }
         } catch (IllegalArgumentException e) {
-            fail("Valid gender should not throw exceptions");
+            correctValue = false;
+            failureReason = "gender in options should throw an IllegalArgumentException";
         } catch (IOException e) {
-            fail("File Not Found");
+            correctValue = false;
+            failureReason = "file not found";
         }
+
+        String message = "setGender() should not throw an exception when going through options but " + failureReason;
+        assertTrue(message, correctValue);
 
     }
 
