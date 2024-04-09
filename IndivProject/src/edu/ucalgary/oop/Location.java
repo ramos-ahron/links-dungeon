@@ -7,7 +7,6 @@ public class Location {
     private final LinkedList<Supply> supplies;
     private String name;
     private String address;
-//    private static DatabaseManager database;
 
     /**
      * Constructs a new location with the specified name and address.

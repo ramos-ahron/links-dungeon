@@ -3,7 +3,7 @@ package edu.ucalgary.oop;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class MedicalRecord {
+public class MedicalRecord implements DateValidator {
     private Location location;
     private String treatmentDetails;
     private String dateOfTreatment;
@@ -29,7 +29,7 @@ public class MedicalRecord {
     public MedicalRecord(Location location, String dateOfTreatment) throws IllegalArgumentException {
         this.location = location;
 
-        if (invalidDateFormat(dateOfTreatment)) {
+        if (invalidDate(dateOfTreatment)) {
             throw new IllegalArgumentException("Invalid date format for date of treatment. Expected format: YYYY-MM-DD");
         }
 
@@ -49,7 +49,7 @@ public class MedicalRecord {
         this.location = location;
         this.treatmentDetails = treatmentDetails;
 
-        if (invalidDateFormat(dateOfTreatment)) {
+        if (invalidDate(dateOfTreatment)) {
             throw new IllegalArgumentException("Invalid date format for date of treatment. Expected format: YYYY-MM-DD");
         }
 
@@ -114,7 +114,7 @@ public class MedicalRecord {
      * @throws IllegalArgumentException if the provided date format is invalid
      */
     public void setDateOfTreatment(String dateOfTreatment) throws IllegalArgumentException {
-        if (invalidDateFormat(dateOfTreatment)) {
+        if (invalidDate(dateOfTreatment)) {
             throw new IllegalArgumentException("Invalid date format. Expected format: YYYY-MM-DD");
         }
         this.dateOfTreatment = dateOfTreatment;
@@ -126,7 +126,8 @@ public class MedicalRecord {
      * @param date the date string to check
      * @return true if the date string has an invalid format, otherwise false
      */
-    private boolean invalidDateFormat(String date) {
+    @Override
+    public boolean invalidDate(String date) {
         try {
             LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
             return false;
