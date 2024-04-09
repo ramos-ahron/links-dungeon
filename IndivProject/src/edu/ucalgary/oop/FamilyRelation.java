@@ -102,5 +102,4 @@ public class FamilyRelation {
                 this.personTwo.getAssignedSocialID() == other.personTwo.getAssignedSocialID() &&
                 this.relationshipType == other.relationshipType;
     }
-
 }
