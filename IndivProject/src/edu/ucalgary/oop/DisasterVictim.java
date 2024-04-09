@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 
-public class DisasterVictim extends Person {
+public class DisasterVictim extends Person implements DateValidator {
     private static int counter = 0;
     private final int ASSIGNED_SOCIAL_ID;
     private final String ENTRY_DATE;
@@ -371,7 +371,8 @@ public class DisasterVictim extends Person {
      * @param dateToCheck the date string to check, formatted as "YYYY-MM-DD"
      * @return true if the date string has a valid format and represents a date before or equal to the current date, otherwise false
      */
-    private boolean invalidDate(String dateToCheck) {
+    @Override
+    public boolean invalidDate(String dateToCheck) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         try {
             LocalDate date = LocalDate.parse(dateToCheck, formatter);
