@@ -51,7 +51,6 @@ public class SQLQueryRunner {
         return rowCount;
     }
 
-
     /**
      * Creates a connection with the database ensf380project.
      */
