@@ -4,12 +4,18 @@ public class Person {
     private String firstName;
     private String lastName;
 
-    public Person(String firstName, String lastName) {
-        this.firstName = firstName;
+    public Person(String firstName, String lastName) throws NullPointerException {
+        this(firstName);
+        if (lastName.isEmpty() || lastName == null) {
+            throw new NullPointerException("Cannot have a last name that is empty or null");
+        }
         this.lastName = lastName;
     }
 
-    public Person(String firstName) {
+    public Person(String firstName) throws NullPointerException {
+        if (firstName.isEmpty() || firstName == null) {
+            throw new NullPointerException("Cannot have a first name that is empty or null");
+        }
         this.firstName = firstName;
     }
 
