@@ -39,7 +39,7 @@ public class LocationReliefWorkerInterface {
     }
 
     public void mainMenu() {
-        mainFrame = new JFrame("Disaster Management System");
+        mainFrame = new JFrame("Local Relief Worker Interface");
         mainFrame.setSize(400, 400);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
