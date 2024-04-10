@@ -1,5 +1,7 @@
 package edu.ucalgary.oop;
 
+import java.sql.*;
+
 public class LocationReliefWorker extends ReliefService {
     /**
      * Constructs a new LocationReliefWorker instance.
@@ -16,15 +18,45 @@ public class LocationReliefWorker extends ReliefService {
     public void addDisasterVictim(DisasterVictim victim, Location location) {
         location.addOccupant(victim);
         victim.setLocation(location);
+        addPerson(victim);
 
         // If location is not in shelters, consider victim as missing
         if (inListLocation(location) == null) {
             addMissingPerson(victim);
         }
 
-    /*
-      TODO: Connect this to database
-     */
+        int locationId = 0;
+        DatabaseInitializer.createConnection();
+        try {
+            String query = "SELECT location_id \n" +
+                    "FROM Location \n" +
+                    "WHERE name = ? AND address = ?";
+            PreparedStatement myStmt = DatabaseInitializer.dbConnect.prepareStatement(query);
+            myStmt.setString(1, location.getName());
+            myStmt.setString(2, location.getAddress());
+            ResultSet resultSet = myStmt.executeQuery();
+
+            if (resultSet.next()) {
+                locationId = resultSet.getInt("location_id");
+            }
+            String insertQuery = "INSERT INTO DisasterVictim (id, first_name, last_name, entry_date, age, gender, comments, date_of_birth, location_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement insertStmt = DatabaseInitializer.dbConnect.prepareStatement(insertQuery);
+
+            insertStmt.setInt(1, victim.getAssignedSocialID());
+            insertStmt.setString(2, victim.getFirstName());
+            insertStmt.setString(3, victim.getLastName());
+            insertStmt.setString(4, victim.getEntryDate());
+            insertStmt.setInt(5, victim.getAge());
+            insertStmt.setString(6, victim.getGender());
+            insertStmt.setString(7, victim.getComments());
+            insertStmt.setString(8, victim.getDateOfBirth());
+            insertStmt.setInt(9, locationId);
+
+            insertStmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseInitializer.close();
     }
 
 
@@ -35,6 +67,7 @@ public class LocationReliefWorker extends ReliefService {
      */
     public void removeDisasterVictim(DisasterVictim victim) {
         victim.getLocation().removeOccupant(victim);
+        removePerson(victim);
         for (FamilyRelation familyRelation : victim.getFamilyConnections()) {
             victim.removeFamilyRelationship(familyRelation.getPersonTwo(), familyRelation.getRelationshipType());
         }
@@ -44,9 +77,17 @@ public class LocationReliefWorker extends ReliefService {
         } catch (IllegalArgumentException ignored) {
 
         }
-    /*
-        TODO: Connect this to database
-     */
+        DatabaseInitializer.createConnection();
+        try {
+            Statement myStmt = DatabaseInitializer.dbConnect.createStatement();
+            String deleteQuery = "DELETE FROM DisasterVictim WHERE victim_id = ?";
+            PreparedStatement deleteStmt = DatabaseInitializer.dbConnect.prepareStatement(deleteQuery);
+            deleteStmt.setInt(1, victim.getAssignedSocialID());
+            deleteStmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseInitializer.close();
     }
 
 
@@ -58,14 +99,11 @@ public class LocationReliefWorker extends ReliefService {
      * @throws IllegalArgumentException If the victim is not currently located in a valid shelter.
      */
     public void giveSupplies(DisasterVictim victim, Supply supply) throws IllegalArgumentException {
-        if (inListLocation(victim.getLocation()) == null) { // If missing, cannot give supplies
+        if (inListLocation(victim.getLocation()) == null) {
             throw new IllegalArgumentException("Disaster victim is not in a valid shelter");
         }
         victim.getLocation().removeSupply(supply);
         victim.addPersonalBelonging(supply);
-    /*
-        TODO: Connect this to database
-     */
     }
 
 

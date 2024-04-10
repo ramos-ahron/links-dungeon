@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Objects;
 
 public class DisasterVictim extends Person implements DateValidator {
-    private static int counter = 0;
+    private static int counter = 1;
     private final int ASSIGNED_SOCIAL_ID;
     private final String ENTRY_DATE;
     private final HashSet<FamilyRelation> familyConnections = new HashSet<>();
@@ -94,6 +94,8 @@ public class DisasterVictim extends Person implements DateValidator {
 
         john.addFamilyRelationship(tony, RelationshipType.PARENT_CHILD);
         taylor.addFamilyRelationship(tony, RelationshipType.PARENT_CHILD);
+
+        john.setDateOfBirth("2023-04-10");
 
         // Print all relationships for John
         System.out.println("Relationships for John:");
@@ -411,6 +413,29 @@ public class DisasterVictim extends Person implements DateValidator {
             return true;
         }
 
+    }
+
+
+    /**
+     * Generates and returns a string containing information about the DisasterVictim.
+     * The information includes the Social ID, First Name, Last Name, and Location.
+     * If any of the fields are null, they will not be included in the returned string.
+     *
+     * @return A string containing the information about the DisasterVictim.
+     */
+    public String getInfo() {
+        StringBuilder info = new StringBuilder();
+        info.append("Social ID: ").append(getAssignedSocialID());
+        if (getFirstName() != null) {
+            info.append(", ").append("First Name: ").append(getFirstName());
+        }
+        if (getLastName() != null) {
+            info.append(", ").append("Last Name: ").append(getLastName());
+        }
+        if (getLocation() != null) {
+            info.append(", ").append("Location: ").append(getLocation().getName()).append(", ").append(getLocation().getAddress());
+        }
+        return info.append("\n\n").toString();
     }
 
 

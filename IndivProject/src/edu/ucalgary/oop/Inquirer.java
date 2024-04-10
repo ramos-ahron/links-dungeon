@@ -55,7 +55,10 @@ public class Inquirer extends Person {
      *
      * @param phoneNumber the phone number to set for the inquirer
      */
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) throws IllegalArgumentException {
+        if (invalidPhoneNumber(phoneNumber)) {
+            throw new IllegalArgumentException("Invalid Phone Number");
+        }
         this.phoneNumber = phoneNumber;
     }
 

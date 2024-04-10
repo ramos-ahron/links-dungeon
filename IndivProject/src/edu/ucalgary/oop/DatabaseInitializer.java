@@ -4,8 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseInitializer {
-    private static Connection dbConnect;
-    private static ResultSet results;
+    public static Connection dbConnect;
+    public static ResultSet results;
 
     public static void main(String[] args) {
     }
@@ -218,11 +218,12 @@ public class DatabaseInitializer {
         createConnection();
         try {
             Statement stmt = dbConnect.createStatement();
-            results = stmt.executeQuery("SELECT name, address FROM Location");
+            results = stmt.executeQuery("SELECT * FROM Location");
             while (results.next()) {
                 ArrayList<String> info = new ArrayList<>();
                 info.add(results.getString("name"));
                 info.add(results.getString("address"));
+                info.add(results.getString("shelter"));
                 locationInfo.add(info);
             }
             stmt.close();
