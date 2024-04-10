@@ -8,20 +8,22 @@ import static org.junit.Assert.*;
 
 public class InquirerLogTest {
     @Test
-    public void testAddInquirer_ValidInquirer() {
-        Inquirer inquirer = new Inquirer("Jane", "Doe", "123-456-7890");
-        InquirerLog.addInquirer(inquirer);
+    public void testAddInquirerValidInquiry() {
+        InquirerLog inquirerLog = new InquirerLog();
+        Inquiry inquiry = new Inquiry("123-456-7890");
+        inquirerLog.addInquirer(inquiry);
 
-        assertTrue("addInquirer() should update inquirerList", InquirerLog.getInquirerList().contains(inquirer));
+        assertTrue("addInquirer() should update inquirerList", inquirerLog.getInquirerList().contains(inquiry));
     }
 
     @Test
-    public void testAddInquirerNullInquirer() {
+    public void testAddInquirerNullInquiry() {
+        InquirerLog inquirerLog = new InquirerLog();
         boolean correctValue = false;
         String failureReason = "no exception was thrown";
 
         try {
-            InquirerLog.addInquirer(null);
+            inquirerLog.addInquirer(null);
         } catch (IllegalArgumentException e) {
             correctValue = true;
         } catch (Exception e) {
@@ -33,17 +35,18 @@ public class InquirerLogTest {
     }
 
     @Test
-    public void testAddInquirerDuplicateInquirer() {
-        Inquirer inquirer1 = new Inquirer("John", "Doe", "123-456-7890");
-        Inquirer inquirer2 = new Inquirer("John", "Doe", "123-456-7890");
+    public void testAddInquirerDuplicateInquiry() {
+        InquirerLog inquirerLog = new InquirerLog();
+        Inquiry inquiry1 = new Inquiry("123-456-7890");
+        Inquiry inquiry2 = new Inquiry("123-456-7890");
 
         boolean correctValue = false;
         String failureReason = "no exception was thrown";
 
-        InquirerLog.getInquirerList().clear();
-        InquirerLog.addInquirer(inquirer1);
+        inquirerLog.getInquirerList().clear();
+        inquirerLog.addInquirer(inquiry1);
         try {
-            InquirerLog.addInquirer(inquirer2);
+            inquirerLog.addInquirer(inquiry2);
         } catch (IllegalArgumentException e) {
             correctValue = true;
         } catch (Exception e) {
@@ -56,21 +59,23 @@ public class InquirerLogTest {
 
     @Test
     public void testRemoveInquirerValidInquirer() {
-        Inquirer inquirer = new Inquirer("Jane", "Doe", "123-456-7890");
-        InquirerLog.addInquirer(inquirer);
+        InquirerLog inquirerLog = new InquirerLog();
+        Inquiry inquiry = new Inquiry("123-456-7890");
+        inquirerLog.addInquirer(inquiry);
 
-        InquirerLog.removeInquirer(inquirer);
+        inquirerLog.removeInquirer(inquiry);
 
-        assertFalse("removeInquirer() should update inquirerList", InquirerLog.getInquirerList().contains(inquirer));
+        assertFalse("removeInquirer() should update inquirerList", inquirerLog.getInquirerList().contains(inquiry));
     }
 
     @Test
     public void testRemoveInquirerNullInquirer() {
+        InquirerLog inquirerLog = new InquirerLog();
         boolean correctValue = false;
         String failureReason = "no exception was thrown";
 
         try {
-            InquirerLog.removeInquirer(null);
+            inquirerLog.removeInquirer(null);
         } catch (IllegalArgumentException e) {
             correctValue = true;
         } catch (Exception e) {
@@ -83,11 +88,12 @@ public class InquirerLogTest {
 
     @Test
     public void testRemoveInquirerNotInList() {
-        Inquirer inquirer = new Inquirer("John", "Doe", "123-456-7890");
+        InquirerLog inquirerLog = new InquirerLog();
+        Inquiry inquirer = new Inquiry("123-456-7890");
         boolean correctValue = false;
         String failureReason = "no exception was thrown";
         try {
-            InquirerLog.removeInquirer(inquirer);
+            inquirerLog.removeInquirer(inquirer);
         } catch (IllegalArgumentException e) {
             correctValue = true;
         } catch (Exception e) {
@@ -99,11 +105,12 @@ public class InquirerLogTest {
 
     @Test
     public void testSetAndGetInquirerList() {
-        HashSet<Inquirer> newList = new HashSet<>();
-        newList.add(new Inquirer("John", "Doe", "123-456-7890"));
+        InquirerLog inquirerLog = new InquirerLog();
+        HashSet<Inquiry> newList = new HashSet<>();
+        newList.add(new Inquiry("123-456-7890"));
 
-        InquirerLog.setInquirerList(newList);
+        inquirerLog.setInquirerList(newList);
 
-        assertEquals("setInquirerList() should update the values of inquirerList and getInquirerList() should return the updated value", newList, InquirerLog.getInquirerList());
+        assertEquals("setInquirerList() should update the values of inquirerList and getInquirerList() should return the updated value", newList, inquirerLog.getInquirerList());
     }
 }
