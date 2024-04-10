@@ -2,6 +2,7 @@ CREATE TABLE Location (
     location_id 			SERIAL PRIMARY KEY,
     name 							VARCHAR(255) NOT NULL,
     address 					VARCHAR(255) NOT NULL
+		shelter 					BOOLEAN NOT NULL
 );
 
 
@@ -59,10 +60,10 @@ CREATE TABLE DietaryRestriction (
 );
 
 
-INSERT INTO Location (name, address) VALUES
-		('Maple Grove Hospital', '123 Main St'),
-		('UrgentCare Emergency Center', '456 Elm Street'),
-		('Meadowview Retirement Village', '789 Oak Street');
+INSERT INTO Location (name, address, shelter) VALUES
+    ('Maple Grove Hospital', '123 Main St', true),
+    ('UrgentCare Emergency Center', '456 Elm Street', true),
+    ('Meadowview Retirement Village', '789 Oak Street', false);
 
 
 INSERT INTO DisasterVictim (first_name, last_name, entry_date, age, gender, comments, date_of_birth, location_id) VALUES
