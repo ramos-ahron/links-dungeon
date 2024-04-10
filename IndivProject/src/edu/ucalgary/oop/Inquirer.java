@@ -80,6 +80,13 @@ public class Inquirer extends Person implements DateValidator {
         inquiries.addInquirer(new Inquiry(date, info));
     }
 
+		/**
+		 * Adds an inquiry with the provided date and information.
+		 *
+		 * @param date The date of the inquiry.
+		 * @param info The information related to the inquiry.
+		 * @throws IllegalArgumentException if the date is invalid or if an inquiry with the same date and information already exists.
+		 */
     public void addInquiry(String date, String info) {
         if (invalidDate(date)) {
             throw new IllegalArgumentException("Invalid entry date");
@@ -115,10 +122,20 @@ public class Inquirer extends Person implements DateValidator {
 
     }
 
+		/**
+		 * Retrieves the log of inquiries associated with this Inquirer.
+		 *
+		 * @return The log of inquiries.
+		 */
     public InquirerLog getInquiries() {
         return inquiries;
     }
 
+		/**
+		 * Sets the log of inquiries associated with this Inquirer.
+		 *
+		 * @param inquiries The log of inquiries to be set.
+		 */
     public void setInquiries(InquirerLog inquiries) {
         this.inquiries = inquiries;
     }
