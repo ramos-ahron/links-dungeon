@@ -3,8 +3,8 @@ package edu.ucalgary.oop;
 import java.util.LinkedList;
 
 public class Location {
-    private final LinkedList<DisasterVictim> occupants;
-    private final LinkedList<Supply> supplies;
+    private final LinkedList<DisasterVictim> occupants = new LinkedList<>();
+    private final LinkedList<Supply> supplies = new LinkedList<>();
     private String name;
     private String address;
 
@@ -18,8 +18,6 @@ public class Location {
     public Location(String name, String address) {
         this.name = name;
         this.address = address;
-        this.occupants = new LinkedList<>();
-        this.supplies = new LinkedList<>();
     }
 
     /**

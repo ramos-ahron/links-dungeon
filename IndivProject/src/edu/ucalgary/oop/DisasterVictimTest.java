@@ -60,40 +60,6 @@ public class DisasterVictimTest {
     }
 
     @Test
-    public void testInvalidStringObjectCreationConstructorLastName() {
-        String invalidName = "";
-
-        boolean correctValueEmpty = false;
-        String failureReasonEmpty = "no exception was thrown";
-
-        boolean correctValueNull = false;
-        String failureReasonNull = "no exception was thrown";
-
-        try {
-            new DisasterVictim("Random", invalidName);
-        } catch (NullPointerException e) {
-            correctValueEmpty = true;
-        } catch (Exception e) {
-            failureReasonEmpty = "the wrong type of exception was thrown";
-        }
-
-        try {
-            new DisasterVictim("Random", invalidName, LocalDate.now().toString());
-        } catch (NullPointerException e) {
-            correctValueNull = true;
-        } catch (Exception e) {
-            failureReasonNull = "the wrong type of exception was thrown";
-        }
-
-        String messageEmpty = "DisasterVictim() should throw an IllegalArgumentException if '' is tried to be created as name but " + failureReasonEmpty;
-
-        String messageNull = "DisasterVictim() should throw an IllegalArgumentException if '' is tried to be created as name but " + failureReasonNull;
-
-        assertTrue(messageEmpty, correctValueEmpty);
-        assertTrue(messageNull, correctValueNull);
-    }
-
-    @Test
     public void testInvalidDateObjectCreationConstructor() {
         String futureDate = LocalDate.of(2025, 1, 1).toString();
 
@@ -340,6 +306,62 @@ public class DisasterVictimTest {
 
         assertTrue("removeFamilyRelationship() should remove relationship between testVictim1 and testVictim2", correctValue1);
         assertTrue("removeFamilyRelationship() should not remove relationship between testVictim1 and testVictim3", correctValue2);
+    }
+
+    @Test
+    public void testAddDietaryRestriction() {
+        DisasterVictim victim = new DisasterVictim("John");
+        victim.addDietaryRestriction(DietaryRestriction.GFML);
+        assertTrue("addDietaryRestriction() should update dietaryRestrictions", victim.getDietaryRestrictions().contains(DietaryRestriction.GFML));
+    }
+
+    @Test
+    public void testAddDuplicateDietaryRestriction() {
+        DisasterVictim victim = new DisasterVictim("John");
+        victim.addDietaryRestriction(DietaryRestriction.AVML);
+
+        boolean correctValue = false;
+        String failureReason = "no exception was thrown";
+
+        try {
+            victim.addDietaryRestriction(DietaryRestriction.AVML);
+        } catch (IllegalArgumentException e) {
+            correctValue = true;
+        } catch (Exception e) {
+            failureReason = "wrong exception was thrown";
+        }
+
+        String message = "addDietaryRestriction() should thrown an IllegalArgumentException when duplicate DietaryRestriction is added but " + failureReason;
+
+        assertTrue(message, correctValue);
+    }
+
+    @Test
+    public void testRemoveDietaryRestriction() {
+        DisasterVictim victim = new DisasterVictim("John");
+        victim.addDietaryRestriction(DietaryRestriction.KSML);
+        victim.removeDietaryRestriction(DietaryRestriction.KSML);
+        assertFalse(victim.getDietaryRestrictions().contains(DietaryRestriction.KSML));
+    }
+
+    @Test
+    public void testRemoveNonexistentDietaryRestriction() {
+        DisasterVictim victim = new DisasterVictim("John");
+
+        boolean correctValue = false;
+        String failureReason = "no exception was thrown";
+
+        try {
+            victim.removeDietaryRestriction(DietaryRestriction.DBML);
+        } catch (IllegalArgumentException e) {
+            correctValue = true;
+        } catch (Exception e) {
+            failureReason = "wrong exception was thrown";
+        }
+
+        String message = "removeDietaryRestriction() should thrown an IllegalArgumentException when DietaryRestriction being removed does not exist but " + failureReason;
+
+        assertTrue(message, correctValue);
     }
 
     @Test

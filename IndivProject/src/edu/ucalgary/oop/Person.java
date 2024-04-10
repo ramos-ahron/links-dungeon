@@ -15,11 +15,7 @@ public class Person {
         if (firstName == null || firstName.isEmpty()) {
             throw new NullPointerException("First name cannot be null or empty");
         }
-        if (lastName == null || lastName.isEmpty()) {
-            throw new NullPointerException("Last name cannot be null or empty");
-        }
-        this.firstName = firstName;
-        this.lastName = lastName;
+        setNames(firstName, lastName);
     }
 
     /**
@@ -33,6 +29,19 @@ public class Person {
             throw new NullPointerException("First name cannot be null or empty");
         }
         this.firstName = firstName;
+    }
+
+    /**
+     * Sets the first name and last name of the individual.
+     *
+     * @param firstName the first name of the individual
+     * @param lastName the last name of the individual, can be null or empty if not available
+     */
+    private void setNames(String firstName, String lastName) {
+        this.firstName = firstName;
+        if (lastName != null && !lastName.isEmpty()) {
+            this.lastName = lastName;
+        }
     }
 
 
