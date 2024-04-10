@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 public class CentralReliefWorkerInterface {
     private static JFrame mainFrame;
+    private final CentralReliefWorker centralReliefWorker = new CentralReliefWorker();
     private JTextField txtFirstName;
     private JTextField txtLastName;
     private JTextField txtName;
@@ -15,10 +16,12 @@ public class CentralReliefWorkerInterface {
     private JTextField txtComments;
     private JTextField txtLocationAddress;
     private JTextField txtQuantity;
-    private final CentralReliefWorker centralReliefWorker = new CentralReliefWorker();
-    private JComboBox<String> cmbGender;
+    private JTextField txtType;
 
     public static void main(String[] args) {
+        if (!DatabaseInitializer.flag) {
+            DatabaseInitializer.getData();
+        }
         EventQueue.invokeLater(() -> {
             mainFrame = new JFrame("Central Relief Worker Interface");
             mainFrame.setSize(400, 300);
@@ -119,8 +122,8 @@ public class CentralReliefWorkerInterface {
         formPanel.add(txtLocationAddress);
 
         formPanel.add(new JLabel("Type: "));
-        txtName = new JTextField();
-        formPanel.add(txtName);
+        txtType = new JTextField();
+        formPanel.add(txtType);
 
         formPanel.add(new JLabel("Quantity: "));
         txtQuantity = new JTextField();
@@ -132,7 +135,7 @@ public class CentralReliefWorkerInterface {
     private boolean validateFormAddSupply() {
         String name = txtName.getText();
         String addressText = txtLocationAddress.getText();
-        String type = txtName.getText();
+        String type = txtType.getText();
         String quantity = txtQuantity.getText();
 
         if (name.isEmpty() || addressText.isEmpty() || type.isEmpty() || quantity.isEmpty()) {
@@ -149,14 +152,14 @@ public class CentralReliefWorkerInterface {
 
         Location location = null;
 
-        for (Location testLocation : ReliefService.getLocations()) {
+        for (Location testLocation : ReliefService.getShelters()) {
             if (testLocation.getName().equals(name) && testLocation.getAddress().equals(addressText)) {
                 location = testLocation;
             }
         }
 
         if (location == null) {
-            JOptionPane.showMessageDialog(null, "Location does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Location is not a shelter", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -169,7 +172,7 @@ public class CentralReliefWorkerInterface {
     }
 
     private void submitFormAddSupply() {
-        Supply supply = new Supply(txtName.getText(), Integer.parseInt(txtQuantity.getText()));
+        Supply supply = new Supply(txtType.getText(), Integer.parseInt(txtQuantity.getText()));
         Location location = null;
 
         for (Location testLocation : ReliefService.getLocations()) {
@@ -244,13 +247,14 @@ public class CentralReliefWorkerInterface {
             try {
                 ReliefService.addShelter(location);
             } catch (IllegalArgumentException ignored) {
+                JOptionPane.showMessageDialog(null, "Location already exists", "Error", JOptionPane.ERROR_MESSAGE);
 
             }
         }
         try {
             ReliefService.addLocation(location);
         } catch (IllegalArgumentException ignored) {
-
+            JOptionPane.showMessageDialog(null, "Location already exists", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -322,7 +326,7 @@ public class CentralReliefWorkerInterface {
 
     private void submitFormVictimRelationships() {
         String message;
-        DisasterVictim victim = new DisasterVictim("");
+        DisasterVictim victim = new DisasterVictim("test");
 
         for (DisasterVictim disasterVictim : ReliefService.getPeople()) {
             if (disasterVictim.getFirstName().equals(txtFirstName.getText()) && disasterVictim.getLastName().equals(txtLastName.getText())) {
@@ -467,6 +471,10 @@ public class CentralReliefWorkerInterface {
     }
 
     private void submitFormAddInquirer() {
-        centralReliefWorker.addInquirer(new Inquirer(txtFirstName.getText(), txtLastName.getText(), txtPhoneNum.getText(), txtComments.getText()));
+        Inquirer inquirer = new Inquirer(txtFirstName.getText(), txtLastName.getText(), txtPhoneNum.getText());
+        Inquiry inquiry = new Inquiry(txtComments.getText());
+
+        centralReliefWorker.addInquirer(inquirer, inquiry);
+
     }
 }
