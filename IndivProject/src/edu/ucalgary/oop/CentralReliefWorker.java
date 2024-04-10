@@ -12,6 +12,12 @@ public class CentralReliefWorker extends ReliefService {
         super();
     }
 
+    /**
+     * Adds an Inquirer along with their Inquiry to the system.
+     *
+     * @param inquirer The Inquirer to be added.
+     * @param inquiry  The Inquiry associated with the Inquirer.
+     */
     public void addInquirer(Inquirer inquirer, Inquiry inquiry) {
         Inquirer inquirer2 = null;
         for (Inquirer inquirer1 : inquirers) {
@@ -30,6 +36,13 @@ public class CentralReliefWorker extends ReliefService {
         }
     }
 
+    /**
+     * Searches for disaster victims based on provided first name and last name patterns.
+     *
+     * @param firstNamePattern The pattern to match against the first names of the victims.
+     * @param lastNamePattern  The pattern to match against the last names of the victims.
+     * @return A string containing information about disaster victims matching the given patterns.
+     */
     public String findDisasterVictim(String firstNamePattern, String lastNamePattern) {
         StringBuilder message = new StringBuilder();
         try {
@@ -60,6 +73,12 @@ public class CentralReliefWorker extends ReliefService {
         return message.toString();
     }
 
+    /**
+     * Searches for disaster victims based on the provided first name pattern.
+     *
+     * @param firstNamePattern The pattern to match against the first names of the victims.
+     * @return A string containing information about disaster victims matching the given pattern.
+     */
     public String findDisasterVictim(String firstNamePattern) {
         StringBuilder message = new StringBuilder();
         try {
@@ -89,6 +108,12 @@ public class CentralReliefWorker extends ReliefService {
         return message.toString();
     }
 
+    /**
+     * Retrieves and formats the relationships associated with a given disaster victim.
+     *
+     * @param victim The disaster victim for whom relationships are to be retrieved.
+     * @return A string containing formatted information about the victim's relationships, or a message indicating no recorded relationships.
+     */
     public String getRelationships(DisasterVictim victim) {
         StringBuilder message = new StringBuilder();
         for (FamilyRelation relation : victim.getFamilyConnections()) {
