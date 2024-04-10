@@ -6,80 +6,45 @@ import java.util.ArrayList;
 public class DatabaseInitializer {
     public static Connection dbConnect;
     public static ResultSet results;
+    public static boolean flag = false;
 
     public static void main(String[] args) {
+        getData();
     }
 
+
     /**
-     * Retrieves information about all the inquirers stored in the database.
-     * This method establishes a database connection, executes a SQL query to select
-     * all records from the INQUIRER table, and retrieves the following information
-     * for each inquirer: ID, first name, last name, and phone number.
-     * The retrieved information is stored in an ArrayList of ArrayLists of Strings.
-     * Each inner ArrayList represents the information for a single inquirer,
-     * where the elements are arranged in the following order:
-     * [ID, first name, last name, phone number].
+     * Retrieves information by combining data from the INQUIRER and INQUIRY_LOG tables.
      *
-     * @return an ArrayList containing information about all the inquirers in the database,
-     * where each inner ArrayList represents the information for a single inquirer
-     * and contains the ID, first name, last name, and phone number of the inquirer
+     * @return An ArrayList of ArrayLists containing combined information from the INQUIRER and INQUIRY_LOG tables.
+     * Each inner ArrayList represents a record, containing the following elements:
+     * - First name of the inquirer.
+     * - Last name of the inquirer.
+     * - Phone number of the inquirer.
+     * - Call date from the inquiry log.
+     * - Details of the inquiry.
      */
-    public static ArrayList<ArrayList<String>> getInquirerInfo() {
-        ArrayList<ArrayList<String>> inquirerInfo = new ArrayList<>();
+    public static ArrayList<ArrayList<String>> getCombinedInquirerInfo() {
+        ArrayList<ArrayList<String>> combinedInfo = new ArrayList<>();
         createConnection();
         try {
             Statement stmt = dbConnect.createStatement();
-            ResultSet results = stmt.executeQuery("SELECT * FROM INQUIRER");
+            ResultSet results = stmt.executeQuery("SELECT * FROM INQUIRER JOIN INQUIRY_LOG ON INQUIRER.id = INQUIRY_LOG.inquirer");
             while (results.next()) {
                 ArrayList<String> info = new ArrayList<>();
-                info.add(results.getString("id"));
                 info.add(results.getString("firstName"));
                 info.add(results.getString("lastName"));
                 info.add(results.getString("phoneNumber"));
-                inquirerInfo.add(info);
-            }
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        close();
-        return inquirerInfo;
-    }
-
-    /**
-     * Retrieves information about all the inquiries logged in the database.
-     * This method establishes a database connection, executes a SQL query to select
-     * all records from the INQUIRY_LOG table, and retrieves the following information
-     * for each inquiry log entry: ID, inquirer ID, call date, and details.
-     * The retrieved information is stored in an ArrayList of ArrayLists of Strings.
-     * Each inner ArrayList represents the information for a single inquiry log entry,
-     * where the elements are arranged in the following order:
-     * [ID, inquirer ID, call date, details].
-     *
-     * @return an ArrayList containing information about all the inquiry log entries in the database,
-     * where each inner ArrayList represents the information for a single inquiry log entry
-     * and contains the ID, inquirer ID, call date, and details of the inquiry
-     */
-    public static ArrayList<ArrayList<String>> getInquiryLogInfo() {
-        ArrayList<ArrayList<String>> inquiryLogInfo = new ArrayList<>();
-        createConnection();
-        try {
-            Statement stmt = dbConnect.createStatement();
-            ResultSet results = stmt.executeQuery("SELECT * FROM INQUIRY_LOG");
-            while (results.next()) {
-                ArrayList<String> info = new ArrayList<>();
-                info.add(results.getString("id"));
-                info.add(results.getString("inquirer"));
                 info.add(results.getString("callDate"));
                 info.add(results.getString("details"));
-                inquiryLogInfo.add(info);
+                combinedInfo.add(info);
             }
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         close();
-        return inquiryLogInfo;
+        return combinedInfo;
     }
 
     /**
@@ -243,7 +208,7 @@ public class DatabaseInitializer {
      * The retrieved information is stored in an ArrayList of ArrayLists of Strings.
      * Each inner ArrayList represents the information for a single victim entry,
      * where the elements are arranged in the following order:
-     * [victim_id, first_name, last_name, entry_date, age, gender, comments, date_of_birth, location_name, location_address].
+     * [victim_id, first_name, last_name, entry_date, comments, date_of_birth, location_name, location_address].
      *
      * @return an ArrayList containing information about all the disaster victim entries in the database,
      * where each inner ArrayList represents the information for a single victim entry
@@ -259,8 +224,6 @@ public class DatabaseInitializer {
                     "    dv.first_name, \n" +
                     "    dv.last_name, \n" +
                     "    dv.entry_date, \n" +
-                    "    dv.age, \n" +
-                    "    dv.gender, \n" +
                     "    dv.comments, \n" +
                     "    dv.date_of_birth, \n" +
                     "    loc.name AS location_name, \n" +
@@ -275,8 +238,6 @@ public class DatabaseInitializer {
                 info.add(results.getString("first_name"));
                 info.add(results.getString("last_name"));
                 info.add(results.getString("entry_date"));
-                info.add(results.getString("age"));
-                info.add(results.getString("gender"));
                 info.add(results.getString("comments"));
                 info.add(results.getString("date_of_birth"));
                 info.add(results.getString("location_name"));
@@ -340,6 +301,96 @@ public class DatabaseInitializer {
 
         close();
         return supplyInfo;
+    }
+
+    public static void getData() {
+        CentralReliefWorker centralReliefWorker = new CentralReliefWorker();
+        LocationReliefWorker locationReliefWorker = new LocationReliefWorker();
+
+        for (ArrayList<String> inquirerInfo : getCombinedInquirerInfo()) {
+            Inquirer inquirer = new Inquirer(inquirerInfo.get(0), inquirerInfo.get(1), inquirerInfo.get(2));
+            Inquiry inquiry = new Inquiry(inquirerInfo.get(3), inquirerInfo.get(4));
+            centralReliefWorker.addInquirer(inquirer, inquiry);
+        }
+
+        for (ArrayList<String> locationInfo : getLocationInfo()) {
+            Location location = new Location(locationInfo.get(0), locationInfo.get(1));
+            if (locationInfo.get(2).equals("t")) {
+                ReliefService.addShelter(location);
+            }
+            ReliefService.addLocation(location);
+        }
+
+        for (ArrayList<String> victimInfo : getDisasterVictimInfo()) {
+            DisasterVictim victim = new DisasterVictim(victimInfo.get(1), victimInfo.get(2), victimInfo.get(3));
+            victim.setComments(victimInfo.get(4));
+            victim.setDateOfBirth(victimInfo.get(5));
+
+            for (Location location : ReliefService.getLocations()) {
+                if (location.getName().equals(victimInfo.get(6)) && location.getAddress().equals(victimInfo.get(7))) {
+                    locationReliefWorker.addDisasterVictim(victim, location);
+                }
+            }
+        }
+
+        for (ArrayList<String> supplyInfo : getSupplyInfo()) {
+            Supply supply = new Supply(supplyInfo.get(1), Integer.parseInt(supplyInfo.get(2)));
+            if (supplyInfo.get(3).equals("Location")) {
+                for (Location location : ReliefService.getLocations()) {
+                    if (location.getName().equals(supplyInfo.get(4)) && location.getAddress().equals(supplyInfo.get(5))) {
+                        location.addSupply(supply);
+                    }
+                }
+            } else {
+                for (DisasterVictim victim : ReliefService.getPeople()) {
+                    if (victim.getAssignedSocialID() == Integer.parseInt(supplyInfo.get(6))) {
+                        victim.addPersonalBelonging(supply);
+                    }
+                }
+            }
+        }
+
+        for (ArrayList<String> medicalInfo : getMedicalRecordInfo()) {
+            for (DisasterVictim victim : ReliefService.getPeople()) {
+                if (victim.getAssignedSocialID() == Integer.parseInt(medicalInfo.get(2))) {
+                    for (Location location : ReliefService.getLocations()) {
+                        if (location.getName().equals(medicalInfo.get(3)) && location.getAddress().equals(medicalInfo.get(4))) {
+                            MedicalRecord medicalRecord = new MedicalRecord(location, medicalInfo.get(0), medicalInfo.get(1));
+                            locationReliefWorker.addDisasterVictimMedicalRecord(victim, medicalRecord);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (ArrayList<String> relationshipInfo : getRelationshipInfo()) {
+            for (DisasterVictim victim1 : ReliefService.getPeople()) {
+                if (victim1.getAssignedSocialID() == Integer.parseInt(relationshipInfo.get(1))) {
+                    for (DisasterVictim victim2 : ReliefService.getPeople()) {
+                        if (victim2.getAssignedSocialID() == Integer.parseInt(relationshipInfo.get(2))) {
+                            for (RelationshipType type : RelationshipType.values()) {
+                                if (type.toString().equalsIgnoreCase(relationshipInfo.get(0))) {
+                                    victim1.addFamilyRelationship(victim2, type);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (ArrayList<String> dietInfo : getDietaryRestrictionInfo()) {
+            for (DisasterVictim victim : ReliefService.getPeople()) {
+                if (victim.getAssignedSocialID() == Integer.parseInt(dietInfo.get(1))) {
+                    for (DietaryRestriction type : DietaryRestriction.values()) {
+                        if (type.toString().equalsIgnoreCase(dietInfo.get(0))) {
+                            victim.addDietaryRestriction(type);
+                        }
+                    }
+                }
+            }
+        }
+        flag = true;
     }
 
     /**
