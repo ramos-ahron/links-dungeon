@@ -18,7 +18,6 @@ public class LocationReliefWorkerInterface {
     private JTextField txtFirstName;
     private JTextField txtLastName;
     private JTextField txtName;
-
     private JTextField txtSocialID;
     private JTextField txtEntryDate;
     private JTextField txtDateOfBirth;
@@ -30,6 +29,9 @@ public class LocationReliefWorkerInterface {
 
 
     public static void main(String[] args) {
+        if (!DatabaseInitializer.flag) {
+            DatabaseInitializer.getData();
+        }
         EventQueue.invokeLater(() -> {
             LocationReliefWorkerInterface menu = new LocationReliefWorkerInterface();
             menu.mainMenu();
@@ -41,11 +43,9 @@ public class LocationReliefWorkerInterface {
         mainFrame.setSize(400, 400);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Create a panel to hold the buttons
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(7, 1)); // Arrange buttons vertically
+        buttonPanel.setLayout(new GridLayout(7, 1));
 
-        // Create buttons
         JButton switchInterfaceButton = new JButton("Switch Interface");
         JButton btnPrintMissingPeople = new JButton("Print Missing People");
         JButton btnPrintDisasterVictims = new JButton("Print Disaster Victims");
@@ -53,9 +53,7 @@ public class LocationReliefWorkerInterface {
         JButton btnRemoveDisasterVictims = new JButton("Remove Disaster Victims");
         JButton btnPrintSupplies = new JButton("Print Supplies");
         JButton btnGiveSupplies = new JButton("Give Supplies");
-        JButton btnUpdateDisasterVictim = new JButton("Update Disaster Victim");
 
-        // Add action listeners to buttons
         switchInterfaceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,7 +69,7 @@ public class LocationReliefWorkerInterface {
         });
         btnEnterDisasterVictims.addActionListener(e -> {
             createAndShowGUIEnterDV();
-            mainFrame.setVisible(false); // Hide the main menu
+            mainFrame.setVisible(false);
         });
         btnRemoveDisasterVictims.addActionListener(e -> {
             createAndShowGUIRemoveDV();
@@ -86,131 +84,17 @@ public class LocationReliefWorkerInterface {
             mainFrame.setVisible(false);
         });
 
-        // Add buttons to the panel
         buttonPanel.add(switchInterfaceButton);
         buttonPanel.add(btnPrintMissingPeople);
         buttonPanel.add(btnPrintDisasterVictims);
         buttonPanel.add(btnEnterDisasterVictims);
-        //
         buttonPanel.add(btnRemoveDisasterVictims);
         buttonPanel.add(btnPrintSupplies);
         buttonPanel.add(btnGiveSupplies);
 
-        // Add panel to the frame
         mainFrame.add(buttonPanel);
 
         mainFrame.setVisible(true);
-    }
-
-    private void createAndUpdateDVMenu() {
-        JFrame frame = new JFrame("Update Disaster Victim Information");
-        frame.setSize(400, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-
-        JPanel updatePanel = new JPanel(new GridLayout(8, 1)); // Adjust layout for update options
-
-        JButton btnAddRelationship = new JButton("Add Relationship");
-        JButton btnAddMedicalRecord = new JButton("Add Medical Record");
-        JButton btnAddPersonalBelonging = new JButton("Add Personal Belonging");
-        JButton btnAddDietRestrictions = new JButton("Add Diet Restrictions");
-        JButton btnUpdateGender = new JButton("Update Gender");
-        JButton btnUpdateComment = new JButton("Update Comment");
-        JButton btnUpdateLocation = new JButton("Update Location");
-        JButton btnBack = new JButton("Back to Main Menu"); // Add a back button
-
-        // Add action listeners to update buttons
-        btnAddRelationship.addActionListener(e -> {
-            // Add Relationship logic here
-        });
-        btnAddMedicalRecord.addActionListener(e -> {
-            // Add Medical Record logic here
-        });
-        btnAddPersonalBelonging.addActionListener(e -> {
-            // Add Personal Belonging logic here
-        });
-        btnAddDietRestrictions.addActionListener(e -> {
-            // Add Diet Restrictions logic here
-        });
-        btnUpdateGender.addActionListener(e -> {
-            // Update Gender logic here
-        });
-        btnUpdateComment.addActionListener(e -> {
-            // Update Comment logic here
-        });
-        btnUpdateLocation.addActionListener(e -> {
-            // Update Location logic here
-        });
-        btnBack.addActionListener(e -> {
-            mainFrame.setVisible(true); // Show the main menu
-            frame.dispose(); // Close the current frame
-        });
-
-        // Add update buttons to the panel
-        updatePanel.add(btnAddRelationship);
-        updatePanel.add(btnAddMedicalRecord);
-        updatePanel.add(btnAddPersonalBelonging);
-        updatePanel.add(btnAddDietRestrictions);
-        updatePanel.add(btnUpdateGender);
-        updatePanel.add(btnUpdateComment);
-        updatePanel.add(btnUpdateLocation);
-        updatePanel.add(btnBack); // Add the back button
-
-        frame.add(updatePanel, BorderLayout.CENTER);
-
-        frame.setVisible(true);
-    }
-
-    public void createAndShowGUIRelationship() {
-        JFrame frame = new JFrame("Enter Location Information");
-        frame.setSize(400, 120);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-
-        JPanel formPanel = createFormPanelRelationship();
-        JButton btnSubmit = createSubmitButtonRelationship(frame); // Pass the frame as an argument
-
-        frame.add(formPanel, BorderLayout.CENTER);
-        frame.add(btnSubmit, BorderLayout.SOUTH);
-
-        frame.setVisible(true);
-    }
-
-    private JButton createSubmitButtonRelationship(JFrame frame) { // Pass the frame as an argument
-        JButton btnSubmit = new JButton("Submit");
-        btnSubmit.addActionListener(e -> {
-            if (validateFormRelationship()) {
-//                submitFormRelationship();
-                frame.dispose(); // Close the current frame
-                mainFrame.setVisible(true); // Show the main menu
-            }
-        });
-        return btnSubmit;
-    }
-
-    private JPanel createFormPanelRelationship() {
-        JPanel formPanel = new JPanel(new GridLayout(2, 2));
-
-        formPanel.add(new JLabel("Social ID Victim 1:"));
-        txtName = new JTextField();
-        formPanel.add(txtName);
-
-        formPanel.add(new JLabel("Social ID Victim 2:"));
-        txtLocationAddress = new JTextField();
-        formPanel.add(txtLocationAddress);
-
-        return formPanel;
-    }
-
-    private boolean validateFormRelationship() {
-        String name = txtName.getText();
-        String address = txtLocationAddress.getText();
-
-        if (name.isEmpty() || address.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Fill in all text fields", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;
     }
 
     public void createAndShowGUIGetLocationDV() {
@@ -220,7 +104,7 @@ public class LocationReliefWorkerInterface {
         frame.setLayout(new BorderLayout());
 
         JPanel formPanel = createFormPanelGetLocationDV();
-        JButton btnSubmit = createSubmitButtonGetLocationDV(frame); // Pass the frame as an argument
+        JButton btnSubmit = createSubmitButtonGetLocationDV(frame);
 
         frame.add(formPanel, BorderLayout.CENTER);
         frame.add(btnSubmit, BorderLayout.SOUTH);
@@ -228,13 +112,13 @@ public class LocationReliefWorkerInterface {
         frame.setVisible(true);
     }
 
-    private JButton createSubmitButtonGetLocationDV(JFrame frame) { // Pass the frame as an argument
+    private JButton createSubmitButtonGetLocationDV(JFrame frame) {
         JButton btnSubmit = new JButton("Submit");
         btnSubmit.addActionListener(e -> {
             if (validateFormGetLocation()) {
                 submitFormGetLocationDV();
-                frame.dispose(); // Close the current frame
-                mainFrame.setVisible(true); // Show the main menu
+                frame.dispose();
+                mainFrame.setVisible(true);
             }
         });
         return btnSubmit;
@@ -261,7 +145,7 @@ public class LocationReliefWorkerInterface {
         frame.setLayout(new BorderLayout());
 
         JPanel formPanel = createFormPanelGetLocationSupplies();
-        JButton btnSubmit = createSubmitButtonGetLocationSupplies(frame); // Pass the frame as an argument
+        JButton btnSubmit = createSubmitButtonGetLocationSupplies(frame);
 
         frame.add(formPanel, BorderLayout.CENTER);
         frame.add(btnSubmit, BorderLayout.SOUTH);
@@ -269,13 +153,13 @@ public class LocationReliefWorkerInterface {
         frame.setVisible(true);
     }
 
-    private JButton createSubmitButtonGetLocationSupplies(JFrame frame) { // Pass the frame as an argument
+    private JButton createSubmitButtonGetLocationSupplies(JFrame frame) {
         JButton btnSubmit = new JButton("Submit");
         btnSubmit.addActionListener(e -> {
             if (validateFormGetLocation()) {
                 submitFormGetLocationSupplies();
-                frame.dispose(); // Close the current frame
-                mainFrame.setVisible(true); // Show the main menu
+                frame.dispose();
+                mainFrame.setVisible(true);
             }
         });
         return btnSubmit;
@@ -285,11 +169,11 @@ public class LocationReliefWorkerInterface {
         JPanel formPanel = new JPanel(new GridLayout(2, 2));
 
         formPanel.add(new JLabel("Name:"));
-        txtName = new JTextField(); // Initialize txtType
+        txtName = new JTextField();
         formPanel.add(txtName);
 
         formPanel.add(new JLabel("Address"));
-        txtLocationAddress = new JTextField(); // Initialize txtQuantity
+        txtLocationAddress = new JTextField();
         formPanel.add(txtLocationAddress);
 
         return formPanel;
@@ -313,7 +197,7 @@ public class LocationReliefWorkerInterface {
         frame.setLayout(new BorderLayout());
 
         JPanel formPanel = createFormPanelGiveSupplies();
-        JButton btnSubmit = createSubmitButtonGiveSupplies(frame); // Pass the frame as an argument
+        JButton btnSubmit = createSubmitButtonGiveSupplies(frame);
 
         frame.add(formPanel, BorderLayout.CENTER);
         frame.add(btnSubmit, BorderLayout.SOUTH);
@@ -321,13 +205,13 @@ public class LocationReliefWorkerInterface {
         frame.setVisible(true);
     }
 
-    private JButton createSubmitButtonGiveSupplies(JFrame frame) { // Pass the frame as an argument
+    private JButton createSubmitButtonGiveSupplies(JFrame frame) {
         JButton btnSubmit = new JButton("Submit");
         btnSubmit.addActionListener(e -> {
             if (validateFormGiveSupplies()) {
                 submitFormGiveSupplies();
-                frame.dispose(); // Close the current frame
-                mainFrame.setVisible(true); // Show the main menu
+                frame.dispose();
+                mainFrame.setVisible(true);
             }
         });
         return btnSubmit;
@@ -337,15 +221,15 @@ public class LocationReliefWorkerInterface {
         JPanel formPanel = new JPanel(new GridLayout(3, 2));
 
         formPanel.add(new JLabel("Type:"));
-        txtType = new JTextField(); // Initialize txtType
+        txtType = new JTextField();
         formPanel.add(txtType);
 
         formPanel.add(new JLabel("Quantity"));
-        txtQuantity = new JTextField(); // Initialize txtQuantity
+        txtQuantity = new JTextField();
         formPanel.add(txtQuantity);
 
         formPanel.add(new JLabel("Social ID:"));
-        txtSocialID = new JTextField(); // Initialize txtSocialID
+        txtSocialID = new JTextField();
         formPanel.add(txtSocialID);
 
         return formPanel;
@@ -396,7 +280,7 @@ public class LocationReliefWorkerInterface {
         frame.setLayout(new BorderLayout());
 
         JPanel formPanel = createFormPanelRemoveDV();
-        JButton btnSubmit = createSubmitButtonRemoveDV(frame); // Pass the frame as an argument
+        JButton btnSubmit = createSubmitButtonRemoveDV(frame);
 
         frame.add(formPanel, BorderLayout.CENTER);
         frame.add(btnSubmit, BorderLayout.SOUTH);
@@ -404,13 +288,13 @@ public class LocationReliefWorkerInterface {
         frame.setVisible(true);
     }
 
-    private JButton createSubmitButtonRemoveDV(JFrame frame) { // Pass the frame as an argument
+    private JButton createSubmitButtonRemoveDV(JFrame frame) {
         JButton btnSubmit = new JButton("Submit");
         btnSubmit.addActionListener(e -> {
             if (validateFormRemoveDV()) {
                 submitFormRemoveDV();
-                frame.dispose(); // Close the current frame
-                mainFrame.setVisible(true); // Show the main menu
+                frame.dispose();
+                mainFrame.setVisible(true);
             }
         });
         return btnSubmit;
@@ -473,7 +357,7 @@ public class LocationReliefWorkerInterface {
         frame.setLayout(new BorderLayout());
 
         JPanel formPanel = createFormPanelEnterDV();
-        JButton btnSubmit = createSubmitButtonEnterDV(frame); // Pass the frame as an argument
+        JButton btnSubmit = createSubmitButtonEnterDV(frame);
 
         frame.add(formPanel, BorderLayout.CENTER);
         frame.add(btnSubmit, BorderLayout.SOUTH);
@@ -526,13 +410,13 @@ public class LocationReliefWorkerInterface {
         return formPanel;
     }
 
-    private JButton createSubmitButtonEnterDV(JFrame frame) { // Pass the frame as an argument
+    private JButton createSubmitButtonEnterDV(JFrame frame) {
         JButton btnSubmit = new JButton("Submit");
         btnSubmit.addActionListener(e -> {
             if (validateForm()) {
                 submitFormEnterDV();
-                frame.dispose(); // Close the current frame
-                mainFrame.setVisible(true); // Show the main menu
+                frame.dispose();
+                mainFrame.setVisible(true);
             }
         });
         return btnSubmit;
@@ -546,7 +430,6 @@ public class LocationReliefWorkerInterface {
         String name = txtName.getText();
         String address = txtLocationAddress.getText();
 
-        // Validate first name and last name
         if (firstName.isEmpty() || lastName.isEmpty()) {
             JOptionPane.showMessageDialog(null, "First Name and Last Name are required.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -557,7 +440,6 @@ public class LocationReliefWorkerInterface {
             return false;
         }
 
-        // Validate entry date format
         try {
             LocalDate parsedEntryDate = LocalDate.parse(entryDate, DateTimeFormatter.ISO_LOCAL_DATE);
             LocalDate currentDate = LocalDate.now();
@@ -570,7 +452,6 @@ public class LocationReliefWorkerInterface {
             return false;
         }
 
-        // Validate date of birth format
         try {
             LocalDate.parse(dateOfBirth, DateTimeFormatter.ISO_LOCAL_DATE);
         } catch (DateTimeParseException ex) {
@@ -591,12 +472,10 @@ public class LocationReliefWorkerInterface {
         } catch (DateTimeParseException ignored) {
         }
 
-        // Check if other fields are empty
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(null, "First Name is required.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Construct DisasterVictim object based on available information
         DisasterVictim victim;
         if (!lastName.isEmpty()) {
             if (!entryDateText.isEmpty()) {
@@ -615,7 +494,6 @@ public class LocationReliefWorkerInterface {
             victim.setComments(txtComments.getText());
         }
         Location location = new Location(txtName.getText(), txtLocationAddress.getText());
-        System.out.println(location.getName());
         try {
             locationReliefWorker.addDisasterVictim(victim, location);
         } catch (IllegalArgumentException e) {
@@ -667,7 +545,7 @@ public class LocationReliefWorkerInterface {
         try {
             locationReliefWorker.giveSupplies(person, new Supply(type, quantity));
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, person.getFirstName() + " " + person.getLastName() + " is currently missing and cannot be given supplies", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, person.getFirstName() + " " + person.getLastName() + " cannot be given supplies", "Error", JOptionPane.ERROR_MESSAGE);
 
         }
     }
@@ -694,7 +572,7 @@ public class LocationReliefWorkerInterface {
         }
 
         if (message.length() == 0) {
-            message.append("There are no missing people");
+            message.append("There are no occupants in this location");
         }
 
         JOptionPane.showMessageDialog(null, message.toString(), "Disaster Victims Information", JOptionPane.INFORMATION_MESSAGE);
@@ -724,7 +602,6 @@ public class LocationReliefWorkerInterface {
     }
 
     private void printMissingPeople() {
-        System.out.println("Print Missing People function called.");
         LinkedList<DisasterVictim> missingPeople = ReliefService.getMissingPeople();
 
         StringBuilder message = new StringBuilder();
