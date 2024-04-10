@@ -1,7 +1,7 @@
 CREATE TABLE Location (
     location_id 			SERIAL PRIMARY KEY,
     name 							VARCHAR(255) NOT NULL,
-    address 					VARCHAR(255) NOT NULL
+    address 					VARCHAR(255) NOT NULL,
 		shelter 					BOOLEAN NOT NULL
 );
 
@@ -11,12 +11,11 @@ CREATE TABLE DisasterVictim (
     first_name				VARCHAR(255) NOT NULL,
 		last_name					VARCHAR(255),
 		entry_date 				DATE,
-		age 							INT,
 		gender 						VARCHAR(20),
     comments 					TEXT,
     date_of_birth 		DATE,
     location_id 			INT NOT NULL,
-    FOREIGN KEY (location_id) REFERENCES Location(location_id)
+    FOREIGN KEY (location_id) REFERENCES Location(location_id) ON DELETE CASCADE
 );
 
 
@@ -37,8 +36,8 @@ CREATE TABLE MedicalRecord (
     victim_id 				INT,
     location_id 			INT,
     date_of_treatment	DATE,
-    FOREIGN KEY (victim_id) REFERENCES DisasterVictim(victim_id),
-    FOREIGN KEY (location_id) REFERENCES Location(location_id)
+    FOREIGN KEY (victim_id) REFERENCES DisasterVictim(victim_id) ON DELETE CASCADE,
+    FOREIGN KEY (location_id) REFERENCES Location(location_id) ON DELETE CASCADE
 );
 
 
@@ -47,8 +46,8 @@ CREATE TABLE Relationship (
     relationship_type VARCHAR(255) NOT NULL,
     victim1_id 				INT NOT NULL,
     victim2_id 				INT NOT NULL,
-    FOREIGN KEY (victim1_id) REFERENCES DisasterVictim(victim_id),
-    FOREIGN KEY (victim2_id) REFERENCES DisasterVictim(victim_id)
+    FOREIGN KEY (victim1_id) REFERENCES DisasterVictim(victim_id) ON DELETE CASCADE,
+    FOREIGN KEY (victim2_id) REFERENCES DisasterVictim(victim_id) ON DELETE CASCADE
 );
 
 
@@ -66,11 +65,11 @@ INSERT INTO Location (name, address, shelter) VALUES
     ('Meadowview Retirement Village', '789 Oak Street', false);
 
 
-INSERT INTO DisasterVictim (first_name, last_name, entry_date, age, gender, comments, date_of_birth, location_id) VALUES
-		('John', 'Doe', '2024-04-01', 30, 'Male', 'Injured leg', '1994-01-01', 1),
-		('Jane', 'Doe', '2024-04-03', 25, 'Female', 'Needs medication', '1999-05-15', 2),
-    ('Alice', 'Smith', '2024-04-05', 40, 'Female', 'Fractured arm', '1984-03-10', 2),
-    ('Bob', 'Johnson', '2024-04-07', 35, 'Male', 'Severe cough', '1989-08-20', 3);
+INSERT INTO DisasterVictim (first_name, last_name, entry_date, comments, date_of_birth, location_id) VALUES
+		('John', 'Doe', '2024-04-01', 'Injured leg', '1994-01-01', 1),
+		('Jane', 'Doe', '2024-04-03', 'Needs medication', '1999-05-15', 2),
+    ('Alice', 'Smith', '2024-04-05', 'Fractured arm', '1984-03-10', 2),
+    ('Bob', 'Johnson', '2024-04-07', 'Severe cough', '1989-08-20', 3);
 
 
 INSERT INTO Supply (type, quantity, reference_type, reference_id) VALUES
