@@ -1,8 +1,16 @@
 package edu.ucalgary.oop;
 
-public class Inquirer extends Person {
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class Inquirer extends Person implements DateValidator {
     private String phoneNumber;
     private String info;
+    private String date;
+    private InquirerLog inquiries = new InquirerLog();
 
     /**
      * Constructs an Inquirer object with the specified first name, last name, phone number, and additional information.
@@ -20,25 +28,100 @@ public class Inquirer extends Person {
         }
         this.phoneNumber = phoneNumber;
         this.info = info;
+        this.date = LocalDate.now().toString();
+        inquiries.addInquirer(new Inquiry(date, info));
     }
 
-
     /**
-     * Constructs an Inquirer object with the specified first name, last name, and phone number.
+     * Constructs a new Inquirer object with the provided information.
      *
-     * @param firstName   the first name of the inquirer
-     * @param lastName    the last name of the inquirer
+     * @param firstName the first name of the inquirer
+     * @param lastName the last name of the inquirer
      * @param phoneNumber the phone number of the inquirer
-     * @throws IllegalArgumentException if the provided phone number is not in the format "000-000-0000"
+     * @param date the date of the inquiry
+     * @param info additional information provided by the inquirer
+     * @throws IllegalArgumentException if the provided phone number or date is invalid
      */
-    public Inquirer(String firstName, String lastName, String phoneNumber) throws IllegalArgumentException {
+    public Inquirer(String firstName, String lastName, String phoneNumber, String date, String info) {
         super(firstName, lastName);
         if (invalidPhoneNumber(phoneNumber)) {
             throw new IllegalArgumentException("Invalid Phone Number");
         }
         this.phoneNumber = phoneNumber;
+        if (invalidDate(date)) {
+            throw new IllegalArgumentException("Invalid entry date");
+        }
+        this.date = date;
     }
 
+
+        /**
+         * Constructs an Inquirer object with the specified first name, last name, and phone number.
+         *
+         * @param firstName   the first name of the inquirer
+         * @param lastName    the last name of the inquirer
+         * @param phoneNumber the phone number of the inquirer
+         * @throws IllegalArgumentException if the provided phone number is not in the format "000-000-0000"
+         */
+    public Inquirer(String firstName, String lastName, String phoneNumber) throws IllegalArgumentException {
+        // Call the appropriate superclass constructor based on whether lastName is provided
+        super(lastName == null || lastName.isEmpty() ? firstName : firstName, lastName);
+
+        // Check the validity of the phone number
+        if (invalidPhoneNumber(phoneNumber)) {
+            throw new IllegalArgumentException("Invalid Phone Number");
+        }
+
+        // Initialize the remaining instance variables
+        this.phoneNumber = phoneNumber;
+        this.date = LocalDate.now().toString();
+
+        // Assuming `inquiries` is an instance of `InquirerLog`, you should call `addInquirer` on it
+        inquiries.addInquirer(new Inquiry(date, info));
+    }
+
+    public void addInquiry(String date, String info) {
+        if (invalidDate(date)) {
+            throw new IllegalArgumentException("Invalid entry date");
+        }
+
+        for (Inquiry inquiry : getInquiries().getInquirerList()) {
+            if (inquiry.getDate().equals(date) && inquiry.getInfo().equals(info)) {
+                throw new IllegalArgumentException("Inquiry already exists");
+            }
+        }
+
+        getInquiries().addInquirer(new Inquiry(date, info));
+    }
+
+    /**
+     * Checks if the provided date string has a valid format and represents a date before or equal to the current date.
+     *
+     * @param dateToCheck the date string to check, formatted as "YYYY-MM-DD"
+     * @return true if the date string has a valid format and represents a date before or equal to the current date, otherwise false
+     */
+    @Override
+    public boolean invalidDate(String dateToCheck) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        try {
+            LocalDate date = LocalDate.parse(dateToCheck, formatter);
+            LocalDate currentDate = LocalDate.now();
+
+            LocalDate minValidDate = currentDate.minusYears(150);
+            return date.isBefore(minValidDate) || date.isAfter(currentDate);
+        } catch (DateTimeParseException e) {
+            return true;
+        }
+
+    }
+
+    public InquirerLog getInquiries() {
+        return inquiries;
+    }
+
+    public void setInquiries(InquirerLog inquiries) {
+        this.inquiries = inquiries;
+    }
 
     /**
      * Retrieves the phone number associated with the services.
@@ -81,7 +164,6 @@ public class Inquirer extends Person {
     public void setInfo(String info) {
         this.info = info;
     }
-
 
     /**
      * Checks if the provided phone number is in the format "000-000-0000".
