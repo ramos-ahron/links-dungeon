@@ -22,7 +22,7 @@ abstract public class ReliefService {
             throw new NullPointerException("The location provided cannot be null");
         }
 
-        if (inListLocation(location) != null) {
+        if (inListShelter(location) != null) {
             throw new IllegalArgumentException("The location is already a shelter");
         } else {
             shelters.add(location);
@@ -42,7 +42,7 @@ abstract public class ReliefService {
             throw new NullPointerException("The shelter provided cannot be null");
         }
 
-        Location locationToRemove = inListLocation(location);
+        Location locationToRemove = inListShelter(location);
 
         if (locationToRemove != null) {
             shelters.remove(locationToRemove);
@@ -167,6 +167,11 @@ abstract public class ReliefService {
 
         if (personToRemove != null) {
             people.remove(personToRemove);
+            try {
+                missingPeople.remove(personToRemove);
+            } catch (Exception ignored) {
+
+            }
         } else {
             throw new IllegalArgumentException("The victim is not found in the list");
         }
@@ -253,13 +258,28 @@ abstract public class ReliefService {
 
 
     /**
+     * Checks if the specified location is present in the list of locations.
+     *
+     * @param elementToFind The location to search for.
+     * @return The first found location with the same name and address as the specified elementToFind, or null if no such location is found.
+     */
+    public static Location inListLocation(Location elementToFind) {
+        for (Location location : locations) {
+            if (location.getName().equals(elementToFind.getName()) && location.getAddress().equals(elementToFind.getAddress())) {
+                return location;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Checks if the specified location is present in the list of shelters.
      *
      * @param elementToFind The location to search for.
      * @return The first found location with the same name and address as the specified elementToFind,
      *         or null if no such location is found.
      */
-    public static Location inListLocation(Location elementToFind) {
+    public static Location inListShelter(Location elementToFind) {
         for (Location location : shelters) {
             if (location.getName().equals(elementToFind.getName()) && location.getAddress().equals(elementToFind.getAddress())) {
                 return location;
