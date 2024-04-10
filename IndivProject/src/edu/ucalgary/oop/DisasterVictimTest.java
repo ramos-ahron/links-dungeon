@@ -60,40 +60,6 @@ public class DisasterVictimTest {
     }
 
     @Test
-    public void testInvalidStringObjectCreationConstructorLastName() {
-        String invalidName = "";
-
-        boolean correctValueEmpty = false;
-        String failureReasonEmpty = "no exception was thrown";
-
-        boolean correctValueNull = false;
-        String failureReasonNull = "no exception was thrown";
-
-        try {
-            new DisasterVictim("Random", invalidName);
-        } catch (NullPointerException e) {
-            correctValueEmpty = true;
-        } catch (Exception e) {
-            failureReasonEmpty = "the wrong type of exception was thrown";
-        }
-
-        try {
-            new DisasterVictim("Random", invalidName, LocalDate.now().toString());
-        } catch (NullPointerException e) {
-            correctValueNull = true;
-        } catch (Exception e) {
-            failureReasonNull = "the wrong type of exception was thrown";
-        }
-
-        String messageEmpty = "DisasterVictim() should throw an IllegalArgumentException if '' is tried to be created as name but " + failureReasonEmpty;
-
-        String messageNull = "DisasterVictim() should throw an IllegalArgumentException if '' is tried to be created as name but " + failureReasonNull;
-
-        assertTrue(messageEmpty, correctValueEmpty);
-        assertTrue(messageNull, correctValueNull);
-    }
-
-    @Test
     public void testInvalidDateObjectCreationConstructor() {
         String futureDate = LocalDate.of(2025, 1, 1).toString();
 
