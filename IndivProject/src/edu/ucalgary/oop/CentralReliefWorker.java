@@ -1,15 +1,30 @@
 package edu.ucalgary.oop;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CentralReliefWorker extends ReliefService {
+    private static final ArrayList<Inquirer> inquirers = new ArrayList<>();
+
     public CentralReliefWorker() {
         super();
     }
 
-    public void addInquirer(Inquirer inquirer) {
+    public void addInquirer(Inquirer inquirer, Inquiry inquiry) {
+        Inquirer inquirer2 = null;
+        for (Inquirer inquirer1 : inquirers) {
+            if (inquirer1.getFirstName().equals(inquirer.getFirstName()) && inquirer1.getPhoneNumber().equals(inquirer.getPhoneNumber())) {
+                inquirer2 = inquirer1;
+            }
+        }
+        if (inquirer2 == null) {
+            inquirer2 = inquirer;
+            inquirers.add(inquirer2);
+        }
         try {
-            InquirerLog.addInquirer(inquirer);
+            inquirer2.getInquiries().addInquirer(inquiry);
         } catch (IllegalArgumentException ignored) {
 
         }
