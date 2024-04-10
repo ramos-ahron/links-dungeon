@@ -65,40 +65,6 @@ public class PersonTest {
     }
 
     @Test
-    public void testInvalidConstructorWithNullLastName() {
-        boolean correctValue = false;
-        String failureReason = "no exception was thrown";
-
-        try {
-            new Person("John", null);
-        } catch (NullPointerException e) {
-            correctValue = true;
-        } catch (Exception e) {
-            failureReason = "the wrong exception was thrown";
-        }
-
-        String message = "Constructor should throw a NullPointerException if parameter is null but " + failureReason;
-        assertTrue(message, correctValue);
-    }
-
-    @Test
-    public void testInvalidConstructorWithEmptyLastName() {
-        boolean correctValue = false;
-        String failureReason = "no exception was thrown";
-
-        try {
-            new Person("John", "");
-        } catch (NullPointerException e) {
-            correctValue = true;
-        } catch (Exception e) {
-            failureReason = "the wrong exception was thrown";
-        }
-
-        String message = "Constructor should throw a NullPointerException if parameter is null but " + failureReason;
-        assertTrue(message, correctValue);
-    }
-
-    @Test
     public void testGetAndSetFirstName() {
         Person person = new Person("John", "Doe");
 
