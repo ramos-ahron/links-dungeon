@@ -15,5 +15,7 @@ state = SimpleNamespace()
 def init():
     """Create every game variable with its starting value."""
     state.clock = pygame.time.Clock()
+    state.all_sprites1 = pygame.sprite.Group()
+    state.background = []
     state.health = 10
     state.parkour_enemies = True

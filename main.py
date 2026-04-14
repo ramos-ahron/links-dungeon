@@ -12,6 +12,7 @@ def main():
     """Start the game: parkour level, then the boss room, then the credits."""
     loop.init_display()
     game_state.init()
+    parkour.setup()
     parkour.run()
     pygame.quit()
 
