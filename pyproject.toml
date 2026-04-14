@@ -1,0 +1,7 @@
+[project]
+name = "links-dungeon"
+version = "1.0.0"
+description = "Link's Dungeon: a Grade 10 pygame dungeon crawler by Ahron Ramos and Marcus Reid"
+# pygame 2.6.1 has no wheels for Python 3.14 yet
+requires-python = ">=3.8,<3.14"
+dependencies = ["pygame==2.6.1"]
