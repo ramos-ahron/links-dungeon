@@ -2,7 +2,7 @@
 """
 import pygame
 
-from game import loop
+from game import loop, player
 from game.sprite import Sprite
 from game.colors import PINK
 from game.state import state
@@ -47,7 +47,7 @@ def build_background():
 
 def fill_draw_groups():
     """Put the level sprites into the groups that get drawn each frame."""
-    state.all_sprites1.add(state.boundaries,state.background,state.ground)
+    state.all_sprites1.add(state.boundaries,state.background,state.ground,state.player)
 
 
 def draw():
@@ -67,6 +67,7 @@ def handle_events():
 def setup():
     """Build the level (runs once, before the loop)."""
     build_background()
+    player.create_player()
     fill_draw_groups()
 
 

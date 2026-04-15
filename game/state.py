@@ -19,5 +19,6 @@ def init():
     state.boundaries = []
     state.background = []
     state.ground = []
+    state.character = []
     state.health = 10
     state.parkour_enemies = True
