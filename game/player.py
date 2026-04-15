@@ -95,3 +95,24 @@ def create_player():
     state.player.addImage("link_damage_right_00.png")
     state.player.setPosition(325,0)
     state.character.append(state.player)
+
+
+def collide_with_ground():
+    """Player vs ground blocks: stop at sides, land on top, jump, defend and attack (sword/bow)."""
+    for i in state.ground:
+        if (i.getY() <= state.player.getY() + 25 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 15 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 35 <= i.getY() + i.getHeight()) and i.getX() + i.getWidth() - 10 <= state.player.getX() <= i.getX() + i.getWidth() + 2:
+            state.playerLeft = False
+        elif (i.getY() <= state.player.getY() + 25 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 15 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 35 <= i.getY() + i.getHeight()) and i.getX() - 2 <= state.player.getX() + state.player.getWidth() <= i.getX() + 10:
+            state.playerRight = False
+        elif (i.getX() <= state.player.getX() + 25  <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15  <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35  <= i.getX() + i.getWidth()) and i.getY() - 2 <= state.player.getY() + state.player.getHeight() <= i.getY() + 10:
+            if state.playerLeft:
+                state.player.imageStartEnd(9,17,5)
+            elif state.playerRight:
+                state.player.imageStartEnd(0,8,5)
+            state.collision = True
+            state.bottom = False
+            state.yVelocity = 0
+            state.playerDown = False
+        elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
+            state.playerUp = False
+            state.yVelocity += 1

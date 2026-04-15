@@ -2,7 +2,7 @@
 """
 import pygame
 
-from game import loop, player
+from game import loop, physics, player
 from game.sprite import Sprite
 from game.colors import PINK
 from game.state import state
@@ -57,6 +57,18 @@ def draw():
     pygame.display.update()
 
 
+def reset_frame_flags():
+    """Clear the per-frame collision flags."""
+    state.a_collision = False
+    state.e_a_collision = False
+    state.collision = False
+    state.defend = False
+    state.bottom = False
+    state.side_collision = False
+    state.enemy1_stop_left = False
+    state.enemy1_stop_right = False
+
+
 def handle_events():
     """Keyboard and mouse input for the parkour level."""
     for event in pygame.event.get():
@@ -73,7 +85,11 @@ def setup():
 
 def frame():
     """One frame of the level, in the exact order of the original loop body."""
+    physics.reset_speeds_and_gravity()
     draw()
+    reset_frame_flags()
+    player.collide_with_ground()
+    physics.apply_gravity()
     pygame.display.flip()
     handle_events()
 
