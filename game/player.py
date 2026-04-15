@@ -116,3 +116,12 @@ def collide_with_ground():
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.yVelocity += 1
+
+
+def update_idle_pose():
+    """Pick the idle or defend frame when the player isn't moving."""
+    if state.player_health != 0:
+        if not state.playerRight and not state.playerLeft and state.bottom and not state.damage_check:
+            state.player.setImageIndex(55)
+        elif not state.playerRight and not state.playerLeft and not state.bottom and not state.attack and not state.collision and not state.side_collision and not state.damage_check:
+            state.player.setImageIndex(55)

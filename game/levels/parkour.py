@@ -69,11 +69,29 @@ def reset_frame_flags():
     state.enemy1_stop_right = False
 
 
+def check_level_bounds():
+    """Stop the player at the left and right ends of the level."""
+    if state.player.collision(state.bound1):
+        state.playerLeft = False
+    elif state.player.collision(state.bound2):
+        state.playerRight = False
+
+
 def handle_events():
     """Keyboard and mouse input for the parkour level."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             state.parkour_enemies = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_d:
+                state.playerRight = True
+            if event.key == pygame.K_a:
+                state.playerLeft = True
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_d:
+                state.playerRight = False
+            if event.key == pygame.K_a:
+                state.playerLeft = False
 
 
 def setup():
@@ -88,8 +106,12 @@ def frame():
     physics.reset_speeds_and_gravity()
     draw()
     reset_frame_flags()
+    check_level_bounds()
     player.collide_with_ground()
+    physics.scroll_world()
+    player.update_idle_pose()
     physics.apply_gravity()
+    physics.wrap_background()
     pygame.display.flip()
     handle_events()
 
