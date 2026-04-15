@@ -43,6 +43,7 @@ def init():
     state.e_a_collision = False
     state.playerRight = False
     state.playerLeft = False
+    state.jump = False
     state.attack = False
     state.side_collision = False
     state.defend = False

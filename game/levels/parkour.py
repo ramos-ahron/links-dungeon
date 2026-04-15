@@ -87,11 +87,15 @@ def handle_events():
                 state.playerRight = True
             if event.key == pygame.K_a:
                 state.playerLeft = True
+            if event.key == pygame.K_SPACE:
+                state.jump = True
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_d:
                 state.playerRight = False
             if event.key == pygame.K_a:
                 state.playerLeft = False
+            if event.key == pygame.K_SPACE:
+                state.jump = False
 
 
 def setup():

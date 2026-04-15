@@ -113,6 +113,8 @@ def collide_with_ground():
             state.bottom = False
             state.yVelocity = 0
             state.playerDown = False
+            if state.jump:
+                state.yVelocity = -3
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.yVelocity += 1
