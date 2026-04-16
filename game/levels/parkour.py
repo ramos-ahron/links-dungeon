@@ -45,9 +45,57 @@ def build_background():
     state.ground.append(state.ground4)
 
 
+def build_terrain():
+    """Place the walls, climbable (vine) walls and spikes of the parkour course."""
+    state.wall1 = Sprite(100, 50, None, "wall_texture_00.png")
+    state.wall2 = Sprite(50, 100, None, "wall_texture_06.png")
+    state.wall3 = Sprite(100, 50, None, "wall_texture_00.png")
+    state.wall4 = Sprite(50, 80, None, "wall_texture_02.png")
+    state.wall5 = Sprite(50, 50, None, "wall_texture_03.png")
+    state.wall6 = Sprite(50, 25, None, "wall_texture_04.png")
+    state.wall7 = Sprite(100,50, None, "wall_texture_00.png")
+    state.wall8 = Sprite(100,50, None, "wall_texture_00.png")
+    state.wall9 = Sprite(100,50, None, "wall_texture_00.png")
+    state.wall10 = Sprite(100,50, None, "wall_texture_00.png")
+    state.wall11 = Sprite(50,125, None, "wall_texture_01.png")
+    state.wall12 = Sprite(50,125, None, "wall_texture_01.png")
+    state.wall13 = Sprite(50,125, None, "wall_texture_01.png")
+    state.wall14 = Sprite(50,30,None, "wall_texture_04.png")
+    state.wall15 = Sprite(50,75,None, "wall_texture_02.png")
+    state.wall1.setPosition(650, 410)
+    state.wall2.setPosition(825, 360)
+    state.wall3.setPosition(950, 410)
+    state.wall4.setPosition(2200, 380)
+    state.wall5.setPosition(2030, 290)
+    state.wall6.setPosition(2200, 210)
+    state.wall7.setPosition(3000, 410)
+    state.wall8.setPosition(3200, 410)
+    state.wall9.setPosition(3400, 410)
+    state.wall10.setPosition(3600, 410)
+    state.wall11.setPosition(4850, 335)
+    state.wall12.setPosition(5000, 335)
+    state.wall13.setPosition(5150, 335)
+    state.wall14.setPosition(6900,430)
+    state.wall15.setPosition(7500,385)
+    state.wall.append(state.wall1)
+    state.wall.append(state.wall2)
+    state.wall.append(state.wall3)
+    state.wall.append(state.wall4)
+    state.wall.append(state.wall5)
+    state.wall.append(state.wall6)
+    state.wall.append(state.wall7)
+    state.wall.append(state.wall8)
+    state.wall.append(state.wall9)
+    state.wall.append(state.wall10)
+    state.wall.append(state.wall11)
+    state.wall.append(state.wall12)
+    state.wall.append(state.wall13)
+    state.wall.append(state.wall14)
+
+
 def fill_draw_groups():
     """Put the level sprites into the groups that get drawn each frame."""
-    state.all_sprites1.add(state.boundaries,state.background,state.ground,state.player)
+    state.all_sprites1.add(state.boundaries,state.background,state.ground,state.wall,state.player)
 
 
 def draw():
@@ -102,6 +150,7 @@ def setup():
     """Build the level (runs once, before the loop)."""
     build_background()
     player.create_player()
+    build_terrain()
     fill_draw_groups()
 
 
@@ -112,6 +161,7 @@ def frame():
     reset_frame_flags()
     check_level_bounds()
     player.collide_with_ground()
+    player.collide_with_walls()
     physics.scroll_world()
     player.update_idle_pose()
     physics.apply_gravity()

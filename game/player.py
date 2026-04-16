@@ -120,6 +120,29 @@ def collide_with_ground():
             state.yVelocity += 1
 
 
+def collide_with_walls():
+    """Player vs normal walls: same rules as the ground."""
+    for i in state.wall:
+        if (i.getY() <= state.player.getY() + 25 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 15 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 35 <= i.getY() + i.getHeight()) and i.getX() + i.getWidth() - 10 <= state.player.getX() <= i.getX() + i.getWidth() + 2:
+            state.playerLeft = False
+        elif (i.getY() <= state.player.getY() + 25 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 15 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 35 <= i.getY() + i.getHeight()) and i.getX() - 2 <= state.player.getX() + state.player.getWidth() <= i.getX() + 10:
+            state.playerRight = False
+        elif (i.getX() <= state.player.getX() + 25  <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15  <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35  <= i.getX() + i.getWidth()) and i.getY() - 2 <= state.player.getY() + state.player.getHeight() <= i.getY() + 10:
+            if state.playerLeft:
+                state.player.imageStartEnd(9,17,5)
+            elif state.playerRight:
+                state.player.imageStartEnd(0,8,5)
+            state.collision = True
+            state.bottom = False
+            state.yVelocity = 0
+            state.playerDown = False
+            if state.jump:
+                state.yVelocity = -3
+        elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
+            state.playerUp = False
+            state.yVelocity += 1
+
+
 def update_idle_pose():
     """Pick the idle or defend frame when the player isn't moving."""
     if state.player_health != 0:
