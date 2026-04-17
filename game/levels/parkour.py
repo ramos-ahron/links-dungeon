@@ -91,11 +91,50 @@ def build_terrain():
     state.wall.append(state.wall12)
     state.wall.append(state.wall13)
     state.wall.append(state.wall14)
+    state.c_wall1 = Sprite(50, 175, None, "c_wall_texture_08.png")
+    state.c_wall2 = Sprite(50, 335, None, "c_wall_texture_01.png")
+    state.c_wall3 = Sprite(50, 25, None, "c_wall_texture_02.png")
+    state.c_wall4 = Sprite(50, 15, None, "c_wall_texture_03.png")
+    state.c_wall5 = Sprite(50, 15, None, "c_wall_texture_03.png")
+    state.c_wall6 = Sprite(50, 50, None, "c_wall_texture_04.png")
+    state.c_wall7 = Sprite(50, 335, None, "c_wall_texture_01.png")
+    state.c_wall8 = Sprite(50, 125, None, "c_wall_texture_00.png")
+    state.c_wall9 = Sprite(50,125, None, "c_wall_texture_00.png")
+    state.c_wall10 = Sprite(50,160,None, "c_wall_texture_05.png")
+    state.c_wall11 = Sprite(50,225,None, "c_wall_texture_06.png")
+    state.c_wall12 = Sprite(750,50,None, "c_wall_texture_07.png")
+    state.c_wall13 = Sprite(50,225,None, "c_wall_texture_06.png")
+    state.c_wall1.setPosition(1025, 125)
+    state.c_wall2.setPosition(1425, 125)
+    state.c_wall3.setPosition(2200, 355)
+    state.c_wall4.setPosition(2030, 280)
+    state.c_wall5.setPosition(2200, 195)
+    state.c_wall6.setPosition(2280, 130)
+    state.c_wall7.setPosition(2700, 130)
+    state.c_wall8.setPosition(4700, 335)
+    state.c_wall9.setPosition(5300,335)
+    state.c_wall10.setPosition(6300,300)
+    state.c_wall11.setPosition(6125,30)
+    state.c_wall12.setPosition(6175,30)
+    state.c_wall13.setPosition(6925,30)
+    state.c_wall.append(state.c_wall1)
+    state.c_wall.append(state.c_wall2)
+    state.c_wall.append(state.c_wall3)
+    state.c_wall.append(state.c_wall4)
+    state.c_wall.append(state.c_wall5)
+    state.c_wall.append(state.c_wall6)
+    state.c_wall.append(state.c_wall7)
+    state.c_wall.append(state.c_wall8)
+    state.c_wall.append(state.c_wall9)
+    state.c_wall.append(state.c_wall10)
+    state.c_wall.append(state.c_wall11)
+    state.c_wall.append(state.c_wall12)
+    state.c_wall.append(state.c_wall13)
 
 
 def fill_draw_groups():
     """Put the level sprites into the groups that get drawn each frame."""
-    state.all_sprites1.add(state.boundaries,state.background,state.ground,state.wall,state.player)
+    state.all_sprites1.add(state.boundaries,state.background,state.ground,state.wall,state.c_wall,state.player)
 
 
 def draw():
@@ -137,6 +176,10 @@ def handle_events():
                 state.playerLeft = True
             if event.key == pygame.K_SPACE:
                 state.jump = True
+            if event.key == pygame.K_w:
+                state.playerUp = True
+            elif event.key == pygame.K_s:
+                state.playerDown = True
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_d:
                 state.playerRight = False
@@ -144,6 +187,10 @@ def handle_events():
                 state.playerLeft = False
             if event.key == pygame.K_SPACE:
                 state.jump = False
+            if event.key == pygame.K_w:
+                state.playerUp = False
+            elif event.key == pygame.K_s:
+                state.playerDown = False
 
 
 def setup():
@@ -162,6 +209,7 @@ def frame():
     check_level_bounds()
     player.collide_with_ground()
     player.collide_with_walls()
+    player.collide_with_climbable_walls()
     physics.scroll_world()
     player.update_idle_pose()
     physics.apply_gravity()
