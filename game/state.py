@@ -39,6 +39,8 @@ def init():
     state.shield_count = 0
     state.stamina_count = 0
     state.arrows_taken = 0
+    state.damage_counter = 0
+    state.damage_count = 0
     state.over = 0
     state.health = 10
     state.shield = 10
@@ -65,6 +67,7 @@ def init():
     state.facingLeft = False
     state.facingRight = True
     state.extra_gravity = False
+    state.spike_collision = False
     state.damage_check = False
     state.enemy1_stop_left = False
     state.enemy1_stop_right = False

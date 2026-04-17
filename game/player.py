@@ -139,6 +139,31 @@ def update_stats():
             state.shield_count = 180
 
 
+def reset_spike_counter():
+    """Reset the spike damage counter when not touching spikes."""
+    for spikes in state.spike:
+        if not state.player.collision(spikes):
+            state.damage_counter = 0
+
+
+def update_damage_flash():
+    """Show the 'hit' frame for 15 frames after taking damage."""
+    if state.damage_check and state.health != 0:
+        state.damage_count += 1
+        if state.facingLeft:
+            if state.damage_count == 1:
+                state.player.setImageIndex(85)
+            if state.damage_count == 15:
+                state.damage_count = 0
+                state.damage_check = False
+        if state.facingRight:
+            if state.damage_count == 1:
+                state.player.setImageIndex(86)
+            if state.damage_count == 15:
+                state.damage_count = 0
+                state.damage_check = False
+
+
 def collide_with_ground():
     """Player vs ground blocks: stop at sides, land on top, jump, defend and attack (sword/bow)."""
     for i in state.ground:
@@ -237,6 +262,32 @@ def collide_with_climbable_walls():
             state.collision = True
             if state.playerDown:
                 state.player.move(0,2)
+
+
+def collide_with_spikes():
+    """Player vs spikes: take damage and get pushed back."""
+    for i in state.spike:
+        if state.player.collision(i):
+            state.damage_counter += 1
+            state.shield_count = 0
+            state.spike_collision = True
+            state.damage_check = True
+            if state.player_shield > 0:
+                if state.damage_counter == 1:
+                        state.player_shield -= 10
+                        state.shield -= 1
+            else:
+                if state.health != 0:
+                    if state.damage_counter == 1:
+                        state.player_health -= 10
+                        state.health -= 1
+            if (i.getY() <= state.player.getY() + 25 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 15 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 35 <= i.getY() + i.getHeight()) and i.getX() + i.getWidth() - 10 <= state.player.getX() <= i.getX() + i.getWidth() + 2:
+                state.playerLeft = False
+                state.player.move(10,0)
+            elif (i.getY() <= state.player.getY() + 25 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 15 <= i.getY() + i.getHeight() or i.getY() <= state.player.getY() + 35 <= i.getY() + i.getHeight()) and i.getX() - 2 <= state.player.getX() + state.player.getWidth() <= i.getX() + 10:
+                state.playerRight = False
+            elif (i.getX() <= state.player.getX() + 25  <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15  <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35  <= i.getX() + i.getWidth()) and i.getY() - 2 <= state.player.getY() + state.player.getHeight() <= i.getY() + 10:
+                state.yVelocity = -2
 
 
 def update_idle_pose():
