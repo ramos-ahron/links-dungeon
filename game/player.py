@@ -1,6 +1,7 @@
 """The player: sprite and animation frames, stats, damage/death, collisions with terrain, attacks.
 """
 from game.sprite import Sprite
+from game.colors import BLACK
 from game.state import state
 
 
@@ -93,8 +94,49 @@ def create_player():
     state.player.addImage("link_death_ani_04.png")
     state.player.addImage("link_damage_left_00.png")
     state.player.addImage("link_damage_right_00.png")
+    state.player_stats = Sprite(134,68,None,"player_stats.png")
+    state.stat_background = Sprite(134,68,BLACK)
     state.player.setPosition(325,0)
     state.character.append(state.player)
+
+
+def tick_regen_counters():
+    """Advance the shield and stamina regeneration counters by one frame."""
+    state.shield_count += 1
+    state.stamina_count += 1
+
+
+def update_stats():
+    """Clamp health/shield/stamina and regenerate shield and stamina over time."""
+    if state.player_health <= 0:
+        state.player_health = 0
+        state.health = 0
+    if state.player_stamina <= 0:
+        state.player_stamina = 0
+        state.stamina = 0
+    if state.player_shield <= 0:
+        state.player_shield = 0
+        state.shield = 0
+    if state.player_health >= 100:
+        state.player_health = 100
+        state.health = 10
+    if state.player_stamina >= 100:
+        state.player_stamina = 100
+        state.stamina = 10
+    if state.player_shield >= 100:
+        state.player_shield = 100
+        state.shield = 10
+    if state.health != 0:
+        if state.stamina_count >= 300:
+            if state.stamina != 10:
+                state.player_stamina += 10
+                state.stamina += 1
+            state.stamina_count = 120
+        if state.shield_count >= 300:
+            if state.shield != 10:
+                state.player_shield += 10
+                state.shield += 1
+            state.shield_count = 180
 
 
 def collide_with_ground():

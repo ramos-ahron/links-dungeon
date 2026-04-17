@@ -5,6 +5,7 @@ import pygame
 from game import loop, physics, player
 from game.sprite import Sprite
 from game.colors import PINK
+from game.loop import add_text
 from game.state import state
 
 
@@ -134,13 +135,21 @@ def build_terrain():
 
 def fill_draw_groups():
     """Put the level sprites into the groups that get drawn each frame."""
-    state.all_sprites1.add(state.boundaries,state.background,state.ground,state.wall,state.c_wall,state.player)
+    state.all_sprites1.add(state.boundaries,state.background,state.ground,state.wall,state.c_wall,state.stat_background,state.player)
+    state.all_sprites2.add(state.player_stats)
 
 
 def draw():
     """Draw the level, the player's stat bars and the enemy health bars."""
     state.screen.fill([0, 0, 0])
     state.all_sprites1.draw(state.screen)
+    pygame.draw.rect(state.screen,[255,0,0],[27,10,state.player_health,15])
+    pygame.draw.rect(state.screen,[211,211,211],[27,25,state.player_shield,15])
+    pygame.draw.rect(state.screen,[0,0,255],[27,43,state.player_stamina,15])
+    state.all_sprites2.draw(state.screen)
+    add_text(str(state.health) + " / 10",[57,10],24,[255,255,255])
+    add_text(str(state.shield) + " / 10",[57,27],24,[255,0,0])
+    add_text(str(state.stamina) + " / 10",[57,45],23,[255,255,255])
     pygame.display.update()
 
 
@@ -204,8 +213,10 @@ def setup():
 def frame():
     """One frame of the level, in the exact order of the original loop body."""
     physics.reset_speeds_and_gravity()
+    player.tick_regen_counters()
     draw()
     reset_frame_flags()
+    player.update_stats()
     check_level_bounds()
     player.collide_with_ground()
     player.collide_with_walls()

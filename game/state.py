@@ -16,6 +16,7 @@ def init():
     """Create every game variable with its starting value."""
     state.clock = pygame.time.Clock()
     state.all_sprites1 = pygame.sprite.Group()
+    state.all_sprites2 = pygame.sprite.Group()
     state.boundaries = []
     state.background = []
     state.ground = []
@@ -35,12 +36,22 @@ def init():
     state.background_speed = 1
     state.norm_speed = 4
     state.groundSpeed = 4
+    state.shield_count = 0
+    state.stamina_count = 0
+    state.arrows_taken = 0
+    state.over = 0
     state.health = 10
+    state.shield = 10
+    state.stamina = 10
+    state.speed = 2
     state.player_health = 100
+    state.player_shield = 100
+    state.player_stamina = 100
     state.parkour_enemies = True
     state.countdowned = True
     state.a_collision = False
     state.e_a_collision = False
+    state.credit = False
     state.playerRight = False
     state.playerLeft = False
     state.jump = False
