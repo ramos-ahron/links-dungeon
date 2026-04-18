@@ -207,6 +207,13 @@ def collide_with_ground():
             state.playerDown = False
             if state.jump:
                 state.yVelocity = -3
+            if state.defend:
+                state.playerRight = False
+                state.playerLeft = False
+                if state.facingLeft:
+                    state.player.setImageIndex(65)
+                if state.facingRight:
+                    state.player.setImageIndex(56)
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.yVelocity += 1
@@ -230,6 +237,13 @@ def collide_with_walls():
             state.playerDown = False
             if state.jump:
                 state.yVelocity = -3
+            if state.defend:
+                state.playerRight = False
+                state.playerLeft = False
+                if state.facingLeft:
+                    state.player.setImageIndex(65)
+                if state.facingRight:
+                    state.player.setImageIndex(56)
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.yVelocity += 1
@@ -279,6 +293,13 @@ def collide_with_climbable_walls():
             state.playerDown = False
             if state.jump:
                 state.yVelocity = -3
+            if state.defend:
+                state.playerRight = False
+                state.playerLeft = False
+                if state.facingLeft:
+                    state.player.setImageIndex(65)
+                if state.facingRight:
+                    state.player.setImageIndex(56)
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.gravity = 0
@@ -315,6 +336,12 @@ def collide_with_spikes():
                 state.yVelocity = -2
 
 
+def lower_shield_when_hanging():
+    """The player can't defend while hanging under a vine wall."""
+    if state.bottom:
+        state.defend = False
+
+
 def update_idle_pose():
     """Pick the idle or defend frame when the player isn't moving."""
     if state.player_health != 0:
@@ -322,3 +349,16 @@ def update_idle_pose():
             state.player.setImageIndex(55)
         elif not state.playerRight and not state.playerLeft and not state.bottom and not state.attack and not state.collision and not state.side_collision and not state.damage_check:
             state.player.setImageIndex(55)
+        if not state.playerRight and not state.playerLeft and state.collision and not state.side_collision and not state.bottom and not state.attack and state.health != 0 and not state.damage_check:
+            state.defend = True
+            if state.facingLeft:
+                state.player.setImageIndex(65)
+            if state.facingRight:
+                state.player.setImageIndex(56)
+
+
+def cancel_attack_in_air():
+    """Attacks and defending only work while standing on something."""
+    if not state.collision:
+        state.attack = False
+        state.defend = False
