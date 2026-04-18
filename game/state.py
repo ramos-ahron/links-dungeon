@@ -39,6 +39,7 @@ def init():
     state.shield_count = 0
     state.stamina_count = 0
     state.arrows_taken = 0
+    state.death_counter = 0
     state.damage_counter = 0
     state.damage_count = 0
     state.over = 0

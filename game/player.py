@@ -139,6 +139,31 @@ def update_stats():
             state.shield_count = 180
 
 
+def update_death():
+    """Freeze input and play the death animation when health reaches 0."""
+    if state.health == 0:
+        state.playerLeft = False
+        state.playerRight = False
+        state.playerUp = False
+        state.playerDown = False
+        state.playerUp = False
+        state.jump = False
+        state.attack = False
+        state.death_counter += 1
+        if state.death_counter == 1:
+            state.player.setImageIndex(80)
+        if state.death_counter == 15:
+            state.player.setImageIndex(81)
+        if state.death_counter == 30:
+            state.player.setImageIndex(82)
+        if state.death_counter == 45:
+            state.player.setImageIndex(83)
+        if state.death_counter == 60:
+            state.player.setImageIndex(84)
+        if state.death_counter == 75:
+            state.all_sprites1.remove(state.player)
+
+
 def reset_spike_counter():
     """Reset the spike damage counter when not touching spikes."""
     for spikes in state.spike:

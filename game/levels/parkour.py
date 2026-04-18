@@ -241,6 +241,7 @@ def frame():
     draw()
     reset_frame_flags()
     player.update_stats()
+    player.update_death()
     check_level_bounds()
     player.reset_spike_counter()
     player.update_damage_flash()
