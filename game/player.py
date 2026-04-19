@@ -104,6 +104,7 @@ def create_attack_ranges():
     """Create the sword hit boxes on each side of the player, and the first arrow sprite."""
     state.player_range1 = Sprite(30,50,RED)
     state.player_range2 = Sprite(30,50,RED)
+    state.arrow = Sprite(30,12,None,"arrow_right_00.png")
 
 
 def update_attack_ranges():
@@ -265,6 +266,45 @@ def collide_with_ground():
                                 state.player.setImageIndex(31)
                                 state.player_count = 0
                                 state.attack = False
+                    if state.weapon == 2:
+                        if state.stamina > 0:
+                            if state.facingLeft:
+                                if state.player_count == 1:
+                                    state.player.setImageIndex(77)
+                                if state.player_count == 15:
+                                    state.player.setImageIndex(78)
+                                if state.player_count == 30:
+                                    state.player.setImageIndex(79)
+                                    state.player_count = 0
+                                    state.attack = False
+                                    state.arrow = Sprite(30,12,None,"arrow_left_00.png")
+                                    state.arrow.xSpeed = -state.groundSpeed - 2
+                                    state.arrow.setPosition(state.player.getX() - 30, state.player.getY() + (state.player.getWidth() / 2) - 5)
+                                    state.arrows.append(state.arrow)
+                                    state.all_sprites1.add(state.arrow)
+                                    state.player_stamina -= 10
+                                    state.stamina_count = 0
+                                    state.stamina -= 1
+                            if state.facingRight:
+                                if state.player_count == 1:
+                                    state.player.setImageIndex(74)
+                                if state.player_count == 15:
+                                    state.player.setImageIndex(75)
+                                if state.player_count == 30:
+                                    state.player.setImageIndex(76)
+                                    state.player_count = 0
+                                    state.attack = False
+                                    state.arrow = Sprite(30,12,None,"arrow_right_00.png")
+                                    state.arrow.xSpeed = state.groundSpeed + 2
+                                    state.arrow.setPosition(state.player.getX() + state.player.getWidth(), state.player.getY() + (state.player.getWidth() / 2) - 5)
+                                    state.arrows.append(state.arrow)
+                                    state.all_sprites1.add(state.arrow)
+                                    state.player_stamina -= 10
+                                    state.stamina -= 1
+                                    state.stamina_count = 0
+                        else:
+                            state.player_count = 0
+                            state.attack = False
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.yVelocity += 1
@@ -328,6 +368,45 @@ def collide_with_walls():
                                 state.player.setImageIndex(31)
                                 state.player_count = 0
                                 state.attack = False
+                    if state.weapon == 2:
+                        if state.player_stamina > 0:
+                            if state.facingLeft:
+                                if state.player_count == 1:
+                                    state.player.setImageIndex(77)
+                                if state.player_count == 15:
+                                    state.player.setImageIndex(78)
+                                if state.player_count == 30:
+                                    state.player.setImageIndex(79)
+                                    state.player_count = 0
+                                    state.attack = False
+                                    state.arrow = Sprite(30,12,None,"arrow_left_00.png")
+                                    state.arrow.xSpeed = -state.groundSpeed - 2
+                                    state.arrow.setPosition(state.player.getX() - 30, state.player.getY() + (state.player.getWidth() / 2) - 5)
+                                    state.arrows.append(state.arrow)
+                                    state.all_sprites1.add(state.arrow)
+                                    state.player_stamina -= 10
+                                    state.stamina_count = 0
+                                    state.stamina -= 1
+                            if state.facingRight:
+                                if state.player_count == 1:
+                                    state.player.setImageIndex(74)
+                                if state.player_count == 15:
+                                    state.player.setImageIndex(75)
+                                if state.player_count == 30:
+                                    state.player.setImageIndex(76)
+                                    state.player_count = 0
+                                    state.attack = False
+                                    state.arrow = Sprite(30,12,None,"arrow_right_00.png")
+                                    state.arrow.xSpeed = state.groundSpeed + 2
+                                    state.arrow.setPosition(state.player.getX() + state.player.getWidth(), state.player.getY() + (state.player.getWidth() / 2) - 5)
+                                    state.arrows.append(state.arrow)
+                                    state.all_sprites1.add(state.arrow)
+                                    state.player_stamina -= 10
+                                    state.stamina -= 1
+                                    state.stamina_count = 0
+                        else:
+                            state.player_count = 0
+                            state.attack = False
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.yVelocity += 1
@@ -417,6 +496,45 @@ def collide_with_climbable_walls():
                                 state.player.setImageIndex(31)
                                 state.player_count = 0
                                 state.attack = False
+                    if state.weapon == 2:
+                        if state.stamina > 0:
+                            if state.facingLeft:
+                                if state.player_count == 1:
+                                    state.player.setImageIndex(77)
+                                if state.player_count == 15:
+                                    state.player.setImageIndex(78)
+                                if state.player_count == 30:
+                                    state.player.setImageIndex(79)
+                                    state.player_count = 0
+                                    state.attack = False
+                                    state.arrow = Sprite(30,12,None,"arrow_left_00.png")
+                                    state.arrow.xSpeed = -state.groundSpeed - 2
+                                    state.arrow.setPosition(state.player.getX() - 30, state.player.getY() + (state.player.getWidth() / 2) - 5)
+                                    state.arrows.append(state.arrow)
+                                    state.all_sprites1.add(state.arrow)
+                                    state.player_stamina -= 5
+                                    state.stamina_count = 0
+                                    state.stamina -= 1
+                            if state.facingRight:
+                                if state.player_count == 1:
+                                    state.player.setImageIndex(74)
+                                if state.player_count == 15:
+                                    state.player.setImageIndex(75)
+                                if state.player_count == 30:
+                                    state.player.setImageIndex(76)
+                                    state.player_count = 0
+                                    state.attack = False
+                                    state.arrow = Sprite(30,12,None,"arrow_right_00.png")
+                                    state.arrow.xSpeed = state.groundSpeed + 2
+                                    state.arrow.setPosition(state.player.getX() + state.player.getWidth(), state.player.getY() + (state.player.getWidth() / 2) - 5)
+                                    state.arrows.append(state.arrow)
+                                    state.all_sprites1.add(state.arrow)
+                                    state.player_stamina -= 5
+                                    state.stamina -= 1
+                                    state.stamina_count = 0
+                        else:
+                            state.player_count = 0
+                            state.attack = False
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.gravity = 0
@@ -479,3 +597,41 @@ def cancel_attack_in_air():
     if not state.collision:
         state.attack = False
         state.defend = False
+
+
+def cancel_bow_without_stamina():
+    """Can't fire the bow with no stamina left."""
+    if state.player_stamina == 0 and state.stamina == 0 and state.attack:
+        if state.weapon == 2:
+            state.attack = False
+
+
+def update_arrows():
+    """Move the player's arrows; remove them on terrain, damage enemies they hit."""
+    # `arrow` stays on state: the original used this global name both in this loop and outside it.
+    for state.arrow in state.arrows:
+        state.arrow.move(state.arrow.xSpeed,0)
+        for grounds in state.ground:
+            if state.arrow.collision(grounds):
+                state.all_sprites1.remove(state.arrow)
+                state.arrow.move(0, 0)
+                state.arrow.setPosition(0, 0)
+                state.arrows.remove(state.arrow)
+        for walls in state.wall:
+            if state.arrow.collision(walls):
+                state.all_sprites1.remove(state.arrow)
+                state.arrow.move(0, 0)
+                state.arrow.setPosition(0, 0)
+                state.arrows.remove(state.arrow)
+        for c_walls in state.c_wall:
+            if state.arrow.collision(c_walls):
+                state.all_sprites1.remove(state.arrow)
+                state.arrow.move(0, 0)
+                state.arrow.setPosition(0, 0)
+                state.arrows.remove(state.arrow)
+        for spikes in state.spike:
+            if state.arrow.collision(spikes):
+                state.all_sprites1.remove(state.arrow)
+                state.arrow.move(0, 0)
+                state.arrow.setPosition(0, 0)
+                state.arrows.remove(state.arrow)

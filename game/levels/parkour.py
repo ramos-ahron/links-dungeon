@@ -213,6 +213,10 @@ def handle_events():
                 state.playerUp = True
             elif event.key == pygame.K_s:
                 state.playerDown = True
+            if event.key == pygame.K_1:
+                state.weapon = 1
+            if event.key == pygame.K_2:
+                state.weapon = 2
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_d:
                 state.playerRight = False
@@ -258,6 +262,8 @@ def frame():
     physics.scroll_world()
     player.update_idle_pose()
     player.cancel_attack_in_air()
+    player.cancel_bow_without_stamina()
+    player.update_arrows()
     physics.apply_gravity()
     physics.wrap_background()
     pygame.display.flip()

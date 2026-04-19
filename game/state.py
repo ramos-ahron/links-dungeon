@@ -26,6 +26,7 @@ def init():
     state.spike= []
     state.enemy = []
     state.doors = []
+    state.arrows  = []
     state.yVelocity = 0
     state.gravity = 0.9  # never used: each level overwrites gravity every frame (physics.py)
     state.weapon = 1
