@@ -28,6 +28,7 @@ def init():
     state.doors = []
     state.yVelocity = 0
     state.gravity = 0.9  # never used: each level overwrites gravity every frame (physics.py)
+    state.weapon = 1
     state.backgroundPosition = 799
     state.background_position = 799
     state.groundPosition = 790
@@ -36,6 +37,7 @@ def init():
     state.background_speed = 1
     state.norm_speed = 4
     state.groundSpeed = 4
+    state.player_count = 0
     state.shield_count = 0
     state.stamina_count = 0
     state.arrows_taken = 0

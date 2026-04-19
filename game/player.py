@@ -1,7 +1,7 @@
 """The player: sprite and animation frames, stats, damage/death, collisions with terrain, attacks.
 """
 from game.sprite import Sprite
-from game.colors import BLACK
+from game.colors import RED, BLACK
 from game.state import state
 
 
@@ -100,6 +100,18 @@ def create_player():
     state.character.append(state.player)
 
 
+def create_attack_ranges():
+    """Create the sword hit boxes on each side of the player, and the first arrow sprite."""
+    state.player_range1 = Sprite(30,50,RED)
+    state.player_range2 = Sprite(30,50,RED)
+
+
+def update_attack_ranges():
+    """Keep the sword hit boxes next to the player."""
+    state.player_range1.setPosition(state.player.getX() - 30, state.player.getY())
+    state.player_range2.setPosition(state.player.getX() + state.player.getWidth(),state.player.getY())
+
+
 def tick_regen_counters():
     """Advance the shield and stamina regeneration counters by one frame."""
     state.shield_count += 1
@@ -164,6 +176,12 @@ def update_death():
             state.all_sprites1.remove(state.player)
 
 
+def reset_attack_counter():
+    """Reset the attack animation counter when not attacking."""
+    if not state.attack:
+        state.player_count = 0
+
+
 def reset_spike_counter():
     """Reset the spike damage counter when not touching spikes."""
     for spikes in state.spike:
@@ -214,6 +232,39 @@ def collide_with_ground():
                     state.player.setImageIndex(65)
                 if state.facingRight:
                     state.player.setImageIndex(56)
+            if state.attack:
+                if state.health != 0:
+                    state.player_count += 1
+                    state.jump = False
+                    state.playerRight = False
+                    state.playerLeft = False
+                    if state.weapon == 1:
+                        if state.facingLeft:
+                            if state.player_count == 1:
+                                state.player.setImageIndex(22)
+                            if state.player_count == 10:
+                                state.player.setImageIndex(23)
+                            if state.player_count == 20:
+                                state.player.setImageIndex(24)
+                            if state.player_count == 30:
+                               state.player.setImageIndex(25)
+                            if state.player_count == 40:
+                                state.player.setImageIndex(26)
+                                state.player_count = 0
+                                state.attack = False
+                        if state.facingRight:
+                            if state.player_count == 1:
+                                state.player.setImageIndex(27)
+                            if state.player_count == 10:
+                                state.player.setImageIndex(28)
+                            if state.player_count == 20:
+                                state.player.setImageIndex(29)
+                            if state.player_count == 30:
+                               state.player.setImageIndex(30)
+                            if state.player_count == 40:
+                                state.player.setImageIndex(31)
+                                state.player_count = 0
+                                state.attack = False
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.yVelocity += 1
@@ -244,6 +295,39 @@ def collide_with_walls():
                     state.player.setImageIndex(65)
                 if state.facingRight:
                     state.player.setImageIndex(56)
+            if state.attack:
+                if state.health != 0:
+                    state.player_count += 1
+                    state.jump = False
+                    state.playerRight = False
+                    state.playerLeft = False
+                    if state.weapon == 1:
+                        if state.facingLeft:
+                            if state.player_count == 1:
+                                state.player.setImageIndex(22)
+                            if state.player_count == 10:
+                                state.player.setImageIndex(23)
+                            if state.player_count == 20:
+                                state.player.setImageIndex(24)
+                            if state.player_count == 30:
+                               state.player.setImageIndex(25)
+                            if state.player_count == 40:
+                                state.player.setImageIndex(26)
+                                state.player_count = 0
+                                state.attack = False
+                        if state.facingRight:
+                            if state.player_count == 1:
+                                state.player.setImageIndex(27)
+                            if state.player_count == 10:
+                                state.player.setImageIndex(28)
+                            if state.player_count == 20:
+                                state.player.setImageIndex(29)
+                            if state.player_count == 30:
+                               state.player.setImageIndex(30)
+                            if state.player_count == 40:
+                                state.player.setImageIndex(31)
+                                state.player_count = 0
+                                state.attack = False
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.yVelocity += 1
@@ -300,6 +384,39 @@ def collide_with_climbable_walls():
                     state.player.setImageIndex(65)
                 if state.facingRight:
                     state.player.setImageIndex(56)
+            if state.attack:
+                if state.health != 0:
+                    state.player_count += 1
+                    state.jump = False
+                    state.playerRight = False
+                    state.playerLeft = False
+                    if state.weapon == 1:
+                        if state.facingLeft:
+                            if state.player_count == 1:
+                                state.player.setImageIndex(22)
+                            if state.player_count == 10:
+                                state.player.setImageIndex(23)
+                            if state.player_count == 20:
+                                state.player.setImageIndex(24)
+                            if state.player_count == 30:
+                               state.player.setImageIndex(25)
+                            if state.player_count == 40:
+                                state.player.setImageIndex(26)
+                                state.player_count = 0
+                                state.attack = False
+                        if state.facingRight:
+                            if state.player_count == 1:
+                                state.player.setImageIndex(27)
+                            if state.player_count == 10:
+                                state.player.setImageIndex(28)
+                            if state.player_count == 20:
+                                state.player.setImageIndex(29)
+                            if state.player_count == 30:
+                               state.player.setImageIndex(30)
+                            if state.player_count == 40:
+                                state.player.setImageIndex(31)
+                                state.player_count = 0
+                                state.attack = False
         elif (i.getX() <= state.player.getX() + 25 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 15 <= i.getX() + i.getWidth() or i.getX() <= state.player.getX() + 35 <= i.getX() + i.getWidth()) and i.getY() + i.getHeight() - 10 <= state.player.getY() <= i.getY() + i.getHeight() + 2:
             state.playerUp = False
             state.gravity = 0

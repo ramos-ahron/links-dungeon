@@ -224,6 +224,8 @@ def handle_events():
                 state.playerUp = False
             elif event.key == pygame.K_s:
                 state.playerDown = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            state.attack = True
 
 
 def setup():
@@ -231,17 +233,20 @@ def setup():
     build_background()
     player.create_player()
     build_terrain()
+    player.create_attack_ranges()
     fill_draw_groups()
 
 
 def frame():
     """One frame of the level, in the exact order of the original loop body."""
+    player.update_attack_ranges()
     physics.reset_speeds_and_gravity()
     player.tick_regen_counters()
     draw()
     reset_frame_flags()
     player.update_stats()
     player.update_death()
+    player.reset_attack_counter()
     check_level_bounds()
     player.reset_spike_counter()
     player.update_damage_flash()
