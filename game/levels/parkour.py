@@ -2,7 +2,7 @@
 """
 import pygame
 
-from game import loop, physics, player
+from game import enemies, loop, physics, player
 from game.sprite import Sprite
 from game.colors import PINK
 from game.loop import add_text
@@ -159,7 +159,7 @@ def build_terrain():
 
 def fill_draw_groups():
     """Put the level sprites into the groups that get drawn each frame."""
-    state.all_sprites1.add(state.boundaries,state.background,state.ground,state.wall,state.c_wall,state.spike,state.stat_background,state.player)
+    state.all_sprites1.add(state.boundaries,state.background,state.ground,state.wall,state.c_wall,state.spike,state.enemy,state.stat_background,state.player)
     state.all_sprites2.add(state.player_stats)
 
 
@@ -237,6 +237,7 @@ def setup():
     build_background()
     player.create_player()
     build_terrain()
+    enemies.create_enemies()
     player.create_attack_ranges()
     fill_draw_groups()
 
