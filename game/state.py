@@ -46,12 +46,18 @@ def init():
     state.enemy1_count = 0
     state.enemy2_count = 0
     state.enemy3_count = 0
+    state.enemy4_count = 0
+    state.enemy5_count = 0
     state.enemy1_death_ani = 0
     state.enemy2_death_ani = 0
     state.enemy3_death_ani = 0
+    state.enemy4_death_ani = 0
+    state.enemy5_death_ani = 0
     state.enemy1_health = 50
     state.enemy2_health = 50
     state.enemy3_health = 50
+    state.enemy4_health = 50
+    state.enemy5_health = 50
     state.death_counter = 0
     state.damage_counter = 0
     state.damage_count = 0
@@ -93,3 +99,7 @@ def init():
     state.enemy2_stop_right = False
     state.enemy3_stop_left = False
     state.enemy3_stop_right = False
+    state.enemy4_stop_left = False
+    state.enemy4_stop_right = False
+    state.enemy5_stop_left = False
+    state.enemy5_stop_right = False

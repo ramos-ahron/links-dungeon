@@ -183,6 +183,12 @@ def draw():
     if state.enemy3_health > 0:
         pygame.draw.rect(state.screen,[0,0,0],[state.enemy3.getX(),state.enemy3.getY() - 30, 50, 8])
         pygame.draw.rect(state.screen,[255,0,0],[state.enemy3.getX() ,state.enemy1.getY() - 30, state.enemy3_health,8])
+    if state.enemy4_health > 0:
+        pygame.draw.rect(state.screen,[0,0,0],[state.enemy4.getX(),state.enemy4.getY() - 30, 50, 8])
+        pygame.draw.rect(state.screen,[255,0,0],[state.enemy4.getX() ,state.enemy1.getY() - 30, state.enemy4_health,8])
+    if state.enemy5_health > 0:
+        pygame.draw.rect(state.screen,[0,0,0],[state.enemy5.getX(),state.enemy5.getY() - 30, 50, 8])
+        pygame.draw.rect(state.screen,[255,0,0],[state.enemy5.getX() ,state.enemy1.getY() - 30, state.enemy5_health,8])
     pygame.display.update()
 
 
@@ -273,6 +279,8 @@ def frame():
     enemies.update_enemy1()
     enemies.update_enemy2()
     enemies.update_enemy3()
+    enemies.update_enemy4()
+    enemies.update_enemy5()
     player.lower_shield_when_hanging()
     physics.scroll_world()
     player.update_idle_pose()
