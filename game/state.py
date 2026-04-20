@@ -44,8 +44,14 @@ def init():
     state.stamina_count = 0
     state.arrows_taken = 0
     state.enemy1_count = 0
+    state.enemy2_count = 0
+    state.enemy3_count = 0
     state.enemy1_death_ani = 0
+    state.enemy2_death_ani = 0
+    state.enemy3_death_ani = 0
     state.enemy1_health = 50
+    state.enemy2_health = 50
+    state.enemy3_health = 50
     state.death_counter = 0
     state.damage_counter = 0
     state.damage_count = 0
@@ -83,3 +89,7 @@ def init():
     state.damage_check = False
     state.enemy1_stop_left = False
     state.enemy1_stop_right = False
+    state.enemy2_stop_left = False
+    state.enemy2_stop_right = False
+    state.enemy3_stop_left = False
+    state.enemy3_stop_right = False

@@ -253,6 +253,10 @@ def collide_with_ground():
                                 state.player.setImageIndex(26)
                                 if state.player_range1.collision(state.enemy1):
                                     state.enemy1_health -= 10
+                                if state.player_range1.collision(state.enemy2):
+                                    state.enemy2_health -= 10
+                                if state.player_range1.collision(state.enemy3):
+                                    state.enemy3_health -= 10
                                 state.player_count = 0
                                 state.attack = False
                         if state.facingRight:
@@ -268,6 +272,10 @@ def collide_with_ground():
                                 state.player.setImageIndex(31)
                                 if state.player_range2.collision(state.enemy1):
                                     state.enemy1_health -= 10
+                                if state.player_range2.collision(state.enemy2):
+                                    state.enemy2_health -= 10
+                                if state.player_range2.collision(state.enemy3):
+                                    state.enemy3_health -= 10
                                 state.player_count = 0
                                 state.attack = False
                     if state.weapon == 2:
@@ -359,6 +367,10 @@ def collide_with_walls():
                                 state.player.setImageIndex(26)
                                 if state.player_range1.collision(state.enemy1):
                                     state.enemy1_health -= 10
+                                if state.player_range1.collision(state.enemy2):
+                                    state.enemy2_health -= 10
+                                if state.player_range1.collision(state.enemy3):
+                                    state.enemy3_health -= 10
                                 state.player_count = 0
                                 state.attack = False
                         if state.facingRight:
@@ -374,6 +386,10 @@ def collide_with_walls():
                                 state.player.setImageIndex(31)
                                 if state.player_range2.collision(state.enemy1):
                                     state.enemy1_health -= 10
+                                if state.player_range2.collision(state.enemy2):
+                                    state.enemy2_health -= 10
+                                if state.player_range2.collision(state.enemy3):
+                                    state.enemy3_health -= 10
                                 state.player_count = 0
                                 state.attack = False
                     if state.weapon == 2:
@@ -650,6 +666,20 @@ def update_arrows():
         if state.enemy1_health > 0:
             if state.arrow.collision(state.enemy1):
                 state.enemy1_health -= 10
+                state.all_sprites1.remove(state.arrow)
+                state.arrow.move(0, 0)
+                state.arrow.setPosition(0, 0)
+                state.arrows.remove(state.arrow)
+        if state.enemy2_health > 0:
+            if state.arrow.collision(state.enemy2):
+                state.enemy2_health -= 10
+                state.all_sprites1.remove(state.arrow)
+                state.arrow.move(0, 0)
+                state.arrow.setPosition(0, 0)
+                state.arrows.remove(state.arrow)
+        if state.enemy3_health > 0:
+            if state.arrow.collision(state.enemy3):
+                state.enemy3_health -= 10
                 state.all_sprites1.remove(state.arrow)
                 state.arrow.move(0, 0)
                 state.arrow.setPosition(0, 0)
