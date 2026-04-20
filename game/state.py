@@ -27,6 +27,7 @@ def init():
     state.enemy = []
     state.doors = []
     state.arrows  = []
+    state.enemy_arrows = []
     state.yVelocity = 0
     state.gravity = 0.9  # never used: each level overwrites gravity every frame (physics.py)
     state.weapon = 1
@@ -42,6 +43,9 @@ def init():
     state.shield_count = 0
     state.stamina_count = 0
     state.arrows_taken = 0
+    state.enemy1_count = 0
+    state.enemy1_death_ani = 0
+    state.enemy1_health = 50
     state.death_counter = 0
     state.damage_counter = 0
     state.damage_count = 0
@@ -67,9 +71,13 @@ def init():
     state.bottom = False
     state.collision = False
     state.playerUp = False
+    state.enemy_move = False
+    state.enemy_facing_left = True
+    state.enemy_facing_right = False
     state.playerDown = False
     state.facingLeft = False
     state.facingRight = True
+    state.enemy_attack = False
     state.extra_gravity = False
     state.spike_collision = False
     state.damage_check = False

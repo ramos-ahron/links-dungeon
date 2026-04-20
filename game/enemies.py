@@ -1,7 +1,108 @@
 """The 8 parkour-level enemies: sprites, animation helpers, AI and their arrows.
 """
 from game.sprite import Sprite
+from game.colors import GREEN, RED, BLUE
 from game.state import state
+
+
+def enemy_death_left(count,name,group):
+    """Enemy death animation while facing left; `count` is the frame counter."""
+    if count == 1:
+        name.setImageIndex(4)
+    if count == 15:
+        name.setImageIndex(5)
+    if count == 30:
+        name.setImageIndex(6)
+    if count == 45:
+        name.setImageIndex(7)
+    if count == 60:
+        count = 0
+        group.remove(name)
+
+
+def enemy_death_right(count,name,group):
+    """Enemy death animation while facing right; `count` is the frame counter."""
+    if count == 1:
+        name.setImageIndex(16)
+    if count == 15:
+        name.setImageIndex(17)
+    if count == 30:
+        name.setImageIndex(18)
+    if count == 45:
+        name.setImageIndex(19)
+    if count == 60:
+        count = 0
+        group.remove(name)
+
+
+def enemy_shoot_left(count,name,arrow_group,group):
+    """Enemy bow animation facing left; fires an arrow on frame 30."""
+    if count == 1:
+        name.setImageIndex(1)
+    if count == 15:
+        name.setImageIndex(2)
+    if count == 30:
+        name.setImageIndex(3)
+        e_arrow = Sprite(30,12,None,"arrow_left_00.png")
+        e_arrow.xSpeed = -state.groundSpeed - 2
+        e_arrow.setPosition(name.getX() - 30, name.getY() + (name.getWidth() / 2) - 5)
+        arrow_group.append(e_arrow)
+        group.add(arrow_group)
+    if count == 45:
+        name.setImageIndex(24)
+    if count == 85:
+        count = 0
+
+
+def enemy_shoot_right(count,name,arrow_group,group):
+    """Enemy bow animation facing right; fires an arrow on frame 30."""
+    if count == 1:
+        name.setImageIndex(13)
+    if count == 15:
+        name.setImageIndex(14)
+    if count == 30:
+        name.setImageIndex(15)
+        e_arrow = Sprite(30,12,None,"arrow_right_00.png")
+        e_arrow.xSpeed = state.groundSpeed + 2
+        e_arrow.setPosition(name.getX() + name.getWidth(), name.getY() + (name.getWidth() / 2) - 5)
+        arrow_group.append(e_arrow)
+        group.add(arrow_group)
+    if count == 45:
+        name.setImageIndex(27)
+    if count == 85:
+        count = 0
+
+
+def enemy_attack_right(count,name):
+    """Enemy sword animation (player on its left side); `count` is the frame counter."""
+    if count == 1:
+        name.setImageIndex(8)
+    if count == 10:
+        name.setImageIndex(9)
+    if count == 20:
+        name.setImageIndex(10)
+    if count == 30:
+        name.setImageIndex(11)
+    if count == 40:
+        name.setImageIndex(24)
+    if count == 90:
+        count = 0
+
+
+def enemy_attack_left(count,name):
+    """Enemy sword animation (player on its right side); `count` is the frame counter."""
+    if count == 1:
+        name.setImageIndex(20)
+    if count == 10:
+        name.setImageIndex(21)
+    if count == 20:
+        name.setImageIndex(22)
+    if count == 30:
+        name.setImageIndex(23)
+    if count == 40:
+        name.setImageIndex(27)
+    if count == 90:
+        count = 0
 
 
 def create_enemies():
@@ -60,3 +161,196 @@ def create_enemies():
         enemies.addImage("enemy_walking_right_00.png")
         enemies.addImage("enemy_walking_right_01.png")
         enemies.addImage("enemy_walking_right_02.png")
+
+
+def create_ranges():
+    """Create each enemy's detection boxes (sword reach, chase zone, bow zone)."""
+    state.enemy1_range1 = Sprite(50,50,RED)
+    state.enemy1_range2 = Sprite(50,50,RED)
+    state.enemy1_range3 = Sprite(100,200,BLUE)
+    state.enemy1_range4 = Sprite(100,200,BLUE)
+    state.enemy1_range5 = Sprite(950,550,GREEN)
+    state.enemy2_range1 = Sprite(50,50,RED)
+    state.enemy2_range2 = Sprite(50,50,RED)
+    state.enemy2_range3 = Sprite(100,200,BLUE)
+    state.enemy2_range4 = Sprite(100,200,BLUE)
+    state.enemy2_range5 = Sprite(950,550,GREEN)
+    state.enemy3_range1 = Sprite(50,50,RED)
+    state.enemy3_range2 = Sprite(50,50,RED)
+    state.enemy3_range3 = Sprite(100,200,BLUE)
+    state.enemy3_range4 = Sprite(100,200,BLUE)
+    state.enemy3_range5 = Sprite(950,550,GREEN)
+    state.enemy4_range1 = Sprite(50,50,RED)
+    state.enemy4_range2 = Sprite(50,50,RED)
+    state.enemy4_range3 = Sprite(100,200,BLUE)
+    state.enemy4_range4 = Sprite(100,200,BLUE)
+    state.enemy4_range5 = Sprite(950,550,GREEN)
+    state.enemy5_range1 = Sprite(50,50,RED)
+    state.enemy5_range2 = Sprite(50,50,RED)
+    state.enemy5_range3 = Sprite(100,200,BLUE)
+    state.enemy5_range4 = Sprite(100,200,BLUE)
+    state.enemy5_range5 = Sprite(950,550,GREEN)
+    state.enemy6_range1 = Sprite(50,50,RED)
+    state.enemy6_range2 = Sprite(50,50,RED)
+    state.enemy6_range3 = Sprite(100,200,BLUE)
+    state.enemy6_range4 = Sprite(100,200,BLUE)
+    state.enemy6_range5 = Sprite(950,550,GREEN)
+    state.enemy7_range1 = Sprite(50,50,RED)
+    state.enemy7_range2 = Sprite(50,50,RED)
+    state.enemy7_range3 = Sprite(100,200,BLUE)
+    state.enemy7_range4 = Sprite(100,200,BLUE)
+    state.enemy7_range5 = Sprite(950,550,GREEN)
+    state.enemy8_range1 = Sprite(50,50,RED)
+    state.enemy8_range2 = Sprite(50,50,RED)
+    state.enemy8_range3 = Sprite(100,200,BLUE)
+    state.enemy8_range4 = Sprite(100,200,BLUE)
+    state.enemy8_range5 = Sprite(950,550,GREEN)
+
+
+def face_dead_player():
+    """Once the player is dead, every enemy turns to face them."""
+    for enemies in state.enemy:
+        if state.health == 0:
+            if state.player.getX() < enemies.getX():
+                enemies.setImageIndex(0)
+            if state.player.getX() > enemies.getX():
+                enemies.setImageIndex(27)
+
+
+def update_enemy1():
+    """Enemy 1 AI: block on terrain, shoot from far, chase when near, sword when adjacent, die at 0 health."""
+    for i in state.ground:
+        if (i.getX() <= state.enemy1.getX() + 25  <= i.getX() + i.getWidth() or i.getX() <= state.enemy1.getX() + 15  <= i.getX() + i.getWidth() or i.getX() <= state.enemy1.getX() + 35  <= i.getX() + i.getWidth()) and i.getY() - 2 <= state.enemy1.getY() + state.player.getHeight() <= i.getY() + 10:
+            state.enemy_attack = True
+    for walls in state.wall:
+        if state.enemy1.collision(walls):
+            if (walls.getY() <= state.enemy1.getY() + 25 <= walls.getY() + walls.getHeight() or walls.getY() <= state.enemy1.getY() + 15 <= walls.getY() + walls.getHeight() or walls.getY() <= state.enemy1.getY() + 35 <= walls.getY() + walls.getHeight()) and walls.getX() - 2 <= state.enemy1.getX() + state.enemy1.getWidth() <= walls.getX() + 10:
+                state.enemy1_stop_left = True
+            if (walls.getY() <= state.enemy1.getY() + 25 <= walls.getY() + walls.getHeight() or walls.getY() <= state.enemy1.getY() + 15 <= walls.getY() + walls.getHeight() or walls.getY() <= state.enemy1.getY() + 35 <= walls.getY() + walls.getHeight()) and walls.getX() + walls.getWidth() - 10 <= state.enemy1.getX() <= walls.getX() + walls.getWidth() + 2:
+                state.enemy1_stop_right = True
+    for c_walls in state.c_wall:
+        if state.enemy1.collision(c_walls):
+            if (c_walls.getY() <= state.enemy1.getY() + 25 <= c_walls.getY() + c_walls.getHeight() or c_walls.getY() <= state.enemy1.getY() + 15 <= c_walls.getY() + c_walls.getHeight() or c_walls.getY() <= state.enemy1.getY() + 35 <= c_walls.getY() + c_walls.getHeight()) and c_walls.getX() - 2 <= state.enemy1.getX() + state.enemy1.getWidth() <= c_walls.getX() + 10:
+                state.enemy1_stop_left = True
+            if (c_walls.getY() <= state.enemy1.getY() + 25 <= c_walls.getY() + c_walls.getHeight() or c_walls.getY() <= state.enemy1.getY() + 15 <= c_walls.getY() + c_walls.getHeight() or c_walls.getY() <= state.enemy1.getY() + 35 <= c_walls.getY() + c_walls.getHeight()) and c_walls.getX() + c_walls.getWidth() - 10 <= state.enemy1.getX() <= c_walls.getX() + c_walls.getWidth() + 2:
+                state.enemy1_stop_right = True
+    for spikes in state.spike:
+        if state.enemy1.collision(spikes):
+            if (spikes.getY() <= state.enemy1.getY() + 25 <= spikes.getY() + spikes.getHeight() or spikes.getY() <= state.enemy1.getY() + 15 <= spikes.getY() + spikes.getHeight() or spikes.getY() <= state.enemy1.getY() + 35 <= spikes.getY() + spikes.getHeight()) and spikes.getX() - 2 <= state.enemy1.getX() + state.enemy1.getWidth() <= spikes.getX() + 10:
+                state.enemy1_stop_left = True
+            if (spikes.getY() <= state.enemy1.getY() + 25 <= spikes.getY() + spikes.getHeight() or spikes.getY() <= state.enemy1.getY() + 15 <= spikes.getY() + spikes.getHeight() or spikes.getY() <= state.enemy1.getY() + 35 <= spikes.getY() + spikes.getHeight()) and spikes.getX() + spikes.getWidth() - 10 <= state.enemy1.getX() <= spikes.getX() + spikes.getWidth() + 2:
+                state.enemy1_stop_right = True
+    state.enemy1_range1.setPosition(state.enemy1.getX() - 50, state.enemy1.getY())
+    state.enemy1_range2.setPosition(state.enemy1.getX() + state.enemy1.getWidth(), state.enemy1.getY())
+    state.enemy1_range3.setPosition(state.enemy1.getX() - 160,state.enemy1.getY() - state.enemy1.getWidth() - 30)
+    state.enemy1_range4.setPosition(state.enemy1.getX() + 110, state.enemy1.getY() - state.enemy1.getWidth() - 30)
+    state.enemy1_range5.setPosition(state.enemy1.getX() - 425, state.enemy1.getY() - 410)
+    if state.enemy1_health > 0:
+        if state.enemy1.getY() <= state.player.getY() + 25 <= state.enemy1.getY() + state.enemy1.getHeight() and state.enemy1.getX() + state.enemy1.getWidth() - 10 <= state.player.getX() <= state.enemy1.getX() + state.enemy1.getWidth() + 2:
+            state.playerLeft = False
+        elif state.enemy1.getY() <= state.player.getY() + 25 <= state.enemy1.getY() + state.enemy1.getHeight() and state.enemy1.getX() - 2 <= state.player.getX() + state.player.getWidth() <= state.enemy1.getX() + 10:
+            state.playerRight = False
+    if state.enemy1_health <= 0:
+        state.enemy1_health = 0
+    if state.enemy1_health == 0:
+        state.enemy1_death_ani += 1
+        if state.enemy_facing_left:
+            enemy_death_left(state.enemy1_death_ani,state.enemy1,state.all_sprites1)
+        elif state.enemy_facing_right:
+            enemy_death_right(state.enemy1_death_ani,state.enemy1,state.all_sprites1)
+    if state.enemy1_health > 0 and state.health != 0:
+        if state.enemy_attack:
+            state.enemy1_count += 1
+            if not state.player.collision(state.enemy1_range3) and not state.player.collision(state.enemy1_range4) and not state.player.collision(state.enemy1_range1) and not state.player.collision(state.enemy1_range2):
+                if state.player.getX() < state.enemy1.getX():
+                    state.enemy_facing_left = True
+                    state.enemy_facing_right = False
+                    enemy_shoot_left(state.enemy1_count,state.enemy1,state.enemy_arrows,state.all_sprites1)
+                if state.player.getX() > state.enemy1.getX():
+                    state.enemy_facing_left = False
+                    state.enemy_facing_right = True
+                    enemy_shoot_right(state.enemy1_count,state.enemy1,state.enemy_arrows,state.all_sprites1)
+            elif state.player.collision(state.enemy1_range3) or state.player.collision(state.enemy1_range4):
+                if state.player.collision(state.enemy1_range3):
+                    state.enemy_facing_left = True
+                    state.enemy_facing_right = False
+                    if not state.enemy1_stop_right:
+                        state.enemy1.move(-3,0)
+                    state.enemy1.imageStartEnd(24,26,10)
+                if state.player.collision(state.enemy1_range4):
+                    state.enemy_facing_left = False
+                    state.enemy_facing_right = True
+                    if not state.enemy1_stop_left:
+                        state.enemy1.move(3,0)
+                    state.enemy1.imageStartEnd(27,29,10)
+                state.enemy1_count = 0
+            elif state.player.collision(state.enemy1_range1):
+                enemy_attack_right(state.enemy1_count,state.enemy1)
+                if state.enemy1_count == 30:
+                    state.damage_check = True
+                    if state.player_shield > 0:
+                        state.player_shield -= 20
+                        state.shield -= 2
+                    else:
+                        if state.health != 0:
+                            state.player_health -= 10
+                            state.health -= 1
+                    state.shield_count = 0
+            elif state.player.collision(state.enemy1_range2):
+                enemy_attack_left(state.enemy1_count,state.enemy1)
+                if state.enemy1_count == 30:
+                    state.damage_check = True
+                    if state.player_shield > 0:
+                        state.player_shield -= 20
+                        state.shield -= 2
+                    else:
+                        if state.health != 0:
+                            state.player_health -= 10
+                            state.health -= 1
+                    state.shield_count = 0
+            if state.enemy1_count == 90:
+                state.enemy1_count = 0
+
+
+def update_enemy_arrows():
+    """Move enemy arrows; remove them on terrain, damage the player they hit."""
+    for e_arrows in state.enemy_arrows:
+        e_arrows.move(e_arrows.xSpeed,0)
+        for grounds in state.ground:
+            if e_arrows.collision(grounds):
+                state.all_sprites1.remove(e_arrows)
+                state.enemy_arrows.remove(e_arrows)
+                e_arrows.move(0,0)
+                e_arrows.setPosition(0,0)
+        for walls in state.wall:
+            if e_arrows.collision(walls):
+                state.all_sprites1.remove(e_arrows)
+                state.enemy_arrows.remove(e_arrows)
+                e_arrows.move(0,0)
+                e_arrows.setPosition(0,0)
+        for c_walls in state.c_wall:
+            if e_arrows.collision(c_walls):
+                state.all_sprites1.remove(e_arrows)
+                state.enemy_arrows.remove(e_arrows)
+                e_arrows.move(0,0)
+                e_arrows.setPosition(0,0)
+        for spikes in state.spike:
+            if e_arrows.collision(spikes):
+                state.all_sprites1.remove(e_arrows)
+                state.enemy_arrows.remove(e_arrows)
+                e_arrows.move(0,0)
+                e_arrows.setPosition(0,0)
+        if e_arrows.collision(state.player) and state.health != 0:
+            state.damage_check = True
+            state.all_sprites1.remove(e_arrows)
+            state.enemy_arrows.remove(e_arrows)
+            e_arrows.move(0,0)
+            e_arrows.setPosition(0,0)
+            if state.player_shield > 0:
+                state.player_shield -= 10
+                state.shield -= 1
+            else:
+                if state.health != 0:
+                    state.player_health -= 10
+                    state.health -= 1
+            state.shield_count = 0

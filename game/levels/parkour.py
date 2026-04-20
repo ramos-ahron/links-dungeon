@@ -174,6 +174,9 @@ def draw():
     add_text(str(state.health) + " / 10",[57,10],24,[255,255,255])
     add_text(str(state.shield) + " / 10",[57,27],24,[255,0,0])
     add_text(str(state.stamina) + " / 10",[57,45],23,[255,255,255])
+    if state.enemy1_health > 0:
+        pygame.draw.rect(state.screen,[0,0,0],[state.enemy1.getX(),state.enemy1.getY() - 30, 50, 8])
+        pygame.draw.rect(state.screen,[255,0,0],[state.enemy1.getX() ,state.enemy1.getY() - 30, state.enemy1_health,8])
     pygame.display.update()
 
 
@@ -239,6 +242,7 @@ def setup():
     build_terrain()
     enemies.create_enemies()
     player.create_attack_ranges()
+    enemies.create_ranges()
     fill_draw_groups()
 
 
@@ -259,12 +263,15 @@ def frame():
     player.collide_with_walls()
     player.collide_with_climbable_walls()
     player.collide_with_spikes()
+    enemies.face_dead_player()
+    enemies.update_enemy1()
     player.lower_shield_when_hanging()
     physics.scroll_world()
     player.update_idle_pose()
     player.cancel_attack_in_air()
     player.cancel_bow_without_stamina()
     player.update_arrows()
+    enemies.update_enemy_arrows()
     physics.apply_gravity()
     physics.wrap_background()
     pygame.display.flip()
