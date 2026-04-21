@@ -261,6 +261,12 @@ def collide_with_ground():
                                     state.enemy4_health -= 10
                                 if state.player_range1.collision(state.enemy5):
                                     state.enemy5_health -= 10
+                                if state.player_range1.collision(state.enemy6):
+                                    state.enemy6_health -= 10
+                                if state.player_range1.collision(state.enemy7):
+                                    state.enemy7_health -= 10
+                                if state.player_range1.collision(state.enemy8):
+                                    state.enemy8_health -= 10
                                 state.player_count = 0
                                 state.attack = False
                         if state.facingRight:
@@ -284,6 +290,12 @@ def collide_with_ground():
                                     state.enemy4_health -= 10
                                 if state.player_range2.collision(state.enemy5):
                                     state.enemy5_health -= 10
+                                if state.player_range2.collision(state.enemy6):
+                                    state.enemy6_health -= 10
+                                if state.player_range2.collision(state.enemy7):
+                                    state.enemy7_health -= 10
+                                if state.player_range2.collision(state.enemy8):
+                                    state.enemy8_health -= 10
                                 state.player_count = 0
                                 state.attack = False
                     if state.weapon == 2:
@@ -383,6 +395,12 @@ def collide_with_walls():
                                     state.enemy4_health -= 10
                                 if state.player_range1.collision(state.enemy5):
                                     state.enemy5_health -= 10
+                                if state.player_range1.collision(state.enemy6):
+                                    state.enemy6_health -= 10
+                                if state.player_range1.collision(state.enemy7):
+                                    state.enemy7_health -= 10
+                                if state.player_range1.collision(state.enemy8):
+                                    state.enemy8_health -= 10
                                 state.player_count = 0
                                 state.attack = False
                         if state.facingRight:
@@ -406,6 +424,12 @@ def collide_with_walls():
                                     state.enemy4_health -= 10
                                 if state.player_range2.collision(state.enemy5):
                                     state.enemy5_health -= 10
+                                if state.player_range2.collision(state.enemy6):
+                                    state.enemy6_health -= 10
+                                if state.player_range2.collision(state.enemy7):
+                                    state.enemy7_health -= 10
+                                if state.player_range2.collision(state.enemy8):
+                                    state.enemy8_health -= 10
                                 state.player_count = 0
                                 state.attack = False
                     if state.weapon == 2:
@@ -710,6 +734,27 @@ def update_arrows():
         if state.enemy5_health > 0:
             if state.arrow.collision(state.enemy5):
                 state.enemy5_health -= 10
+                state.all_sprites1.remove(state.arrow)
+                state.arrow.move(0, 0)
+                state.arrow.setPosition(0, 0)
+                state.arrows.remove(state.arrow)
+        if state.enemy6_health > 0:
+            if state.arrow.collision(state.enemy6):
+                state.enemy6_health -= 10
+                state.all_sprites1.remove(state.arrow)
+                state.arrow.move(0, 0)
+                state.arrow.setPosition(0, 0)
+                state.arrows.remove(state.arrow)
+        if state.enemy7_health > 0:
+            if state.arrow.collision(state.enemy7):
+                state.enemy7_health -= 10
+                state.all_sprites1.remove(state.arrow)
+                state.arrow.move(0, 0)
+                state.arrow.setPosition(0, 0)
+                state.arrows.remove(state.arrow)
+        if state.enemy8_health > 0:
+            if state.arrow.collision(state.enemy8):
+                state.enemy8_health -= 10
                 state.all_sprites1.remove(state.arrow)
                 state.arrow.move(0, 0)
                 state.arrow.setPosition(0, 0)
