@@ -157,10 +157,55 @@ def build_terrain():
     state.spike.append(state.spike8)
 
 
+def build_door():
+    """Create the boss-room door (hidden until every enemy is dead)."""
+    state.door = Sprite(105,150,None,"door_texture_00.png")
+    state.door.addImage("door_texture_01.png")
+    state.door.addImage("door_texture_02.png")
+    state.door.addImage("door_texture_03.png")
+    state.door.addImage("door_texture_04.png")
+    state.door.addImage("door_texture_05.png")
+    state.door.setPosition(7000,310)
+    state.door_background = Sprite(105,150,None, "door_texture_06.png")
+    state.door_background.setPosition(7000,310)
+    state.doors.append(state.door_background)
+    state.doors.append(state.door)
+
+
 def fill_draw_groups():
     """Put the level sprites into the groups that get drawn each frame."""
     state.all_sprites1.add(state.boundaries,state.background,state.ground,state.wall,state.c_wall,state.spike,state.enemy,state.stat_background,state.player)
     state.all_sprites2.add(state.player_stats)
+
+
+def update_door():
+    """Show the door once all enemies are dead; play its opening animation and switch to the boss room."""
+    if state.enemy1_health == 0 and state.enemy2_health == 0 and state.enemy3_health == 0 and state.enemy4_health == 0 and state.enemy5_health == 0 and state.enemy6_health == 0 and state.enemy7_health == 0 and state.enemy8_health == 0:
+        state.door_appearance += 1
+        if state.door_appearance == 75:
+            for i in state.all_sprites1:
+                state.all_sprites1.remove(i)
+            state.all_sprites1.add(state.boundaries,state.background,state.ground,state.wall,state.c_wall,state.spike,state.stat_background,state.doors,state.player)
+    if state.player.collision(state.door) and state.enter:
+        state.door_count += 1
+        state.playerLeft = False
+        state.playerRight = False
+        state.jump = False
+        if state.door_count == 1:
+            state.door.setImageIndex(0)
+        if state.door_count == 15:
+            state.door.setImageIndex(1)
+        if state.door_count == 30:
+            state.door.setImageIndex(2)
+        if state.door_count == 45:
+            state.door.setImageIndex(3)
+        if state.door_count == 60:
+            state.door.setImageIndex(4)
+        if state.door_count == 75:
+            state.door.setImageIndex(5)
+        if state.door_count == 150:
+            state.parkour_enemies = False
+            state.boss_battle = True
 
 
 def draw():
@@ -241,6 +286,8 @@ def handle_events():
                 state.weapon = 1
             if event.key == pygame.K_2:
                 state.weapon = 2
+            if event.key == pygame.K_o:
+                state.enter = True
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_d:
                 state.playerRight = False
@@ -264,11 +311,13 @@ def setup():
     enemies.create_enemies()
     player.create_attack_ranges()
     enemies.create_ranges()
+    build_door()
     fill_draw_groups()
 
 
 def frame():
     """One frame of the level, in the exact order of the original loop body."""
+    update_door()
     player.update_attack_ranges()
     physics.reset_speeds_and_gravity()
     player.tick_regen_counters()

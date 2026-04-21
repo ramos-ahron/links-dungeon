@@ -43,6 +43,8 @@ def init():
     state.shield_count = 0
     state.stamina_count = 0
     state.arrows_taken = 0
+    state.door_count = 0
+    state.door_appearance = 0
     state.enemy1_count = 0
     state.enemy2_count = 0
     state.enemy3_count = 0
@@ -79,6 +81,7 @@ def init():
     state.player_shield = 100
     state.player_stamina = 100
     state.parkour_enemies = True
+    state.boss_battle = False
     state.countdowned = True
     state.a_collision = False
     state.e_a_collision = False
@@ -91,6 +94,7 @@ def init():
     state.defend = False
     state.bottom = False
     state.collision = False
+    state.enter = False
     state.playerUp = False
     state.enemy_move = False
     state.enemy_facing_left = True
