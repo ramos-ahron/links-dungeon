@@ -17,6 +17,7 @@ def init():
     state.clock = pygame.time.Clock()
     state.all_sprites1 = pygame.sprite.Group()
     state.all_sprites2 = pygame.sprite.Group()
+    state.all_sprites3 = pygame.sprite.Group()
     state.boundaries = []
     state.background = []
     state.ground = []

@@ -128,3 +128,12 @@ def wrap_background():
         state.ground1.setPosition(-state.ground_position, 460)
     if state.ground2.getX() > 800:
         state.ground2.setPosition(-state.ground_position, 460)
+
+
+def set_boss_room_gravity():
+    """Set boss-room gravity (no gravity once the player is dead)."""
+    if state.health != 0:
+        state.gravity = 0.095
+    else:
+        state.gravity = 0
+        state.yVelocity = 0

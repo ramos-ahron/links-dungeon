@@ -29,6 +29,7 @@ def build_background():
     state.boundaries.append(state.bound2)
     state.back1 = Sprite(800, 550, None, "background1.jpg")
     state.back2 = Sprite(800, 550, None, "background1.jpg")
+    state.back3 = Sprite(800, 550, None, "background2.png")
     state.back2.setPosition(800, 0)
     state.background.append(state.back1)
     state.background.append(state.back2)

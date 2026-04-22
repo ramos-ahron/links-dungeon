@@ -759,3 +759,36 @@ def update_arrows():
                 state.arrow.move(0, 0)
                 state.arrow.setPosition(0, 0)
                 state.arrows.remove(state.arrow)
+
+
+def update_stats_boss_room():
+    """Same as update_stats(), except shield regen restarts from 120 instead of 180."""
+    if state.player_health <= 0:
+        state.player_health = 0
+        state.health = 0
+    if state.player_stamina <= 0:
+        state.player_stamina = 0
+        state.stamina = 0
+    if state.player_shield <= 0:
+        state.player_shield = 0
+        state.shield = 0
+    if state.player_health >= 100:
+        state.player_health = 100
+        state.health = 10
+    if state.player_stamina >= 100:
+        state.player_stamina = 100
+        state.stamina = 10
+    if state.player_shield >= 100:
+        state.player_shield = 100
+        state.shield = 10
+    if state.health != 0:
+        if state.stamina_count >= 300:
+            if state.stamina != 10:
+                state.player_stamina += 10
+                state.stamina += 1
+            state.stamina_count = 120
+        if state.shield_count >= 300:
+            if state.shield != 10:
+                state.player_shield += 10
+                state.shield += 1
+            state.shield_count = 120

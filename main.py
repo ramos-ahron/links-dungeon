@@ -5,7 +5,7 @@ Run from the project folder with:  python main.py
 import pygame
 
 from game import loop, state as game_state
-from game.levels import parkour
+from game.levels import boss, parkour
 
 
 def main():
@@ -14,6 +14,8 @@ def main():
     game_state.init()
     parkour.setup()
     parkour.run()
+    boss.setup()
+    boss.run()
     pygame.quit()
 
 
