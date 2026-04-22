@@ -55,6 +55,7 @@ def setup_boss_room():
     state.chain_away = False
     state.attack = False
     state.damage_check = False
+    state.winner = False
     state.a_collision = False
     state.boss_range1 = Sprite(50,100,[255,0,0])
     state.boss_range2 = Sprite(50,100,[255,0,0])
@@ -94,6 +95,9 @@ def draw():
     pygame.draw.rect(state.screen,[211,211,211],[27,25,state.player_shield,15])
     pygame.draw.rect(state.screen,[0,0,255],[27,43,state.player_stamina,15])
     state.all_sprites2.draw(state.screen)
+    if state.boss_health > 0:
+        pygame.draw.rect(state.screen,[0,0,0],[150,30,625,40])
+        pygame.draw.rect(state.screen,[255,0,0],[150,30,state.boss_health,40])
     add_text(str(state.health) + " / 10",[57,10],24,[255,255,255])
     add_text(str(state.shield) + " / 10",[57,27],24,[255,0,0])
     add_text(str(state.stamina) + " / 10",[57,45],23,[255,255,255])
@@ -169,6 +173,81 @@ def player_on_floor():
                     state.player.setImageIndex(56)
                 if not state.attack:
                     state.player_count = 0
+            if state.attack and not state.winner:
+                state.player_count += 1
+                state.jump = False
+                state.playerRight = False
+                state.playerLeft = False
+                if state.weapon == 1:
+                    if state.facingLeft:
+                        if state.player_count == 1:
+                            state.player.setImageIndex(22)
+                        if state.player_count == 10:
+                            state.player.setImageIndex(23)
+                        if state.player_count == 20:
+                            state.player.setImageIndex(24)
+                        if state.player_count == 30:
+                           state.player.setImageIndex(25)
+                        if state.player_count == 40:
+                            state.player.setImageIndex(26)
+                            if state.player_range1.collision(state.boss):
+                                state.boss_health -= 10
+                            state.player_count = 0
+                            state.attack = False
+                    if state.facingRight:
+                        if state.player_count == 1:
+                            state.player.setImageIndex(27)
+                        if state.player_count == 10:
+                            state.player.setImageIndex(28)
+                        if state.player_count == 20:
+                            state.player.setImageIndex(29)
+                        if state.player_count == 30:
+                           state.player.setImageIndex(30)
+                        if state.player_count == 40:
+                            state.player.setImageIndex(31)
+                            if state.player_range2.collision(state.boss):
+                                state.boss_health -= 10
+                            state.player_count = 0
+                            state.attack = False
+                if state.weapon == 2:
+                    if state.stamina > 0:
+                        if state.facingLeft:
+                            if state.player_count == 1:
+                                state.player.setImageIndex(77)
+                            if state.player_count == 15:
+                                state.player.setImageIndex(78)
+                            if state.player_count == 30:
+                                state.player.setImageIndex(79)
+                                state.player_count = 0
+                                state.attack = False
+                                state.arrow = Sprite(30,12,None,"arrow_left_00.png")
+                                state.arrow.xSpeed = -state.groundSpeed - 2
+                                state.arrow.setPosition(state.player.getX() - 30, state.player.getY() + (state.player.getWidth() / 2) - 5)
+                                state.arrows.append(state.arrow)
+                                state.all_sprites3.add(state.arrow)
+                                state.player_stamina -= 10
+                                state.stamina_count = 0
+                                state.stamina -= 1
+                        if state.facingRight:
+                            if state.player_count == 1:
+                                state.player.setImageIndex(74)
+                            if state.player_count == 15:
+                                state.player.setImageIndex(75)
+                            if state.player_count == 30:
+                                state.player.setImageIndex(76)
+                                state.player_count = 0
+                                state.attack = False
+                                state.arrow = Sprite(30,12,None,"arrow_right_00.png")
+                                state.arrow.xSpeed = state.groundSpeed + 2
+                                state.arrow.setPosition(state.player.getX() + state.player.getWidth(), state.player.getY() + (state.player.getWidth() / 2) - 5)
+                                state.arrows.append(state.arrow)
+                                state.all_sprites3.add(state.arrow)
+                                state.player_stamina -= 10
+                                state.stamina -= 1
+                                state.stamina_count = 0
+                    else:
+                        state.player_count = 0
+                        state.attack = False
 
 
 def move_player():
@@ -185,6 +264,26 @@ def move_player():
         state.facingLeft = True
         state.facingRight = False
         state.player.move(-4,0)
+
+
+def update_player_arrows():
+    """Move the player's arrows; damage the boss (and start the fight) on hit."""
+    # `arrow` stays on state: the original used this global name both in this loop and outside it.
+    for state.arrow in state.arrows:
+        state.arrow.move(state.arrow.xSpeed,0)
+        if state.arrow.collision(state.bound5) or state.arrow.collision(state.bound6):
+            state.all_sprites3.remove(state.arrow)
+            state.arrow.move(0, 0)
+            state.arrow.setPosition(0, 0)
+            state.arrows.remove(state.arrow)
+        if state.arrow.collision(state.boss):
+            if not state.boss_battle_start:
+                state.boss_battle_start = True
+            state.boss_health -= 10
+            state.all_sprites3.remove(state.arrow)
+            state.arrow.move(0, 0)
+            state.arrow.setPosition(0, 0)
+            state.arrows.remove(state.arrow)
 
 
 def rebuild_draw_group():
@@ -228,6 +327,8 @@ def handle_events():
                 state.playerUp = False
             elif event.key == pygame.K_s:
                 state.playerDown = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            state.attack = True
 
 
 def setup():
@@ -252,6 +353,7 @@ def frame():
     move_player()
     player.update_idle_pose()
     player.cancel_attack_in_air()
+    update_player_arrows()
     rebuild_draw_group()
     player.reset_attack_counter()
     pygame.display.flip()
