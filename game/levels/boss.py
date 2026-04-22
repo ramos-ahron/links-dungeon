@@ -3,6 +3,7 @@
 import pygame
 
 from game import loop, physics, player
+from game.sprite import Sprite
 from game.loop import add_text
 from game.state import state
 
@@ -10,6 +11,31 @@ from game.state import state
 def setup_boss_room():
     """Create the boss, its attack ranges and the boss-room variables."""
     state.arrows = []
+    state.boss = Sprite(100,100,None, "mace_knight_right_idle.png")
+    state.boss.addImage("mace_knight_left_idle.png")
+    state.boss.addImage("boss_walking_right_00.png")
+    state.boss.addImage("boss_walking_right_01.png")
+    state.boss.addImage("boss_walking_right_02.png")
+    state.boss.addImage("boss_walking_left_00.png")
+    state.boss.addImage("boss_walking_left_01.png")
+    state.boss.addImage("boss_walking_left_02.png")
+    state.boss.addImage("boss_attack_left_00.png")
+    state.boss.addImage("boss_attack_left_01.png")
+    state.boss.addImage("boss_attack_left_02.png")
+    state.boss.addImage("boss_attack_left_03.png")
+    state.boss.addImage("boss_attack_right_00.png")
+    state.boss.addImage("boss_attack_right_01.png")
+    state.boss.addImage("boss_attack_right_02.png")
+    state.boss.addImage("boss_attack_right_03.png")
+    state.boss.addImage("mace_knight_idle.png")
+    state.boss.addImage("boss_death_animation_00.png")
+    state.boss.addImage("boss_death_animation_01.png")
+    state.boss.addImage("boss_death_animation_02.png")
+    state.boss.addImage("boss_death_animation_03.png")
+    state.boss.addImage("boss_death_animation_04.png")
+    state.boss.addImage("boss_death_animation_05.png")
+    state.boss.addImage("boss_death_animation_06.png")
+    state.boss.setPosition(300,360)
     state.boss_clock = pygame.time.Clock()
     state.boss_count1 = 0
     state.damage_count = 0
@@ -19,16 +45,45 @@ def setup_boss_room():
     state.stamina = 10
     state.player_shield = 100
     state.player_stamina = 100
+    state.boss_health = 625
+    state.boss_facing_left = False
+    state.boss_facing_right = False
+    state.boss_battle_start = False
     state.mace_reattack = False
     state.boss_range_collision = False
+    state.mace_away = False
+    state.chain_away = False
     state.attack = False
     state.damage_check = False
     state.a_collision = False
+    state.boss_range1 = Sprite(50,100,[255,0,0])
+    state.boss_range2 = Sprite(50,100,[255,0,0])
+    state.boss_range3 = Sprite(75,100,[0,0,255])
+    state.boss_range4 = Sprite(75,100,[0,0,255])
+    state.boss_range5 = Sprite(100,100,[0,255,0])
+    state.boss_range6 = Sprite(100,100,[0,255,0])
+    state.boss_range7 = Sprite(50,100,[255,0,0])
+    state.boss_range8 = Sprite(50,100,[255,0,0])
+    state.boss_body = Sprite(50,75,[0,255,0])
     state.player.setPosition(0,410)
     state.ground1.setPosition(0, 460)
     state.bound7.setPosition(-300,0)
     state.bound8.setPosition(800,0)
-    state.all_sprites3.add(state.back3,state.ground1,state.player)
+    state.all_sprites3.add(state.back3,state.ground1,state.boss,state.player)
+
+
+def update_boss_ranges():
+    """Keep the boss's attack and detection boxes around it."""
+    if state.boss_health != 0:
+        state.boss_range1.setPosition(state.boss.getX() - 25,state.boss.getY())
+        state.boss_range2.setPosition(state.boss.getX() + state.boss.getWidth() - 25, state.boss.getY())
+        state.boss_range3.setPosition(state.boss.getX() - 100,state.boss.getY())
+        state.boss_range4.setPosition(state.boss.getX() + state.boss.getWidth() + 25,state.boss.getY())
+        state.boss_range5.setPosition(state.boss.getX() - 200,state.boss.getY())
+        state.boss_range6.setPosition(state.boss.getX() + state.boss.getWidth() + 100,state.boss.getY())
+        state.boss_range7.setPosition(state.boss.getX() - 250,state.boss.getY())
+        state.boss_range8.setPosition(state.boss.getX() + state.boss.getWidth() + 200,state.boss.getY())
+        state.boss_body.setPosition(state.boss.getX() + 20, state.boss.getY() + 25)
 
 
 def draw():
@@ -64,6 +119,27 @@ def check_room_bounds():
         state.playerLeft = False
     elif state.player.collision(state.bound4):
         state.playerRight = False
+
+
+def face_player():
+    """Turn the boss toward the player, block the player, start the fight on the first hit."""
+    if state.player.getX() + (state.player.getWidth() / 2) > state.boss.getX() + (state.boss.getWidth() / 2):
+        state.boss_facing_right = True
+        state.boss_facing_left = False
+        if not state.boss_battle_start:
+            state.boss.setImageIndex(0)
+    elif state.player.getX() + (state.player.getWidth() / 2) <= state.boss.getX() + (state.boss.getWidth() / 2):
+        state.boss_facing_left = True
+        state.boss_facing_right = False
+        if not state.boss_battle_start:
+            state.boss.setImageIndex(1)
+    if state.boss_health > 0:
+        if state.boss.getY() <= state.player.getY() - 10 <= state.boss.getY() + state.boss.getHeight() and state.boss.getX() + state.boss.getWidth() - 20 <= state.player.getX() <= state.boss.getX() + state.boss.getWidth() - 10:
+            state.playerLeft = False
+        elif state.boss.getY() <= state.player.getY() - 10  <= state.boss.getY() + state.boss.getHeight() and state.boss.getX() + 10 <= state.player.getX() + state.player.getWidth() <= state.boss.getX() + 20:
+            state.playerRight = False
+    if (state.boss.collision(state.player_range1) or state.boss.collision(state.player_range2)) and state.attack and not state.boss_battle_start:
+        state.boss_battle_start = True
 
 
 def player_on_floor():
@@ -111,6 +187,16 @@ def move_player():
         state.player.move(-4,0)
 
 
+def rebuild_draw_group():
+    """Between attacks: clear projectiles, rebuild what gets drawn, handle winning and the death animation."""
+    if not state.chain_away and not state.mace_away:
+        for sprites in state.all_sprites3:
+            state.all_sprites3.remove(sprites)
+        state.all_sprites3.add(state.back3,state.ground1,state.boss,state.arrows)
+        if state.health != 0 and state.boss_health != 0:
+            state.all_sprites3.add(state.player)
+
+
 def handle_events():
     """Keyboard and mouse input for the boss room."""
     for event in pygame.event.get():
@@ -152,6 +238,7 @@ def setup():
 def frame():
     """One frame of the level, in the exact order of the original loop body."""
     player.update_attack_ranges()
+    update_boss_ranges()
     physics.set_boss_room_gravity()
     player.tick_regen_counters()
     draw()
@@ -159,11 +246,13 @@ def frame():
     player.update_stats_boss_room()
     player.reset_attack_counter()
     check_room_bounds()
+    face_player()
     player_on_floor()
     physics.apply_gravity()
     move_player()
     player.update_idle_pose()
     player.cancel_attack_in_air()
+    rebuild_draw_group()
     player.reset_attack_counter()
     pygame.display.flip()
     handle_events()
