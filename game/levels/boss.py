@@ -41,11 +41,14 @@ def setup_boss_room():
     state.boss.addImage("boss_death_animation_06.png")
     state.boss.setPosition(300,360)
     state.boss_clock = pygame.time.Clock()
+    state.t_yVelocity = 0
     state.boss_count1 = 0
+    state.boss_death_animation = 0
     state.mace_attack_count = 0
     state.mace_stop = 0
     state.mace_speed = 0
     state.chain_position = 15
+    state.winner_text = 0
     state.chain_position1 = 0
     state.chain_appearance = 0
     state.chain_appearance1 = 0
@@ -58,6 +61,8 @@ def setup_boss_room():
     state.chain_attack_count = 0
     state.mace_attempts = 0
     state.boss_fighting_animation = 0
+    state.boss_death_animation = 0
+    state.player_win_count = 0
     state.chain_speed = 0
     state.chain_count = 0
     state.weapon = 1
@@ -67,6 +72,7 @@ def setup_boss_room():
     state.player_stamina = 100
     state.boss_health = 625
     state.boss_facing_left = False
+    state.trophy_up = False
     state.boss_facing_right = False
     state.boss_battle_start = False
     state.mace_rebound = False
@@ -168,6 +174,35 @@ def face_player():
             state.playerRight = False
     if (state.boss.collision(state.player_range1) or state.boss.collision(state.player_range2)) and state.attack and not state.boss_battle_start:
         state.boss_battle_start = True
+
+
+def update_boss_death():
+    """Boss death animation, then drop the trophy."""
+    if state.boss_health < 0:
+        state.boss_health = 0
+    if state.boss_health == 0:
+        state.boss_death_animation += 1
+        if state.boss_death_animation == 1:
+            state.boss.setImageIndex(17)
+        if state.boss_death_animation == 15:
+            state.boss.setImageIndex(18)
+        if state.boss_death_animation == 30:
+            state.boss.setImageIndex(19)
+        if state.boss_death_animation == 45:
+            state.boss.setImageIndex(20)
+        if state.boss_death_animation == 60:
+            state.boss.setImageIndex(21)
+        if state.boss_death_animation == 75:
+            state.boss.setImageIndex(22)
+        if state.boss_death_animation == 90:
+            state.boss.setImageIndex(23)
+        if state.boss_death_animation == 105:
+            state.all_sprites3.remove(state.boss)
+            state.trophy = Sprite(50,50,None,"trophy_texture_01.png")
+            state.trophy.setPosition(state.boss.getX(), state.boss.getY())
+            state.all_sprites3.add(state.trophy)
+    if state.health == 0:
+        state.boss.setImageIndex(16)
 
 
 def update_boss_attacks():
@@ -416,6 +451,15 @@ def move_player():
         state.player.move(-4,0)
 
 
+def drop_trophy():
+    """Let the trophy fall to the floor."""
+    if state.boss_health == 0 and state.health != 0 and state.boss_death_animation > 105:
+        state.t_yVelocity += state.gravity
+        state.trophy.move(0,state.t_yVelocity)
+        if state.trophy.collision(state.ground1):
+            state.t_yVelocity = 0
+
+
 def update_player_arrows():
     """Move the player's arrows; damage the boss (and start the fight) on hit."""
     # `arrow` stays on state: the original used this global name both in this loop and outside it.
@@ -590,6 +634,19 @@ def update_trailing_chains():
             state.o_chains.remove(o_chain)
 
 
+def pick_up_trophy():
+    """Swap the player for the trophy-holding sprite."""
+    if state.boss_health == 0 and state.trophy_up and state.health != 0:
+        if state.player.collision(state.trophy):
+            state.player_win_count += 1
+            if state.player_win_count == 1:
+                state.all_sprites3.remove(state.player)
+                state.all_sprites3.remove(state.trophy)
+                state.player_win = Sprite(75,75,None,"player_trophy_00.png")
+                state.player_win.setPosition(state.player.getX(),state.player.getY() - 25)
+                state.all_sprites3.add(state.player_win)
+
+
 def rebuild_draw_group():
     """Between attacks: clear projectiles, rebuild what gets drawn, handle winning and the death animation."""
     if not state.chain_away and not state.mace_away:
@@ -615,6 +672,19 @@ def rebuild_draw_group():
             state.all_sprites3.add(state.player)
         if state.health == 0 and state.boss_health != 0 and state.death_counter <= 75:
             state.all_sprites3.add(state.player)
+        if state.boss_health == 0 and state.boss_death_animation > 105:
+            state.all_sprites3.remove(state.boss)
+            state.all_sprites3.add(state.trophy)
+        if state.boss_health == 0 and not state.trophy_up and state.health != 0:
+            state.all_sprites3.add(state.player)
+        if state.boss_health == 0 and state.trophy_up and state.health != 0:
+            if state.player.collision(state.trophy):
+                state.winner = True
+        if state.winner:
+            state.winner_text += 1
+            state.all_sprites3.remove(state.player)
+            state.all_sprites3.remove(state.trophy)
+            state.all_sprites3.add(state.back3,state.ground1,state.arrows,state.player_win)
         if state.health == 0:
             state.playerLeft = False
             state.playerRight = False
@@ -654,6 +724,8 @@ def handle_events():
                 state.playerUp = True
             elif event.key == pygame.K_s:
                 state.playerDown = True
+            if event.key == pygame.K_t:
+                state.trophy_up = True
             if event.key == pygame.K_1:
                 state.weapon = 1
             if event.key == pygame.K_2:
@@ -690,17 +762,20 @@ def frame():
     player.reset_attack_counter()
     check_room_bounds()
     face_player()
+    update_boss_death()
     update_boss_attacks()
     player_on_floor()
     physics.apply_gravity()
     move_player()
     player.update_idle_pose()
+    drop_trophy()
     player.cancel_attack_in_air()
     update_player_arrows()
     update_chain_grab()
     update_mace()
     update_trailing_chains()
     player.update_damage_flash_boss_room()
+    pick_up_trophy()
     rebuild_draw_group()
     player.reset_attack_counter()
     pygame.display.flip()
