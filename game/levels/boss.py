@@ -10,6 +10,7 @@ from game.state import state
 
 def setup_boss_room():
     """Create the boss, its attack ranges and the boss-room variables."""
+    state.maces = []
     state.chains = []
     state.o_chains = []
     state.chained = []
@@ -41,13 +42,21 @@ def setup_boss_room():
     state.boss.setPosition(300,360)
     state.boss_clock = pygame.time.Clock()
     state.boss_count1 = 0
+    state.mace_attack_count = 0
+    state.mace_stop = 0
+    state.mace_speed = 0
+    state.chain_position = 15
     state.chain_position1 = 0
+    state.chain_appearance = 0
     state.chain_appearance1 = 0
     state.damage_count = 0
+    state.damage_count1 = 0
     state.damage_count2 = 0
     state.damage_check_count = 0
+    state.chain_distance = 10
     state.chain_distance1 = 10
     state.chain_attack_count = 0
+    state.mace_attempts = 0
     state.boss_fighting_animation = 0
     state.chain_speed = 0
     state.chain_count = 0
@@ -60,7 +69,9 @@ def setup_boss_room():
     state.boss_facing_left = False
     state.boss_facing_right = False
     state.boss_battle_start = False
+    state.mace_rebound = False
     state.mace_reattack = False
+    state.chain_appeared = False
     state.chain_rebound = False
     state.boss_range_collision = False
     state.mace_away = False
@@ -251,6 +262,38 @@ def update_boss_attacks():
                         state.all_sprites3.add(state.chain)
                         state.boss.setImageIndex(0)
                         state.chain_away = True
+            if state.mace_reattack and not state.player.collision(state.boss_range1) and not state.player.collision(state.boss_range2) and not state.player.collision(state.boss_range3) and not state.player.collision(state.boss_range4) and not state.player.collision(state.boss_range5) and not state.player.collision(state.boss_range6) and not state.chain_away:
+                state.mace_attack_count += 1
+                if state.boss_facing_left:
+                    if state.mace_attack_count == 1:
+                        state.mace = Sprite(36,36,None,"mace_texture_left.png")
+                        state.mace.setPosition(state.boss_body.getX() , state.boss_body.getY() + 25)
+                        state.mace_speed = -5
+                        state.mace.xSpeed = state.mace_speed
+                        state.maces.append(state.mace)
+                        state.all_sprites3.add(state.mace)
+                        state.boss.setImageIndex(1)
+                        state.damage_chack1 = 0
+                        state.mace_reattack = False
+                        state.mace_away = True
+                    if state.mace_attack_count >= 20 and state.mace_attack_count <= 80:
+                        state.boss.move(-2,0)
+                        state.boss.imageStartEnd(5,7,5)
+                if state.boss_facing_right:
+                    if state.mace_attack_count == 1:
+                        state.mace = Sprite(36,36,None,"mace_texture_right.png")
+                        state.mace.setPosition(state.boss_body.getX() + state.boss_body.getWidth(), state.boss_body.getY() + 25)
+                        state.mace_speed = 5
+                        state.mace.xSpeed = state.mace_speed
+                        state.maces.append(state.mace)
+                        state.all_sprites3.add(state.mace)
+                        state.damage_check1 = 0
+                        state.boss.setImageIndex(0)
+                        state.mace_reattack = False
+                        state.mace_away = True
+                    if state.mace_attack_count >= 20 and state.mace_attack_count <= 80:
+                        state.boss.move(2,0)
+                        state.boss.imageStartEnd(2,4,5)
 
 
 def player_on_floor():
@@ -463,8 +506,83 @@ def update_chain_grab():
                 state.o_chains.remove(i)
 
 
+def update_mace():
+    """Thrown mace: fly out trailing chain links, wait at the wall, come back."""
+    # `mace` stays on state: the original used this global name both in this loop and outside it.
+    for state.mace in state.maces:
+        state.mace.move(state.mace.xSpeed,0)
+        if state.mace.getX() + state.mace.getWidth() < state.boss_body.getX() and state.boss_facing_left:
+            state.chain_appearance += 1
+            if state.chain_appearance == 3:
+                state.chain = Sprite(20,20,None, "chain_texture_00.png")
+                state.chain.setPosition(state.mace.getX() + state.mace.getWidth() + state.chain_position - state.chain_distance, state.mace.getY() + 10)
+                state.chains.append(state.chain)
+                state.all_sprites3.add(state.chain)
+                state.chain_position += 15
+                state.chain_appearance = 0
+                state.chain_appeared = True
+                if state.chain.getX() + state.chain.getWidth() > state.boss_body.getX():
+                    state.chain_position -= 15
+        if state.mace.getX() > state.boss_body.getX() + state.boss_body.getWidth() and state.boss_facing_right:
+            state.chain_appearance += 1
+            if state.chain_appearance == 3:
+                state.chain = Sprite(20,20,None,"chain_texture_00.png")
+                state.chain.setPosition(state.mace.getX() - state.chain_position - state.chain_distance, state.mace.getY() + 10)
+                state.chains.append(state.chain)
+                state.all_sprites3.add(state.chain)
+                state.chain_position += 15
+                state.chain_appearance = 0
+                state.chain_appeared = True
+                if state.chain.getX()  < state.boss_body.getX() + state.boss_body.getWidth():
+                    state.chain_position -= 15
+        if state.mace.collision(state.player):
+            state.damage_count1 += 1
+            if state.damage_count1 == 1:
+                if state.player_shield > 0:
+                    state.player_shield -= 20
+                    state.shield -= 2
+                else:
+                    if state.health != 0:
+                        state.player_health -= 10
+                        state.health -= 1
+                state.shield_count = 0
+                state.damage_check = True
+        if state.mace.collision(state.bound7) or state.mace.collision(state.bound8):
+            state.mace.xSpeed = 0
+            state.mace_stop += 1
+            if state.mace_stop == 120:
+                state.damage_count1 = 0
+                state.mace.xSpeed = state.mace_speed * -1
+                state.mace_rebound = True
+                state.mace_reattack = False
+        if state.mace.collision(state.boss_body) and state.mace_rebound:
+            state.mace.xSpeed = 0
+            state.maces.remove(state.mace)
+            state.all_sprites3.remove(state.mace)
+            state.mace_rebound = False
+            state.mace_reattack = False
+            state.mace_away = False
+            if not state.not_mace:
+                state.mace_attack_count = -60
+            elif state.not_mace:
+                state.mace_attack_count = 0
+            state.mace_stop = 0
+            state.damage_count1 = 0
+            state.chain_position = 0
+            state.chain_distance = 10
+            for i in state.chains:
+                state.all_sprites3.remove(i)
+                state.chains.remove(i)
+
+
 def update_trailing_chains():
     """Move the chain links that trail behind the mace and the chain grab."""
+    # `chain` stays on state: the original used this global name both in this loop and outside it.
+    for state.chain in state.chains:
+        state.chain.move(state.mace.xSpeed,0)
+        if state.chain.collision(state.boss_body) and state.chain_appeared:
+            state.all_sprites3.remove(state.chain)
+            state.chains.remove(state.chain)
     for o_chain in state.o_chains:
         o_chain.move(state.chain_speed,0)
         if o_chain.collision(state.boss_body) and state.chain_rebound:
@@ -475,9 +593,17 @@ def update_trailing_chains():
 def rebuild_draw_group():
     """Between attacks: clear projectiles, rebuild what gets drawn, handle winning and the death animation."""
     if not state.chain_away and not state.mace_away:
+        # `chain` stays on state: the original used this global name both in this loop and outside it.
+        for state.chain in state.chains:
+            state.all_sprites3.remove(state.chains)
+            state.chains.remove(state.chain)
         for o_chain in state.o_chains:
             state.all_sprites3.remove(state.chains)
             state.o_chains.remove(o_chain)
+        # `mace` stays on state: the original used this global name both in this loop and outside it.
+        for state.mace in state.maces:
+            state.all_sprites3.remove(state.mace)
+            state.maces.remove(state.mace)
         # `chain` stays on state: the original used this global name both in this loop and outside it.
         for state.chain in state.chained:
             state.all_sprites3.remove(state.chain)
@@ -572,6 +698,7 @@ def frame():
     player.cancel_attack_in_air()
     update_player_arrows()
     update_chain_grab()
+    update_mace()
     update_trailing_chains()
     player.update_damage_flash_boss_room()
     rebuild_draw_group()
