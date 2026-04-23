@@ -175,6 +175,9 @@ def update_death():
             state.player.setImageIndex(84)
         if state.death_counter == 75:
             state.all_sprites1.remove(state.player)
+            print("""Good Try!
+
+Please Try Again!!!""")
 
 
 def reset_attack_counter():

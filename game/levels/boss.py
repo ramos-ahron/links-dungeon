@@ -103,6 +103,15 @@ def setup_boss_room():
     state.all_sprites3.add(state.back3,state.ground1,state.boss,state.player)
 
 
+def print_intro():
+    """Print the boss-room hint to the console."""
+    if state.boss_battle:
+        print("""
+Attack the boss to start the battle
+
+Good Luck!!!""")
+
+
 def update_boss_ranges():
     """Keep the boss's attack and detection boxes around it."""
     if state.boss_health != 0:
@@ -685,6 +694,9 @@ def rebuild_draw_group():
             state.all_sprites3.remove(state.player)
             state.all_sprites3.remove(state.trophy)
             state.all_sprites3.add(state.back3,state.ground1,state.arrows,state.player_win)
+            if state.winner_text == 1:
+                print("""
+Congratulations on beating our game!!!""")
         if state.health == 0:
             state.playerLeft = False
             state.playerRight = False
@@ -706,6 +718,10 @@ def rebuild_draw_group():
                 state.player.setImageIndex(84)
             if state.death_counter == 75:
                 state.all_sprites3.remove(state.player)
+                print("""
+Good Try!
+
+Please Try Again!!!""")
 
 
 def handle_events():
@@ -748,6 +764,7 @@ def handle_events():
 def setup():
     """Build the level (runs once, before the loop)."""
     setup_boss_room()
+    print_intro()
 
 
 def frame():

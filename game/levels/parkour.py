@@ -179,6 +179,49 @@ def fill_draw_groups():
     state.all_sprites2.add(state.player_stats)
 
 
+def print_intro():
+    """Print the credits, rules and controls to the console."""
+    print("""
+This game is made by:
+    Marcus Reid &
+    Ahron Ramos
+
+Objective:
+    Kill all the Enemies and defeat the Boss
+
+Parkour Details:
+    normal wall - you can't climb it and you can't go into it. You can only walk on it
+    wall w/ vines - you can climb up, down and sideways when in contact with it
+    spikes - it deals damage to you whenever you come in contact with it
+
+    *there's no fall damage unless you fall on spikes*
+
+Player Stats details:
+    red bar - health (doesn't regenerate)
+    white bar - shield (regenerates)
+    blue bar - ammo/ stamina (regenarates, only available for bow n arrow)
+
+Controls:
+    Change Weapons:
+        1 - sword
+        2 - bow n arrow
+
+    Movement:
+        w - climb up
+        s - climb down
+        a - move left
+        d - move right
+        space bar - jump
+
+    Attacks:
+        use mouse to attack
+        
+    Others:
+        o - enter the boss room
+        t - pick up trophy
+""")
+
+
 def update_door():
     """Show the door once all enemies are dead; play its opening animation and switch to the boss room."""
     if state.enemy1_health == 0 and state.enemy2_health == 0 and state.enemy3_health == 0 and state.enemy4_health == 0 and state.enemy5_health == 0 and state.enemy6_health == 0 and state.enemy7_health == 0 and state.enemy8_health == 0:
@@ -314,6 +357,7 @@ def setup():
     enemies.create_ranges()
     build_door()
     fill_draw_groups()
+    print_intro()
 
 
 def frame():
