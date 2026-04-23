@@ -792,3 +792,21 @@ def update_stats_boss_room():
                 state.player_shield += 10
                 state.shield += 1
             state.shield_count = 120
+
+
+def update_damage_flash_boss_room():
+    """Show the 'hit' frame for 15 frames after taking damage (boss-room counter)."""
+    if state.damage_check and state.health != 0:
+        state.damage_check_count += 1
+        if state.facingLeft:
+            if state.damage_check_count == 1:
+                state.player.setImageIndex(85)
+            if state.damage_check_count == 15:
+                state.damage_check_count = 0
+                state.damage_check = False
+        if state.facingRight:
+            if state.damage_check_count == 1:
+                state.player.setImageIndex(86)
+            if state.damage_check_count == 15:
+                state.damage_check_count = 0
+                state.damage_check = False

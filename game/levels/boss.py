@@ -40,6 +40,8 @@ def setup_boss_room():
     state.boss_count1 = 0
     state.damage_count = 0
     state.damage_count2 = 0
+    state.damage_check_count = 0
+    state.boss_fighting_animation = 0
     state.weapon = 1
     state.shield = 10
     state.stamina = 10
@@ -53,6 +55,7 @@ def setup_boss_room():
     state.boss_range_collision = False
     state.mace_away = False
     state.chain_away = False
+    state.not_mace = False
     state.attack = False
     state.damage_check = False
     state.winner = False
@@ -144,6 +147,70 @@ def face_player():
             state.playerRight = False
     if (state.boss.collision(state.player_range1) or state.boss.collision(state.player_range2)) and state.attack and not state.boss_battle_start:
         state.boss_battle_start = True
+
+
+def update_boss_attacks():
+    """Boss AI: mace swing up close, walk toward the player, chain grab, mace throw from far."""
+    if state.boss_health != 0 and state.health != 0:
+        if state.boss_battle_start:
+            if state.player.collision(state.boss_range1) and not state.player.collision(state.boss_range3) and not state.mace_away and not state.chain_away:
+                state.boss_fighting_animation += 1
+                if state.boss_fighting_animation == 1:
+                    state.boss.setImageIndex(8)
+                if state.boss_fighting_animation == 5:
+                    state.boss.setImageIndex(9)
+                if state.boss_fighting_animation == 10:
+                    state.boss.setImageIndex(10)
+                if state.boss_fighting_animation == 15:
+                    state.boss.setImageIndex(11)
+                    if state.player_shield > 0:
+                        state.player_shield -= 30
+                        state.shield -= 3
+                    else:
+                        if state.health != 0:
+                            state.player_health -= 10
+                            state.health -= 1
+                    state.shield_count = 0
+                    state.damage_check = True
+                if state.boss_fighting_animation == 20:
+                    state.boss.setImageIndex(1)
+                if state.boss_fighting_animation == 45:
+                    state.boss_fighting_animation = 0
+                state.not_mace = True
+            elif state.player.collision(state.boss_range2) and not state.player.collision(state.boss_range4) and not state.mace_away and not state.chain_away:
+                state.boss_fighting_animation += 1
+                if state.boss_fighting_animation == 1:
+                    state.boss.setImageIndex(12)
+                if state.boss_fighting_animation == 5:
+                    state.boss.setImageIndex(13)
+                if state.boss_fighting_animation == 10:
+                    state.boss.setImageIndex(14)
+                if state.boss_fighting_animation == 15:
+                    state.boss.setImageIndex(15)
+                    if state.player_shield > 0:
+                        state.player_shield -= 30
+                        state.shield -= 3
+                    else:
+                        if state.health != 0:
+                            state.player_health -= 10
+                            state.health -= 1
+                    state.shield_count = 0
+                    state.damage_check = True
+                if state.boss_fighting_animation == 20:
+                    state.boss.setImageIndex(0)
+                if state.boss_fighting_animation == 45:
+                    state.boss_fighting_animation = 0
+                state.not_mace = True
+            elif not state.player.collision(state.boss_range1) or not state.player.collision(state.boss_range2) and not state.mace_away and not state.chain_away:
+                state.boss_fighting_animation = 0
+            if state.player.collision(state.boss_range3) and not state.player.collision(state.boss_range5) and not state.mace_away and not state.chain_away:
+                state.boss.move(-3,0)
+                state.boss.imageStartEnd(5,7,5)
+                state.not_mace = True
+            elif state.player.collision(state.boss_range4) and not state.player.collision(state.boss_range6) and not state.mace_away and not state.chain_away:
+                state.boss.move(3,0)
+                state.boss.imageStartEnd(2,4,5)
+                state.not_mace = True
 
 
 def player_on_floor():
@@ -294,6 +361,29 @@ def rebuild_draw_group():
         state.all_sprites3.add(state.back3,state.ground1,state.boss,state.arrows)
         if state.health != 0 and state.boss_health != 0:
             state.all_sprites3.add(state.player)
+        if state.health == 0 and state.boss_health != 0 and state.death_counter <= 75:
+            state.all_sprites3.add(state.player)
+        if state.health == 0:
+            state.playerLeft = False
+            state.playerRight = False
+            state.playerUp = False
+            state.playerDown = False
+            state.playerUp = False
+            state.jump = False
+            state.attack = False
+            state.death_counter += 1
+            if state.death_counter == 1:
+                state.player.setImageIndex(80)
+            if state.death_counter == 15:
+                state.player.setImageIndex(81)
+            if state.death_counter == 30:
+                state.player.setImageIndex(82)
+            if state.death_counter == 45:
+                state.player.setImageIndex(83)
+            if state.death_counter == 60:
+                state.player.setImageIndex(84)
+            if state.death_counter == 75:
+                state.all_sprites3.remove(state.player)
 
 
 def handle_events():
@@ -348,12 +438,14 @@ def frame():
     player.reset_attack_counter()
     check_room_bounds()
     face_player()
+    update_boss_attacks()
     player_on_floor()
     physics.apply_gravity()
     move_player()
     player.update_idle_pose()
     player.cancel_attack_in_air()
     update_player_arrows()
+    player.update_damage_flash_boss_room()
     rebuild_draw_group()
     player.reset_attack_counter()
     pygame.display.flip()
