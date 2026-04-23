@@ -10,6 +10,9 @@ from game.state import state
 
 def setup_boss_room():
     """Create the boss, its attack ranges and the boss-room variables."""
+    state.chains = []
+    state.o_chains = []
+    state.chained = []
     state.arrows = []
     state.boss = Sprite(100,100,None, "mace_knight_right_idle.png")
     state.boss.addImage("mace_knight_left_idle.png")
@@ -38,10 +41,16 @@ def setup_boss_room():
     state.boss.setPosition(300,360)
     state.boss_clock = pygame.time.Clock()
     state.boss_count1 = 0
+    state.chain_position1 = 0
+    state.chain_appearance1 = 0
     state.damage_count = 0
     state.damage_count2 = 0
     state.damage_check_count = 0
+    state.chain_distance1 = 10
+    state.chain_attack_count = 0
     state.boss_fighting_animation = 0
+    state.chain_speed = 0
+    state.chain_count = 0
     state.weapon = 1
     state.shield = 10
     state.stamina = 10
@@ -52,6 +61,7 @@ def setup_boss_room():
     state.boss_facing_right = False
     state.boss_battle_start = False
     state.mace_reattack = False
+    state.chain_rebound = False
     state.boss_range_collision = False
     state.mace_away = False
     state.chain_away = False
@@ -211,6 +221,36 @@ def update_boss_attacks():
                 state.boss.move(3,0)
                 state.boss.imageStartEnd(2,4,5)
                 state.not_mace = True
+            if state.player.collision(state.boss_range5) and not state.mace_away:
+                state.chain_attack_count += 1
+                if state.boss_facing_left:
+                    if state.chain_attack_count < 0:
+                        state.boss.move(-2,0)
+                        state.boss.imageStartEnd(5,7,5)
+                    if state.chain_attack_count == 1:
+                        state.chain = Sprite(20,20,None, "chain_texture_00.png")
+                        state.chain.setPosition(state.boss_body.getX(), state.boss_body.getY() + 40)
+                        state.chain_speed = -5
+                        state.chain.xSpeed = state.chain_speed
+                        state.chained.append(state.chain)
+                        state.all_sprites3.add(state.chain)
+                        state.boss.setImageIndex(1)
+                        state.chain_away = True
+            if state.player.collision(state.boss_range6) and not state.mace_away:
+                state.chain_attack_count += 1
+                if state.boss_facing_right:
+                    if state.chain_attack_count < 0:
+                        state.boss.move(2,0)
+                        state.boss.imageStartEnd(2,4,5)
+                    if state.chain_attack_count == 1:
+                        state.chain = Sprite(20,20,None, "chain_texture_00.png")
+                        state.chain.setPosition(state.boss_body.getX() + state.boss_body.getWidth() , state.boss_body.getY() + 40)
+                        state.chain_speed = 5
+                        state.chain.xSpeed = state.chain_speed
+                        state.chained.append(state.chain)
+                        state.all_sprites3.add(state.chain)
+                        state.boss.setImageIndex(0)
+                        state.chain_away = True
 
 
 def player_on_floor():
@@ -353,9 +393,95 @@ def update_player_arrows():
             state.arrows.remove(state.arrow)
 
 
+def update_chain_grab():
+    """Chain attack: fly out, pull the player back, return to the boss."""
+    # `chain` stays on state: the original used this global name both in this loop and outside it.
+    for state.chain in state.chained:
+        state.chain.move(state.chain.xSpeed,0)
+        if state.chain.getX() + state.chain.getWidth() < state.boss_body.getX() and state.boss_facing_left:
+            state.chain_appearance1 += 1
+            if state.chain_appearance1 == 2:
+                state.other_chain = Sprite(20,20,None,"chain_texture_00.png")
+                state.other_chain.setPosition(state.chain.getX() + state.chain.getWidth() + state.chain_position1,state.chain.getY())
+                state.o_chains.append(state.other_chain)
+                state.all_sprites3.add(state.other_chain)
+                state.chain_position1 += 15
+                state.chain_appearance1 = 0
+                if state.other_chain.getX() + state.other_chain.getWidth() > state.boss_body.getX():
+                    state.chain_position1 -= 15
+        if state.chain.getX() > state.boss_body.getX() + state.boss_body.getWidth() and state.boss_facing_right:
+            state.chain_appearance1 += 1
+            if state.chain_appearance1 == 2:
+                state.other_chain = Sprite(20,20,None,"chain_texture_00.png")
+                state.other_chain.setPosition(state.chain.getX() + state.chain_position1, state.chain.getY())
+                state.o_chains.append(state.other_chain)
+                state.all_sprites3.add(state.other_chain)
+                state.chain_position1 -= 15
+                state.chain_appearance1 = 0
+                if state.other_chain.getX() < state.boss_body.getX() + state.boss_body.getWidth():
+                    state.chain_position1 += 15
+        if state.chain.collision(state.boss_range7) or state.chain.collision(state.boss_range8):
+            state.chain.xSpeed = 0
+            state.chain_speed *= -1
+            state.chain.xSpeed = state.chain_speed
+            state.chain_rebound = True
+        if state.chain.collision(state.player):
+            state.playerLeft = False
+            state.playerRight = False
+            state.jump = False
+            state.chain_count += 1
+            if state.chain_count == 1:
+                if not state.chain_rebound:
+                    state.chain.xSpeed = 0
+                    state.chain_speed *= -1
+                    state.chain.xSpeed = state.chain_speed
+                    state.chain_rebound = True
+                state.damage_count += 1
+                if state.damage_count == 1:
+                    if state.player_shield > 0:
+                        state.player_shield -= 20
+                        state.shield -= 2
+                    else:
+                        if state.health != 0:
+                            state.player_health -= 10
+                            state.health -= 1
+                    state.shield_count = 0
+                state.damage_check = True
+            state.player.move(state.chain.xSpeed,0)
+        if state.chain.collision(state.boss_body) and state.chain_rebound:
+            state.chain.xSpeed = 0
+            state.chained.remove(state.chain)
+            state.all_sprites3.remove(state.chain)
+            state.chain_rebound = False
+            state.chain_away = False
+            state.chain_attack_count = -60
+            state.chain_position1 = 0
+            state.chain_count = 0
+            state.damage_count = 0
+            for i in state.o_chains:
+                state.all_sprites3.remove(i)
+                state.o_chains.remove(i)
+
+
+def update_trailing_chains():
+    """Move the chain links that trail behind the mace and the chain grab."""
+    for o_chain in state.o_chains:
+        o_chain.move(state.chain_speed,0)
+        if o_chain.collision(state.boss_body) and state.chain_rebound:
+            state.all_sprites3.remove(o_chain)
+            state.o_chains.remove(o_chain)
+
+
 def rebuild_draw_group():
     """Between attacks: clear projectiles, rebuild what gets drawn, handle winning and the death animation."""
     if not state.chain_away and not state.mace_away:
+        for o_chain in state.o_chains:
+            state.all_sprites3.remove(state.chains)
+            state.o_chains.remove(o_chain)
+        # `chain` stays on state: the original used this global name both in this loop and outside it.
+        for state.chain in state.chained:
+            state.all_sprites3.remove(state.chain)
+            state.chained.remove(state.chain)
         for sprites in state.all_sprites3:
             state.all_sprites3.remove(sprites)
         state.all_sprites3.add(state.back3,state.ground1,state.boss,state.arrows)
@@ -445,6 +571,8 @@ def frame():
     player.update_idle_pose()
     player.cancel_attack_in_air()
     update_player_arrows()
+    update_chain_grab()
+    update_trailing_chains()
     player.update_damage_flash_boss_room()
     rebuild_draw_group()
     player.reset_attack_counter()
