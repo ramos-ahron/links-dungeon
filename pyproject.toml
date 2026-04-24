@@ -5,3 +5,7 @@ description = "Link's Dungeon: a Grade 10 pygame dungeon crawler by Ahron Ramos 
 # pygame 2.6.1 has no wheels for Python 3.14 yet
 requires-python = ">=3.8,<3.14"
 dependencies = ["pygame==2.6.1"]
+
+[dependency-groups]
+# only needed to make the executable: uv run --group build build.py
+build = ["pyinstaller==6.22.3"]
