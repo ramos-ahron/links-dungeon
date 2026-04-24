@@ -360,13 +360,17 @@ def setup():
     print_intro()
 
 
-def frame():
-    """One frame of the level, in the exact order of the original loop body."""
+def frame(render=True):
+    """One frame of the level, in the exact order of the original loop body.
+
+    render=False skips only the drawing (used by loop.run to catch up on slow machines).
+    """
     update_door()
     player.update_attack_ranges()
     physics.reset_speeds_and_gravity()
     player.tick_regen_counters()
-    draw()
+    if render:
+        draw()
     reset_frame_flags()
     player.update_stats()
     player.update_death()
@@ -396,10 +400,11 @@ def frame():
     enemies.update_enemy_arrows()
     physics.apply_gravity()
     physics.wrap_background()
-    pygame.display.flip()
+    if render:
+        pygame.display.flip()
     handle_events()
 
 
 def run():
     """Run the level until its flag turns off (door entered, boss beaten, or window closed)."""
-    loop.run(state.clock, 70, lambda: state.parkour_enemies, frame)
+    loop.run(state.clock, lambda: state.parkour_enemies, frame)

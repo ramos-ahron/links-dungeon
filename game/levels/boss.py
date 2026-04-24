@@ -767,13 +767,17 @@ def setup():
     print_intro()
 
 
-def frame():
-    """One frame of the level, in the exact order of the original loop body."""
+def frame(render=True):
+    """One frame of the level, in the exact order of the original loop body.
+
+    render=False skips only the drawing (used by loop.run to catch up on slow machines).
+    """
     player.update_attack_ranges()
     update_boss_ranges()
     physics.set_boss_room_gravity()
     player.tick_regen_counters()
-    draw()
+    if render:
+        draw()
     reset_frame_flags()
     player.update_stats_boss_room()
     player.reset_attack_counter()
@@ -795,10 +799,11 @@ def frame():
     pick_up_trophy()
     rebuild_draw_group()
     player.reset_attack_counter()
-    pygame.display.flip()
+    if render:
+        pygame.display.flip()
     handle_events()
 
 
 def run():
     """Run the level until its flag turns off (door entered, boss beaten, or window closed)."""
-    loop.run(state.boss_clock, 70, lambda: state.boss_battle, frame)
+    loop.run(state.boss_clock, lambda: state.boss_battle, frame)
