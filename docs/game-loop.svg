@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 376" width="900" height="376" role="img" aria-labelledby="game-loop-title game-loop-desc">
+  <title id="game-loop-title">Link's Dungeon game loop</title>
+  <desc id="game-loop-desc">Each pass waits for the next 1/40 s slot, runs one frame of game logic, drawing and input, then runs extra logic-only frames while a slow machine is behind.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#8a8d9b"/></marker>
+    <marker id="arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#bf4520"/></marker>
+  </defs>
+  <rect width="900" height="376" fill="#f5f5f5"/>
+  <path d="M200,72 H260" fill="none" stroke="#8a8d9b" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <path d="M420,72 H480" fill="none" stroke="#8a8d9b" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <path d="M640,72 H700" fill="none" stroke="#8a8d9b" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <path d="M780,104 V168" fill="none" stroke="#8a8d9b" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <path d="M700,188 H640" fill="none" stroke="#bf4520" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+  <path d="M640,212 H700" fill="none" stroke="#bf4520" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+  <path d="M780,232 V284 A8 8 0 0 1 772 292 H128 A8 8 0 0 1 120 284 V104" fill="none" stroke="#8a8d9b" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <rect x="654.8" y="168" width="30.4" height="12" fill="#f5f5f5"/>
+  <text x="670" y="177.5" text-anchor="middle" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9.5" letter-spacing="0.6" fill="#bf4520">YES</text>
+  <rect x="648.0" y="220" width="44.0" height="12" fill="#f5f5f5"/>
+  <text x="670" y="229.5" text-anchor="middle" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9.5" letter-spacing="0.6" fill="#bf4520">AGAIN</text>
+  <rect x="792.2" y="252" width="23.6" height="12" fill="#f5f5f5"/>
+  <text x="804" y="261.5" text-anchor="middle" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9.5" letter-spacing="0.6" fill="#5c6073">NO</text>
+  <rect x="411.0" y="272" width="78.0" height="12" fill="#f5f5f5"/>
+  <text x="450" y="281.5" text-anchor="middle" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9.5" letter-spacing="0.6" fill="#5c6073">NEXT FRAME</text>
+  <g>
+    <rect x="40" y="40" width="160" height="64" rx="6" fill="#f5f5f5"/>
+    <rect x="40" y="40" width="160" height="64" rx="6" fill="#f8ebe5" stroke="#bf4520" stroke-width="1.2"/>
+    <rect x="52" y="50" width="36" height="14" rx="2" fill="none" stroke="#bf4520" stroke-width="0.8"/>
+    <text x="57" y="60.5" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9" letter-spacing="0.6" fill="#bf4520">WAIT</text>
+    <text x="52" y="82" font-family="Geist, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2d3142">tick(40)</text>
+    <text x="52" y="96" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="10.5" fill="#5c6073">at most 40 frames/s</text>
+  </g>
+  <g>
+    <rect x="260" y="40" width="160" height="64" rx="6" fill="#f5f5f5"/>
+    <rect x="260" y="40" width="160" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1.2"/>
+    <rect x="272" y="50" width="50" height="14" rx="2" fill="none" stroke="#8a8d9b" stroke-width="0.8"/>
+    <text x="277" y="60.5" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9" letter-spacing="0.6" fill="#5c6073">UPDATE</text>
+    <text x="272" y="82" font-family="Geist, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2d3142">Game logic</text>
+    <text x="272" y="96" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="10.5" fill="#5c6073">player, enemies, physics</text>
+  </g>
+  <g>
+    <rect x="480" y="40" width="160" height="64" rx="6" fill="#f5f5f5"/>
+    <rect x="480" y="40" width="160" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1.2"/>
+    <rect x="492" y="50" width="36" height="14" rx="2" fill="none" stroke="#8a8d9b" stroke-width="0.8"/>
+    <text x="497" y="60.5" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9" letter-spacing="0.6" fill="#5c6073">DRAW</text>
+    <text x="492" y="82" font-family="Geist, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2d3142">Draw + flip</text>
+    <text x="492" y="96" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="10.5" fill="#5c6073">draw(), display.flip()</text>
+  </g>
+  <g>
+    <rect x="700" y="40" width="160" height="64" rx="6" fill="#f5f5f5"/>
+    <rect x="700" y="40" width="160" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1.2"/>
+    <rect x="712" y="50" width="43" height="14" rx="2" fill="none" stroke="#8a8d9b" stroke-width="0.8"/>
+    <text x="717" y="60.5" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9" letter-spacing="0.6" fill="#5c6073">INPUT</text>
+    <text x="712" y="82" font-family="Geist, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2d3142">Read input</text>
+    <text x="712" y="96" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="10.5" fill="#5c6073">handle_events()</text>
+  </g>
+  <g>
+    <rect x="700" y="168" width="160" height="64" rx="6" fill="#f5f5f5"/>
+    <rect x="700" y="168" width="160" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1.2"/>
+    <rect x="712" y="178" width="43" height="14" rx="2" fill="none" stroke="#8a8d9b" stroke-width="0.8"/>
+    <text x="717" y="188.5" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9" letter-spacing="0.6" fill="#5c6073">CHECK</text>
+    <text x="712" y="210" font-family="Geist, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2d3142">Behind ≥ ½ frame?</text>
+    <text x="712" y="224" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="10.5" fill="#5c6073">only on slow machines</text>
+  </g>
+  <g>
+    <rect x="400" y="168" width="240" height="64" rx="6" fill="#f5f5f5"/>
+    <rect x="400" y="168" width="240" height="64" rx="6" fill="#f8ebe5" stroke="#bf4520" stroke-width="1.2"/>
+    <rect x="412" y="178" width="63" height="14" rx="2" fill="none" stroke="#bf4520" stroke-width="0.8"/>
+    <text x="417" y="188.5" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="9" letter-spacing="0.6" fill="#bf4520">CATCH-UP</text>
+    <text x="412" y="210" font-family="Geist, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2d3142">Logic-only frame</text>
+    <text x="412" y="224" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="10.5" fill="#5c6073">frame(render=False): no draw</text>
+  </g>
+  <line x1="40" y1="332" x2="860" y2="332" stroke="#d9dadf" stroke-width="1"/>
+  <rect x="40" y="342" width="20" height="12" rx="2" fill="#f8ebe5" stroke="#bf4520"/>
+  <text x="68" y="352" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="10" fill="#5c6073">timing fix (loop.run)</text>
+  <rect x="238.4" y="342" width="20" height="12" rx="2" fill="#ffffff" stroke="#2d3142"/>
+  <text x="266.4" y="352" font-family="'Geist Mono', ui-monospace, Consolas, 'Courier New', monospace" font-size="10" fill="#5c6073">one frame of the original game code</text>
+</svg>
