@@ -1,11 +1,11 @@
 # Link's Dungeon
 
-A side-scrolling dungeon crawler in Python and pygame, made by Ahron Ramos and Marcus Reid as a Grade 10 computer science final project (December 2019 to January 2020).
+A remake of the side-scrolling dungeon crawler made by me and Marcus Reid in Grade 10.
 
-| | |
-|---|---|
-| ![The start of the parkour level: Link jumps between stone blocks below a vine wall](docs/screenshots/parkour.png) | ![Link swings his sword at an enemy, with a second enemy and spikes nearby](docs/screenshots/enemies.png) |
-| ![The boss room: Link attacks the mace knight, whose health bar runs across the top](docs/screenshots/boss.png) | ![Later in the boss fight: Link's shield is down to 4 of 10 and the boss has lost health](docs/screenshots/boss-fight.png) |
+|                                                                                                                    |                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| ![The start of the parkour level: Link jumps between stone blocks below a vine wall](docs/screenshots/parkour.png) | ![Link swings his sword at an enemy, with a second enemy and spikes nearby](docs/screenshots/enemies.png)                  |
+| ![The boss room: Link attacks the mace knight, whose health bar runs across the top](docs/screenshots/boss.png)    | ![Later in the boss fight: Link's shield is down to 4 of 10 and the boss has lost health](docs/screenshots/boss-fight.png) |
 
 ## Download and play (Windows)
 
@@ -35,15 +35,15 @@ The game also prints its rules and controls in the console window when it starts
 
 ## Controls
 
-| Key | Action |
-|---|---|
-| A / D | Move left / right |
-| Space | Jump |
-| W / S | Climb up / down a vine wall |
-| Mouse click | Attack with the current weapon |
-| 1 / 2 | Switch to sword / bow and arrow |
-| O | Open the door to the boss room (once it appears) |
-| T | Pick up the trophy after the boss dies |
+| Key         | Action                                           |
+| ----------- | ------------------------------------------------ |
+| A / D       | Move left / right                                |
+| Space       | Jump                                             |
+| W / S       | Climb up / down a vine wall                      |
+| Mouse click | Attack with the current weapon                   |
+| 1 / 2       | Switch to sword / bow and arrow                  |
+| O           | Open the door to the boss room (once it appears) |
+| T           | Pick up the trophy after the boss dies           |
 
 ## Run from source
 
@@ -154,4 +154,8 @@ Image sources (from the project's planning document):
 - Parkour background: https://steamcommunity.com/sharedfiles/filedetails/?id=1434609021
 - Boss room: https://www.nexusmods.com/darkestdungeon/mods/686
 
-The player and boss sprites come from Nintendo's *The Legend of Zelda: A Link to the Past*.
+The player and boss sprites come from Nintendo's _The Legend of Zelda: A Link to the Past_.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
