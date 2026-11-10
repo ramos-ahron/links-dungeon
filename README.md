@@ -2,6 +2,17 @@
 
 A side-scrolling dungeon crawler in Python and pygame, made by Ahron Ramos and Marcus Reid as a Grade 10 computer science final project (December 2019 to January 2020).
 
+| | |
+|---|---|
+| ![The start of the parkour level: Link jumps between stone blocks below a vine wall](docs/screenshots/parkour.png) | ![Link swings his sword at an enemy, with a second enemy and spikes nearby](docs/screenshots/enemies.png) |
+| ![The boss room: Link attacks the mace knight, whose health bar runs across the top](docs/screenshots/boss.png) | ![Later in the boss fight: Link's shield is down to 4 of 10 and the boss has lost health](docs/screenshots/boss-fight.png) |
+
+## Download and play (Windows)
+
+Go to the [latest release](https://github.com/ramos-ahron/Links-Dungeon/releases/latest), download `LinksDungeon.exe`, and double-click it. You don't need to install Python or anything else: the game and all its images are inside that one file.
+
+Windows may show "Windows protected your PC" the first time, because the file isn't signed. Click **More info**, then **Run anyway**. A console window opens next to the game; it lists the rules and controls.
+
 ## The game
 
 You play as Link. The first level is a parkour course: climb walls covered in vines, avoid spikes, and fight eight enemies. Each enemy turns to face you, shoots arrows when you are far away, runs at you when you get close, and swings a sword when you are right next to it.
@@ -84,7 +95,7 @@ game/
   levels/boss.py        the boss room
 assets/                 all 172 images
 tests/                  smoke test and timing test
-docs/                   the original planning document and these diagrams
+docs/                   the original planning document, these diagrams and the screenshots
 legacy/                 three earlier versions of the game, kept unchanged
 build.py                one-command build
 pyproject.toml          dependencies (pygame; PyInstaller in the "build" group)
