@@ -8,7 +8,7 @@ def reset_speeds_and_gravity():
     state.backgroundSpeed = 1
     state.groundSpeed = 4
     if state.health != 0:
-        state.gravity = 0.12
+        state.gravity = 0.09
     else:
         state.gravity = 0
         state.yVelocity = 0
@@ -133,7 +133,7 @@ def wrap_background():
 def set_boss_room_gravity():
     """Set boss-room gravity (no gravity once the player is dead)."""
     if state.health != 0:
-        state.gravity = 0.095
+        state.gravity = 0.085
     else:
         state.gravity = 0
         state.yVelocity = 0
